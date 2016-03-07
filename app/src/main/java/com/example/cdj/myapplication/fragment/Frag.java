@@ -43,8 +43,16 @@ public class Frag extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        printScreenDes();
+
+    }
+
+    /**
+     * 打印屏幕宽高.
+     */
+    private void printScreenDes() {
         // 获取屏幕密度（方法3）
-        DisplayMetrics   dm = new DisplayMetrics();
+        DisplayMetrics dm = new DisplayMetrics();
         getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
 
         float  density = dm.density;      // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
@@ -52,8 +60,8 @@ public class Frag extends Fragment {
         float xdpi = dm.xdpi;
         float ydpi = dm.ydpi;
 
-        Logger.e( "  DisplayMetrics" +"  xdpi=" + xdpi + " ydpi=" + ydpi);
-        Logger.e("  DisplayMetrics"+"   density=" + density + " densityDPI=" + densityDPI);
+        Logger.d( " DisplayMetrics" +"  xdpi=" + xdpi + " ydpi=" + ydpi);
+        Logger.i("  DisplayMetrics"+"   density=" + density + " densityDPI=" + densityDPI);
 
         int screenWidthDip = dm.widthPixels;        // 屏幕宽（dip，如：320dip）
         int screenHeightDip = dm.heightPixels;      // 屏幕宽（dip，如：533dip）
@@ -68,6 +76,13 @@ public class Frag extends Fragment {
 
         widthTv.setText("宽度");
         heightTv.setText("高度");
+
+        // 获取屏幕密度（方法1）
+        int screenWidth  =getActivity(). getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
+        int screenHeight = getActivity().getWindowManager().getDefaultDisplay().getHeight();      // 屏幕高（像素，如：800p）
+
+        Logger.i("屏幕宽高  getDefaultDisplay"+ "  screenWidth=" + screenWidth + " screenHeight=" + screenHeight);
+        Logger.i("scale "+screenHeight);
     }
 
     public static int px2dip(Context context, float pxValue){
