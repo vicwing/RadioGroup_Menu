@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.tab_menu)
     RadioGroup mRadioGroup;
 
-    private FragmentChat chat;
+    private Frag chat;
     private FragmentChat address;
     private FragmentChat find;
     private FragmentChat me;
@@ -45,17 +45,17 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void initView() {
-        chat = new FragmentChat();
+//        chat = new FragmentChat();
+        chat = new Frag();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, chat).commit();
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 // TODO Auto-generated method stub
                 switch (checkedId) {
                     case R.id.one:
-                        chat = new FragmentChat();
+                        chat = new Frag();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, chat).commit();
                         break;
                     case R.id.two:
@@ -86,13 +86,17 @@ public class MainActivity extends FragmentActivity {
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         Frag frag ;
         Bundle bundle;
-        for (int i = 0; i <4 ; i++) {
-            frag = new Frag();
-            bundle = new Bundle();
-            bundle.putString("key", "hello world " + i);
-            frag.setArguments(bundle);
-            fragmentList.add(frag);
-        }
+//        for (int i = 0; i <1; i++) {
+//            frag = new Frag();
+//            bundle = new Bundle();
+//            bundle.putString("key", "hello world " + i);
+//            frag.setArguments(bundle);
+//            fragmentList.add(frag);
+//        }
+        fragmentList.add(new Frag());
+        fragmentList.add(new Fragment());
+        fragmentList.add(new Fragment());
+        fragmentList.add(new Fragment());
         //ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
 

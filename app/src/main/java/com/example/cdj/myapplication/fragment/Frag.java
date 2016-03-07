@@ -1,5 +1,6 @@
 package com.example.cdj.myapplication.fragment;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,12 +8,14 @@ import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,6 +29,8 @@ public class Frag extends Fragment {
     TextView widthTv;
     @Bind(R.id.height_tv)
     TextView heightTv;
+    private int screenWidth;
+    private int screenHeight;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -38,10 +43,42 @@ public class Frag extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        // 获取屏幕密度（方法3）
+        DisplayMetrics   dm = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
+
+        float  density = dm.density;      // 屏幕密度（像素比例：0.75/1.0/1.5/2.0）
+        int densityDPI = dm.densityDpi;     // 屏幕密度（每寸像素：120/160/240/320）
+        float xdpi = dm.xdpi;
+        float ydpi = dm.ydpi;
+
+        Logger.e( "  DisplayMetrics" +"  xdpi=" + xdpi + " ydpi=" + ydpi);
+        Logger.e("  DisplayMetrics"+"   density=" + density + " densityDPI=" + densityDPI);
+
+        int screenWidthDip = dm.widthPixels;        // 屏幕宽（dip，如：320dip）
+        int screenHeightDip = dm.heightPixels;      // 屏幕宽（dip，如：533dip）
+
+
+        Logger.e( "  DisplayMetrics(222)"+ "   screenWidthDip=" + screenWidthDip + "   screenHeightDip=" + screenHeightDip);
+
+        screenWidth  = (int)(dm.widthPixels * density + 0.5f);      // 屏幕宽（px，如：480px）
+        screenHeight = (int)(dm.heightPixels * density + 0.5f);     // 屏幕高（px，如：800px）
+
+        Logger.e("  DisplayMetrics(222)"+"  screenWidth=" + screenWidth + "    screenHeight=" + screenHeight);
+
         widthTv.setText("宽度");
         heightTv.setText("高度");
     }
 
+    public static int px2dip(Context context, float pxValue){
+         float scale = context.getResources().getDisplayMetrics().density;
+        return (int)(pxValue / scale +0.5f);
+    }
+
+    public static int dip2px(Context context, float dipValue){
+        float scale = context.getResources().getDisplayMetrics().density;
+        return (int)(dipValue * scale +0.5f);
+    }
     private SpannableStringBuilder setSpanString() {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         String one = "努力";
@@ -56,6 +93,9 @@ public class Frag extends Fragment {
         return builder;
     }
 
+    /**
+     * Spannable 的使用
+     */
     private void spanTest() {
 //        final LinearLayout linearLayout = new LinearLayout(this);
 //        LayoutParams layoutParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
