@@ -73,7 +73,7 @@ dependencies {
     //    //AndroidSwipeLayout 侧滑删除
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
     ////    compile(name:'roundedimageview-2.2.1', ext:'aar')
-    //    compile 'com.makeramen:roundedimageview:2.2.1'
+        compile 'com.makeramen:roundedimageview:2.2.1'
 
 //    compile "com.asha.nightowllib:nightowllib:${libs.nightowllib}"//夜间模式
 
