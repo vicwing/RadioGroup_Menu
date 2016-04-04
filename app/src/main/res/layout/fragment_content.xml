@@ -16,4 +16,19 @@
         android:layout_width="wrap_content"
         tools:text="高度"
         android:layout_height="wrap_content"/>
+
+    <com.example.cdj.myapplication.cusview.CircleCornerTextView
+        android:id="@+id/tv_circle_coner"
+        android:paddingLeft="5dp"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingRight="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <com.example.cdj.myapplication.cusview.CusTextView
+        android:id="@+id/custextview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

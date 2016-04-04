@@ -19,7 +19,7 @@
 
 ext {
     configuration = [
-            package          : "me.chunyu.spike.springrainnews",
+            package          : "com.cdj.radiogroup",
             buildToolsVersion: "23.0.1",
             compileVersion   : 23,
             minSdk           : 14,
@@ -39,7 +39,8 @@ ext {
             recycler_animators: "2.1.0",
             circleimageview   : "2.0.0",
             swipelayout       : "1.2.0@aar",
-            logger            : "1.12"
+            logger            : "1.12",
+            nightowllib       : "0.2"
     ]
 }
 

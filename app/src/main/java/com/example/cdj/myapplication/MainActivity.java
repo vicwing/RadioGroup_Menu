@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.widget.RadioGroup;
 
 import com.example.cdj.myapplication.cusview.MyViewPager;
-import com.example.cdj.myapplication.fragment.Frag;
+import com.example.cdj.myapplication.fragment.FragmentA;
 import com.example.cdj.myapplication.fragment.FragmentChat;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class MainActivity extends FragmentActivity {
     @Bind(R.id.tab_menu)
     RadioGroup mRadioGroup;
 
-    private Frag chat;
+    private FragmentA chat;
     private FragmentChat address;
     private FragmentChat find;
     private FragmentChat me;
@@ -46,7 +46,7 @@ public class MainActivity extends FragmentActivity {
 
     public void initView() {
 //        chat = new FragmentChat();
-        chat = new Frag();
+        chat = new FragmentA();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, chat).commit();
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -55,7 +55,7 @@ public class MainActivity extends FragmentActivity {
                 // TODO Auto-generated method stub
                 switch (checkedId) {
                     case R.id.one:
-                        chat = new Frag();
+                        chat = new FragmentA();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, chat).commit();
                         break;
                     case R.id.two:
@@ -84,16 +84,16 @@ public class MainActivity extends FragmentActivity {
         mRadioGroup.setOnCheckedChangeListener(new CheckedChangeListener());
         mRadioGroup.check(R.id.one);
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        Frag frag ;
+        FragmentA frag ;
         Bundle bundle;
 //        for (int i = 0; i <1; i++) {
-//            frag = new Frag();
+//            frag = new FragmentA();
 //            bundle = new Bundle();
 //            bundle.putString("key", "hello world " + i);
 //            frag.setArguments(bundle);
 //            fragmentList.add(frag);
 //        }
-        fragmentList.add(new Frag());
+        fragmentList.add(new FragmentA());
         fragmentList.add(new Fragment());
         fragmentList.add(new Fragment());
         fragmentList.add(new Fragment());
@@ -160,7 +160,7 @@ public class MainActivity extends FragmentActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Frag frag = new Frag();
+            FragmentA frag = new FragmentA();
             Bundle bundle = new Bundle();
             bundle.putString("key", "hello world " + position);
             frag.setArguments(bundle);
