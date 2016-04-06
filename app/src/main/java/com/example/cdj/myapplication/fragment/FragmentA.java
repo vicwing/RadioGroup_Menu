@@ -1,21 +1,14 @@
 package com.example.cdj.myapplication.fragment;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.method.LinkMovementMethod;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,30 +77,30 @@ public class FragmentA extends Fragment {
 
 
 
-        // 设置图片
-        Drawable drawable = getResources().getDrawable(R.drawable.trash);
-        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-        msp.setSpan(new ImageSpan(drawable), 53, 57, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-
-        // 设置边框
-        Drawable bg = getResources().getDrawable(R.drawable.text_background);
-        msp.setSpan(new ImageSpan(bg) {
-            @Override
-            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
-                             int bottom, Paint paint) {
-                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-                paint.setTextSize(50);
-                int len = Math.round(paint.measureText(text, start, end));
-                getDrawable().setBounds(0, 0, len, 60);
-                super.draw(canvas, text, start, end, x, top, y, bottom, paint);
-                paint.setColor(Color.BLUE);
-                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-                paint.setTextSize(40);
-                canvas.drawText(text.subSequence(start, end).toString(), x + 10, y, paint);
-            }
-        }, 57, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        mTextView.setText(msp);
-        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+//        // 设置图片
+//        Drawable drawable = getResources().getDrawable(R.drawable.trash);
+//        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+//        msp.setSpan(new ImageSpan(drawable), 53, 57, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//
+//        // 设置边框
+//        Drawable bg = getResources().getDrawable(R.drawable.text_background);
+//        msp.setSpan(new ImageSpan(bg) {
+//            @Override
+//            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
+//                             int bottom, Paint paint) {
+//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
+//                paint.setTextSize(50);
+//                int len = Math.round(paint.measureText(text, start, end));
+//                getDrawable().setBounds(0, 0, len, 60);
+//                super.draw(canvas, text, start, end, x, top, y, bottom, paint);
+//                paint.setColor(Color.BLUE);
+//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
+//                paint.setTextSize(40);
+//                canvas.drawText(text.subSequence(start, end).toString(), x + 10, y, paint);
+//            }
+//        }, 57, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+//        mTextView.setText(msp);
+//        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     /**
