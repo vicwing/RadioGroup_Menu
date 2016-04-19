@@ -5,6 +5,16 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:gravity="center"
               android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/ll_newhousedetail_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="18dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
     <TextView
         android:id="@+id/width_tv"
         android:layout_width="wrap_content"

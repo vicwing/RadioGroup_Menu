@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.fragment;
+package com.example.cdj.myapplication.mainfunction.function1;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,15 +10,19 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.cusview.CircleCornerTextView;
 import com.example.cdj.myapplication.cusview.CusTextView;
+import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.orhanobut.logger.Logger;
+import com.socks.library.KLog;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -27,6 +31,7 @@ import butterknife.ButterKnife;
  * Created by cdj on 2016/2/1.
  */
 public class FragmentA extends Fragment {
+    private Context mContext;
 
     @Bind(R.id.width_tv)
     TextView widthTv;
@@ -40,18 +45,23 @@ public class FragmentA extends Fragment {
     CircleCornerTextView tvCircleConer;
 
     @Bind(R.id.custextview)
-    CusTextView custextview;
+    CusTextView custextview
+            ;
     @Bind(R.id.tv_spanble)
     TextView tvSpanble;
+    @Bind(R.id.ll_newhousedetail_label)
+    LinearLayout mLinearLayout;
 
     private int screenWidth;
     private int screenHeight;
 
     SpannableString msp = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_content, null);
+        mContext = getActivity();
+        View view = inflater.inflate(R.layout.fragment_content1, null);
         ButterKnife.bind(this, view);
         return view;
     }
@@ -61,7 +71,7 @@ public class FragmentA extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         printScreenDes();
 //        Logger.clear();
-        Logger.init("circlecorner").setMethodCount(1).hideThreadInfo();
+//        Logger.init("circlecorner").setMethodCount(1).hideThreadInfo();
         String text = "认证田贝四路水工工业区翠北小区海鹏大院x栋301";
 
 
@@ -70,13 +80,12 @@ public class FragmentA extends Fragment {
 //        tvCircleConer.setTextColor(getResources().getColor(R.color.orange));
         tvCircleConer.setBorderColor(getResources().getColor(R.color.orange));
         Logger.d("哈哈哈哈哈");
-
+        KLog.d(text);
+        KLog.d("123", text);
+        KLog.d(text);
         custextview.setText(text);
 
-
-
-
-
+        addView();
 //        // 设置图片
 //        Drawable drawable = getResources().getDrawable(R.drawable.trash);
 //        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
@@ -103,6 +112,46 @@ public class FragmentA extends Fragment {
 //        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
+    /**
+     * 动态添加textview
+     */
+    private void addView() {
+        mLinearLayout.setVisibility(View.VISIBLE);
+        mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+//        TextView view1 = (TextView) getActivity().getLayoutInflater().inflate(R.layout.item_textview, null);
+//        View view =  getActivity().getLayoutInflater().inflate(R.layout.item_textview, null);
+//        TextView textView = (TextView) view.findViewById(R.id.calculatorBtn);
+//        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
+//                ViewGroup.LayoutParams.WRAP_CONTENT,
+//                ViewGroup.LayoutParams.WRAP_CONTENT);
+//        view.setLayoutParams(vlp);
+//        textView.setText("标签1");
+//        view1.setText("房贷计算器1");
+//        TextView textView1 = makeTextView();
+
+        mLinearLayout.addView(makeTextView());
+        mLinearLayout.addView(makeTextView());
+        mLinearLayout.addView(makeTextView());
+        mLinearLayout.addView(makeTextView());
+    }
+    private TextView makeTextView(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.leftMargin=10;
+        TextView textView = new TextView(getActivity());
+        textView.setLayoutParams(params);
+        textView.setBackgroundResource((R.drawable.shap_round_corner));
+        int left = ScreenUtil.Dp2Px(mContext, 10);
+        int top = ScreenUtil.Dp2Px(mContext, 5);
+        int right = ScreenUtil.Dp2Px(mContext, 10);
+        int bottom = ScreenUtil.Dp2Px(mContext, 5);
+        textView.setPadding(left,top,right,bottom);
+        textView.setGravity(Gravity.CENTER);
+        textView.setText("标签一号");
+        return textView;
+    }
     /**
      * 打印屏幕宽高.
      */

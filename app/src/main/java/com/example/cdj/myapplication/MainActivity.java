@@ -9,8 +9,8 @@ import android.support.v4.view.ViewPager;
 import android.widget.RadioGroup;
 
 import com.example.cdj.myapplication.cusview.MyViewPager;
-import com.example.cdj.myapplication.fragment.FragmentA;
-import com.example.cdj.myapplication.fragment.FragmentChat;
+import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
+import com.example.cdj.myapplication.mainfunction.function2.FragmentChat;
 
 import java.util.ArrayList;
 
@@ -94,7 +94,7 @@ public class MainActivity extends FragmentActivity {
 //            fragmentList.add(frag);
 //        }
         fragmentList.add(new FragmentA());
-        fragmentList.add(new Fragment());
+        fragmentList.add(new FragmentChat());
         fragmentList.add(new Fragment());
         fragmentList.add(new Fragment());
         //ViewPager设置适配器

@@ -2,7 +2,10 @@ package com.example.cdj.myapplication.base;
 
 import android.app.Application;
 
+import com.example.cdj.myapplication.BuildConfig;
+import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
+import com.socks.library.KLog;
 
 /**
  * Created by cdj on 2016/3/7.
@@ -11,6 +14,10 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Logger.init("vicwing").setMethodCount(1).hideThreadInfo();
+        Logger.init("vicwing").methodCount(1).logLevel(LogLevel.FULL).hideThreadInfo().methodOffset(2);
+//        Logger.init().setMethodCount(1).hideThreadInfo().logLevel(LogLevel.NONE);
+//        Logger.clear();
+
+        KLog.init(BuildConfig.LOG_DEBUG);
     }
 }
