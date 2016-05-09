@@ -2,7 +2,6 @@ package com.example.cdj.myapplication.base;
 
 import android.app.Application;
 
-import com.example.cdj.myapplication.BuildConfig;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.socks.library.KLog;
@@ -18,6 +17,7 @@ public class BaseApplication extends Application {
 //        Logger.init().setMethodCount(1).hideThreadInfo().logLevel(LogLevel.NONE);
 //        Logger.clear();
 
-        KLog.init(BuildConfig.LOG_DEBUG);
+//        KLog.init(BuildConfig.LOG_DEBUG);
+        KLog.init(true);
     }
 }

@@ -20,7 +20,7 @@
 ext {
     configuration = [
             package          : "com.cdj.radiogroup",
-            buildToolsVersion: "23.0.1",
+            buildToolsVersion: "23.0.2",
             compileVersion   : 23,
             minSdk           : 14,
             targetSdk        : 23,
@@ -29,7 +29,7 @@ ext {
     ]
 
     libraries = [
-            supportVersion    : "23.1.1",
+            supportVersion    : "23.3.0",
             retrofit          : "2.0.0-beta2",
             rxandroid         : "1.1.0",
             dagger            : "2.0",

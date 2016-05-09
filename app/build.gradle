@@ -6,17 +6,12 @@ def libs = rootProject.ext.libraries // 库
 
 
 android {
-//    compileSdkVersion 23
-//    buildToolsVersion "23.0.2"
-
     compileSdkVersion cfg.compileVersion
     buildToolsVersion cfg.buildToolsVersion
-
     defaultConfig {
         applicationId cfg.package
         minSdkVersion cfg.minSdk
         targetSdkVersion cfg.targetSdk
-        versionCode cfg.version_code
         versionName cfg.version_name
     }
     buildTypes {
@@ -29,10 +24,11 @@ android {
             buildConfigField "boolean", "LOG_DEBUG", "true"
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
+    }
+    productFlavors {
     }
 }
 
@@ -43,16 +39,14 @@ repositories {
 
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile "com.android.support:support-v4:${libs.supportVersion}"
     compile "com.android.support:appcompat-v7:${libs.supportVersion}"
     compile "com.android.support:design:${libs.supportVersion}"
     compile "com.android.support:cardview-v7:${libs.supportVersion}"
     compile "com.android.support:recyclerview-v7:${libs.supportVersion}"
-
     //    compile "com.android.support:palette-v7:${libs.supportVersion}"
-    // Others
     compile "com.jakewharton:butterknife:${libs.butterknife}"
     // 资源注入
     compile "com.github.bumptech.glide:glide:${libs.glide}"
@@ -61,15 +55,20 @@ dependencies {
     // Recycler动画
     compile "de.hdodenhof:circleimageview:${libs.circleimageview}"
     // 头像视图
-//    compile "com.asha.nightowllib:nightowllib:${libs.nightowllib}"//夜间模式
+    //    compile "com.asha.nightowllib:nightowllib:${libs.nightowllib}"//夜间模式
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
+    //log日志
     compile "com.github.orhanobut:logger:${libs.logger}"
-    //    //AndroidSwipeLayout 侧滑删除
+
+    // AndroidSwipeLayout 侧滑删除
     compile 'com.daimajia.swipelayout:library:1.2.0@aar'
 
-        compile(name:'roundedimageview-2.2.1', ext:'aar')
-//    compile 'com.makeramen:roundedimageview:2.2.1'
+    compile(name: 'roundedimageview-2.2.1', ext: 'aar')
+
+    //    compile 'com.makeramen:roundedimageview:2.2.1'
+//    compile project(':ptr-lib')
 }
+
 //引用本地的aar文件 compile(name:'roundedimageview-2.2.1', ext:'aar')
 repositories {
     flatDir {

@@ -10,7 +10,9 @@ import android.widget.RadioGroup;
 
 import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
-import com.example.cdj.myapplication.mainfunction.function2.FragmentChat;
+import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
+import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
+import com.socks.library.KLog;
 
 import java.util.ArrayList;
 
@@ -25,9 +27,9 @@ public class MainActivity extends FragmentActivity {
     RadioGroup mRadioGroup;
 
     private FragmentA chat;
-    private FragmentChat address;
-    private FragmentChat find;
-    private FragmentChat me;
+    private FragmentSecond address;
+    private FragmentSecond find;
+    private FragmentSecond me;
 
 
     @Override
@@ -38,7 +40,7 @@ public class MainActivity extends FragmentActivity {
 //        initView();
         initViewPager();
 
-
+        KLog.d("abcdefg");
 
 //        initToolbar();
 //        initListView();
@@ -60,16 +62,16 @@ public class MainActivity extends FragmentActivity {
                         break;
                     case R.id.two:
                         if (address == null) {
-                            address = new FragmentChat();
+                            address = new FragmentSecond();
                         }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, address).commit();
                         break;
                     case R.id.three:
-                        find = new FragmentChat();
+                        find = new FragmentSecond();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, find).commit();
                         break;
                     case R.id.four:
-                        me = new FragmentChat();
+                        me = new FragmentSecond();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, me).commit();
                         break;
                     default:
@@ -94,8 +96,8 @@ public class MainActivity extends FragmentActivity {
 //            fragmentList.add(frag);
 //        }
         fragmentList.add(new FragmentA());
-        fragmentList.add(new FragmentChat());
-        fragmentList.add(new Fragment());
+        fragmentList.add(new FragmentSecond());
+        fragmentList.add(Fragment3.newInstance(null,null));
         fragmentList.add(new Fragment());
         //ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
