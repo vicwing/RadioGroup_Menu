@@ -12,6 +12,7 @@ import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
+import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity {
 
 //        initToolbar();
 //        initListView();
+
     }
 
     public void initView() {
@@ -84,7 +86,7 @@ public class MainActivity extends FragmentActivity {
 
     private void initViewPager() {
         mRadioGroup.setOnCheckedChangeListener(new CheckedChangeListener());
-        mRadioGroup.check(R.id.one);
+
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         FragmentA frag ;
         Bundle bundle;
@@ -98,13 +100,15 @@ public class MainActivity extends FragmentActivity {
         fragmentList.add(new FragmentA());
         fragmentList.add(new FragmentSecond());
         fragmentList.add(Fragment3.newInstance(null,null));
-        fragmentList.add(new Fragment());
+        fragmentList.add(Fragment4.newInstance(null,null));
         //ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
 
 //        mPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
         mPager.setOnPageChangeListener(new PageChangeListener());
         mPager.setOffscreenPageLimit(4);
+
+        mRadioGroup.check(R.id.four);
     }
 
     private class CheckedChangeListener implements RadioGroup.OnCheckedChangeListener {

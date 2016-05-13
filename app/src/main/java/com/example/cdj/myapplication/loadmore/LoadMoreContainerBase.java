@@ -6,11 +6,14 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
+import com.orhanobut.logger.Logger;
+
 /**
  * @author huqiu.lhq
  */
 public abstract class LoadMoreContainerBase extends LinearLayout implements LoadMoreContainer {
 
+//    private static final String TAG =LoadMoreContainerBase.class.getSimpleName() ;
     private AbsListView.OnScrollListener mOnScrollListener;
     private LoadMoreUIHandler mLoadMoreUIHandler;
     private LoadMoreHandler mLoadMoreHandler;
@@ -25,6 +28,7 @@ public abstract class LoadMoreContainerBase extends LinearLayout implements Load
     private View mFooterView;
 
     private AbsListView mAbsListView;
+    private LoadMoreDefaultFooterView mMoreDefaultFooterView;
 
     public LoadMoreContainerBase(Context context) {
         super(context);
@@ -50,10 +54,10 @@ public abstract class LoadMoreContainerBase extends LinearLayout implements Load
     }
 
     public void useDefaultFooter() {
-        LoadMoreDefaultFooterView footerView = new LoadMoreDefaultFooterView(getContext());
-        footerView.setVisibility(GONE);
-        setLoadMoreView(footerView);
-        setLoadMoreUIHandler(footerView);
+        mMoreDefaultFooterView = new LoadMoreDefaultFooterView(getContext());
+        mMoreDefaultFooterView.setVisibility(GONE);
+        setLoadMoreView(mMoreDefaultFooterView);
+        setLoadMoreUIHandler(mMoreDefaultFooterView);
     }
 
     private void init() {
@@ -97,25 +101,25 @@ public abstract class LoadMoreContainerBase extends LinearLayout implements Load
         if (mIsLoading) {
             return;
         }
-
         // no more content and also not load for first page
-//        if (!mHasMore && !(mListEmpty && mShowLoadingForFirstPage)) {
-//            return;
-//        }
-
+        if (!mHasMore && !(mListEmpty && mShowLoadingForFirstPage)) {
+            Logger.i("不加载更多~~~~~~~~~~~~~~~mHasMore "+  !mHasMore+"   (!(mListEmpty && mShowLoadingForFirstPage))"+!(mListEmpty && mShowLoadingForFirstPage));
+            return;
+        }
         mIsLoading = true;
 
         if (mLoadMoreUIHandler != null) {
             mLoadMoreUIHandler.onLoading(this);
         }
         if (null != mLoadMoreHandler) {
+//            mMoreDefaultFooterView.onLoading(this);
             mLoadMoreHandler.onLoadMore(this);
+//            mMoreDefaultFooterView.onLoadFinish(this,true,true);
         }
-
         // no more content and also not load for first page
-        if (!mHasMore && !(mListEmpty && mShowLoadingForFirstPage)) {
-            return;
-        }
+//        if (!mHasMore && !(mListEmpty && mShowLoadingForFirstPage)) {
+//            return;
+//        }
     }
 
     private void onReachBottom() {
