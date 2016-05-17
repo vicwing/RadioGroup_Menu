@@ -1,5 +1,7 @@
 package com.zhy.http.okhttp.request;
 
+import android.util.Log;
+
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.utils.Exceptions;
 
@@ -45,6 +47,7 @@ public abstract class OkHttpRequest
     private void initBuilder()
     {
         builder.url(url).tag(tag);
+        Log.e((String)tag,"url"+url);
         appendHeaders();
     }
 

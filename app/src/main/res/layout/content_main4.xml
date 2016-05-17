@@ -4,14 +4,16 @@
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
+              android:background="#F5F5F9"
               android:orientation="vertical"
               tools:context="com.example.cdj.myapplication.MainActivity"
     >
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#333333"
+        android:background="#000000"
         android:fitsSystemWindows="true"
         android:gravity="center"
         android:padding="10dp"
@@ -31,4 +33,40 @@
             segmentcontrol:texts="商业|公积金|组合"
             segmentcontrol:verticalGap="8dip"/>
     </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_houses_style"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_house_style"
+            style="@style/CommTextview"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/black_33333"
+            android:textSize="@dimen/text_size"
+            tools:text="金龙鱼花园 3房两厅  112m2"/>
+
+        <TextView
+            android:id="@+id/tv_total_price"
+            style="@style/CommTextview"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/orange"
+            tools:text="500万"
+            />
+    </RelativeLayout>
+
+ <!--   <android.support.v4.view.ViewPager
+        android:id="@+id/vg_caculate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>-->
+
+    <FrameLayout
+        android:id="@+id/frame_caculate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
 </LinearLayout>

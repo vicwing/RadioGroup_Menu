@@ -54,6 +54,7 @@ public class Fragment3 extends Fragment {
     private List<SecListItemEntity> mSecListItemEntities  = new ArrayList<SecListItemEntity>();
     private LoadMoreListViewContainer loadMoreListViewContainer;
     private SegmentControl mSegmentControl;
+    private  int pageCount=3;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -118,7 +119,10 @@ public class Fragment3 extends Fragment {
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
                 Logger.i("onRefreshBegin  ");
-                requestUpdate();
+                currentPage =1;
+//                loadMoreListViewContainer.loadMoreFinish(true,false);
+                loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+                requestUpdate(String.valueOf(currentPage));
             }
 
         });
@@ -140,10 +144,9 @@ public class Fragment3 extends Fragment {
         mListView.setAdapter(mAdapter);
 
         mPtrFrameLayout.setPullToRefresh(true);
-
         loadMoreListViewContainer.setAutoLoadMore(true);
         loadMoreListViewContainer.setShowLoadingForFirstPage(true);
-        requestUpdate();
+        requestUpdate(String.valueOf(currentPage));
         return layout;
     }
 
@@ -160,14 +163,14 @@ public class Fragment3 extends Fragment {
 //        mSegmentControl.setDefaultTextColor(getResources().getColor(R.color.white));
 //        mSegmentControl.setSelectedDrawableColor(getResources().getColor(R.color.white));
     }
+    private  int currentPage=1;
 
-
-    private void requestUpdate() {
-        Logger.d("下拉刷新控件啦......");
+    private void requestUpdate(final String currentPageStr) {
+        Logger.d("下拉刷新控件啦......currentPage  "+currentPageStr);
         OkHttpUtils
                 .post()//
                 .url(Url)//
-                .addParams("currentPage", "1")//
+                .addParams("currentPage",currentPageStr)
                 .build()//
                 .execute(new  SecListItemBeanCallback() {
                     @Override
@@ -177,17 +180,19 @@ public class Fragment3 extends Fragment {
 
                     @Override
                     public void onResponse(SecListBean response) {
-                        mPtrFrameLayout.refreshComplete();
-                        mSecListItemEntities = response.getResult().getList();
 
-//                        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
-//                        mListView.setAdapter(mAdapter);
-                        mAdapter.addAll(mSecListItemEntities);
+                        mPtrFrameLayout.refreshComplete();
+//                        mSecListItemEntities.addAll(response.getResult().getList());
+                        mAdapter.addAll(response.getResult().getList());
                         Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
+//                        pageCount = response.getResult().getPageCount();
+                        if (currentPage<=pageCount){
+                            loadMoreListViewContainer.loadMoreFinish(false,true);
+                        }
                     }
                 });
     }
-
+    private int pageSize = 10;
     /**
      * 自定义loadmore footview
      * @param loadMoreListViewContainer
@@ -235,12 +240,15 @@ public class Fragment3 extends Fragment {
         loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
             @Override
             public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                Logger.i("LoadMoreHandler  加载更多..............");
-//                testThread();
-//                loadMoreContainer.loadMoreFinish(true,false);
+                currentPage++;
+                Logger.i("LoadMoreHandler  加载更多..............currentPage "+currentPage);
+                if (currentPage<=pageCount){
+                    requestUpdate(String.valueOf(currentPage));
+                } else {
+                    loadMoreListViewContainer.loadMoreFinish(true,false);
+                }
             }
         });
-//        loadMoreListViewContainer.loadMoreFinish(true,true);
     }
 
 

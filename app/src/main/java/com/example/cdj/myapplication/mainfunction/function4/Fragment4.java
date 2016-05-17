@@ -2,11 +2,15 @@ package com.example.cdj.myapplication.mainfunction.function4;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
@@ -29,13 +33,16 @@ import okhttp3.Call;
  */
 public class Fragment4 extends Fragment {
 
+    public final static String HOUSE_STYLE = "houseStyle";
+    public final static String TOTAL_PRICE = "totalPrice";
 
-//    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
-    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    TextView mTvHouseStyle;
+    TextView mTvTotalPrice;
 
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
@@ -44,13 +51,24 @@ public class Fragment4 extends Fragment {
     private PtrClassicFrameLayout mPtrFrameLayout;
     private ListView mListView;
     private QuickAdapter<SecListItemEntity> mAdapter;
-    private List<SecListItemEntity> mSecListItemEntities  = new ArrayList<SecListItemEntity>();
+    private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
     private LoadMoreListViewContainer loadMoreListViewContainer;
     private SegmentControl mSegmentControl;
+    private FragmentActivity mActivity;
 
+    private int defaultPrice = 100;//默认贷款额
+    private int totalPrice = defaultPrice;//贷款总额
+
+    private float mIntrestRate = 4.9f;
+    private int mLoanTerm = 30;
+
+    private ArrayList<Fragment> fragmentArrayList;
+    private Fragment mCurrentFrgment;
+    private int currentIndex = 0;
     /**
      * 通过工厂方法来创建Fragment实例
      * 同时给Fragment来提供参数来使用
+     *
      * @return Master_Fragment的实例.
      */
     public static Fragment4 newInstance(String param1, String param2) {
@@ -78,36 +96,101 @@ public class Fragment4 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.content_main3, container, false);
-        // set up views
-        final View layout = inflater.inflate(R.layout.content_main3, null);
+        final View layout = inflater.inflate(R.layout.content_main4, null);
         initSegmentControl(layout);
-
+        init(layout);
+        initFragment();
         return layout;
     }
 
+    private void init(View layout) {
+        mActivity = getActivity();
+        String houseStyleStr = mActivity.getIntent().getStringExtra(HOUSE_STYLE);
+        if (!TextUtils.isEmpty(houseStyleStr)) {
+
+            layout.findViewById(R.id.rl_houses_style).setVisibility(View.VISIBLE);
+
+            totalPrice = mActivity.getIntent().getIntExtra(TOTAL_PRICE, defaultPrice);
+
+            mTvHouseStyle = (TextView) layout.findViewById(R.id.tv_house_style);
+
+            mTvHouseStyle.setText("宏宏大厦  3房1厅 112m2");
+
+            mTvTotalPrice = (TextView) layout.findViewById(R.id.tv_total_price);
+            mTvTotalPrice.setText(totalPrice);
+        } else {
+            layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
+        }
+    }
+
+
+
     private void initSegmentControl(View layout) {
-        mSegmentControl = (SegmentControl)layout.findViewById(R.id.segment_control);
+        mSegmentControl = (SegmentControl) layout.findViewById(R.id.segment_control);
         mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {
-                Log.d("tag","index"+index);
+//                if (index==0){
+//                    addFragment(CommercialLoanFragment.newInstance("tongyige",null));
+//                }else if (index==1){
+//                    addFragment(AccumulationFunLoanFragment.newInstance(null,null));
+//                }else if (index==2){
+//                    addFragment(CombinedLoanFragment.newInstance(null,null));
+//                }
+                changeFragment(index);
+                Logger.d( "index" + index+"   fragmentStackCount  "+  getFragmentManager().getBackStackEntryCount());
             }
         });
 //        mSegmentControl.setBackgroundDrawableColor(getResources().getColor(R.color.black));
-//        mSegmentControl.setSelectdTextColor(getResources().getColor(R.color.black));
-//        mSegmentControl.setDefaultTextColor(getResources().getColor(R.color.white));
+        mSegmentControl.setSelectdTextColor(getResources().getColor(R.color.black_33333));
+        mSegmentControl.setDefaultTextColor(getResources().getColor(R.color.white));
 //        mSegmentControl.setSelectedDrawableColor(getResources().getColor(R.color.white));
+
+    }
+
+
+    private void initFragment() {
+        mSegmentControl.setSelectedIndex(0);
+        fragmentArrayList = new ArrayList<Fragment>();
+        fragmentArrayList.add(CommercialLoanFragment.newInstance("新添加",null));
+        fragmentArrayList.add(AccumulationFunLoanFragment.newInstance("新添加",null));
+        fragmentArrayList.add(CombinedLoanFragment.newInstance("新添加",null));
+        changeFragment(0);
+    }
+
+    private  void changeFragment(int index){
+        currentIndex = index;
+        FragmentTransaction ft = getChildFragmentManager().beginTransaction();
+        //判断当前的Fragment是否为空，不为空则隐藏
+        if (null != mCurrentFrgment) {
+            ft.hide(mCurrentFrgment);
+        }
+        //先根据Tag从FragmentTransaction事物获取之前添加的Fragment
+        Fragment fragment = getChildFragmentManager().findFragmentByTag(fragmentArrayList.get(currentIndex).getClass().getName());
+
+        if (null == fragment) {
+            //如fragment为空，则之前未添加此Fragment。便从集合中取出
+            fragment = fragmentArrayList.get(currentIndex);
+        }
+        mCurrentFrgment = fragment;
+
+        //判断此Fragment是否已经添加到FragmentTransaction事物中
+        if (!fragment.isAdded()) {
+            ft.add(R.id.frame_caculate, fragment, fragment.getClass().getName());
+        } else {
+            ft.show(fragment);
+        }
+        ft.commit();
     }
 
 
     private void requestUpdate() {
         OkHttpUtils
                 .post()//
-                .url(Url)//
+                .url("")//
                 .addParams("currentPage", "1")//
                 .build()//
-                .execute(new  SecListItemBeanCallback() {
+                .execute(new SecListItemBeanCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
                         mPtrFrameLayout.refreshComplete();
@@ -121,8 +204,32 @@ public class Fragment4 extends Fragment {
 //                        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
 //                        mListView.setAdapter(mAdapter);
                         mAdapter.addAll(mSecListItemEntities);
-                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
+                        Logger.d("response  " + response.getMessage() + "  count  " + mAdapter.getCount());
                     }
                 });
+    }
+
+    private void addFragment(Fragment fragment) {
+//        CommercialLoanFragment commercialLoanFragment = new CommercialLoanFragment();
+        Bundle bundle = new Bundle();
+//        bundle.putInt(Data.ID, index);
+        fragment.setArguments(bundle);
+
+        FragmentManager childFragMan = getChildFragmentManager();
+        FragmentTransaction childFragTrans = childFragMan.beginTransaction();
+        //开始Fragment的事务Transaction
+//        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        //替换容器(container)原来的Fragment
+        childFragTrans.replace(R.id.frame_caculate, fragment);
+        //设置转换效果
+        childFragTrans.setTransition(FragmentTransaction.TRANSIT_NONE);
+        //将事务添加到Back栈.即按下Back键时回到替换Fragment之前的状态.类似于Activity的返回
+        childFragTrans.addToBackStack(null);
+        //提交事务
+        childFragTrans.commit();
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }
