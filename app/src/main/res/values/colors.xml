@@ -12,6 +12,7 @@
     <color name="dark_gray_press">#ff7e8a97</color>
 
     <color name="orange">#FFB700</color>
+    <color name="orange_ff9933">#ff9933</color>
     <color name="black_33333">#333333</color>
     <color name="white">#ffffff</color>
     <color name="cube_mints_black">#000000</color>
@@ -19,7 +20,12 @@
     <color name="divide_line_e5e5e5">#e5e5e5</color>
     <color name="grey_333333">#333333</color>
     <color name="grey_888888">#888888</color>
+    <color name="grey_d3d3d3">#d3d3d3</color>
+
+
     <color name="bg_white_f5f5f9">#f5f5f9</color>
+    <color name="orange_btn_pressed">#ff7f00</color>
+    <color name="orange_btn_disenabled">#ffc285</color>
 
 
 </resources>

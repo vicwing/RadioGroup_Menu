@@ -10,20 +10,26 @@
     >
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:background="#000000"
         android:fitsSystemWindows="true"
-        android:gravity="center"
-        android:padding="10dp"
         >
+        <ImageView
+            android:id="@+id/iv_back"
+            android:paddingLeft="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/qf_back_normal"/>
 
         <com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl
             xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
             android:id="@+id/segment_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
             android:background="@color/white"
             android:textSize="13sp"
             segmentcontrol:colors="@color/white"
@@ -32,7 +38,7 @@
             segmentcontrol:horizonGap="8dip"
             segmentcontrol:texts="商业|公积金|组合"
             segmentcontrol:verticalGap="8dip"/>
-    </LinearLayout>
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_houses_style"
@@ -58,15 +64,14 @@
             />
     </RelativeLayout>
 
- <!--   <android.support.v4.view.ViewPager
-        android:id="@+id/vg_caculate"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v4.view.ViewPager>-->
-
     <FrameLayout
         android:id="@+id/frame_caculate"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
 
+    <Button
+        android:id="@+id/btn_do_caculate"
+        style="@style/Common_Btn_style"
+        android:text="立即计算"
+        />
 </LinearLayout>

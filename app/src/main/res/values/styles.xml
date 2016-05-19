@@ -1,4 +1,6 @@
-<resources>
+<resources
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CommonFormLayout="http://schemas.android.com/apk/com.example.cdj.myapplication.cusview" >
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -40,5 +42,30 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/black_33333</item>
+    </style>
+
+    <!--计算器CommonFormLayout style-->
+    <style name="caculate_CommonFormLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="contentTextColor">@color/black_33333</item>
+        <item name="CommonFormLayout_titleTextColor">@color/grey_888888</item>
+    </style>
+
+    <!--所有的提交按钮的背景-->
+    <style name="Common_Btn_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginLeft">15dp</item>
+        <item name="android:layout_marginRight">15dp</item>
+        <item name="android:background">@drawable/btn_groupjoin_submit</item>
+    </style>
+    <!-- 页标题-->
+    <style name="Common_Title_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">17sp</item>
     </style>
 </resources>

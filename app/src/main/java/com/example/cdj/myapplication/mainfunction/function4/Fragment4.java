@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -65,6 +66,7 @@ public class Fragment4 extends Fragment {
     private ArrayList<Fragment> fragmentArrayList;
     private Fragment mCurrentFrgment;
     private int currentIndex = 0;
+    private Button btn_do_caculate;
     /**
      * 通过工厂方法来创建Fragment实例
      * 同时给Fragment来提供参数来使用
@@ -121,8 +123,23 @@ public class Fragment4 extends Fragment {
         } else {
             layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
         }
+
+        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
+        btn_do_caculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                caculateData();
+            }
+        });
     }
 
+    /**
+     * 计算房贷结果
+     */
+    private void caculateData() {
+        Logger.d("贷款总额  "+"  利率  "+" 公积金利率 "+ "贷款期限  ");
+
+    }
 
 
     private void initSegmentControl(View layout) {
@@ -130,13 +147,6 @@ public class Fragment4 extends Fragment {
         mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {
-//                if (index==0){
-//                    addFragment(CommercialLoanFragment.newInstance("tongyige",null));
-//                }else if (index==1){
-//                    addFragment(AccumulationFunLoanFragment.newInstance(null,null));
-//                }else if (index==2){
-//                    addFragment(CombinedLoanFragment.newInstance(null,null));
-//                }
                 changeFragment(index);
                 Logger.d( "index" + index+"   fragmentStackCount  "+  getFragmentManager().getBackStackEntryCount());
             }
@@ -182,6 +192,8 @@ public class Fragment4 extends Fragment {
         }
         ft.commit();
     }
+
+
 
 
     private void requestUpdate() {

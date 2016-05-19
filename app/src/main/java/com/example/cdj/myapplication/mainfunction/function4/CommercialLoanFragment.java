@@ -1,20 +1,22 @@
 package com.example.cdj.myapplication.mainfunction.function4;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.mainfunction.function4.sub.CommercialInputFragment;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 商业贷款
+ * 商业贷款界面
  * Created by cdj on 2016/5/17.
  */
 public class CommercialLoanFragment extends Fragment{
@@ -46,21 +48,21 @@ public class CommercialLoanFragment extends Fragment{
         // Required empty public constructor
     }
 
-    @Bind(R.id.frame_loan)
     CommonFormLayout mFrameLoan;//贷款金额
 
-    @Bind(R.id.frame_interest_rate)
     CommonFormLayout mFrameInterestRate;//房贷利率
 
-    @Bind(R.id.frame_loan_year)
     CommonFormLayout mFrameLoanYear;//贷款年限
 
+    private Button btn_do_caculate;
 
     private int defaultPrice = 100;//默认贷款额
     private  int totalPrice = defaultPrice;//贷款总额
 
     private float mIntrestRate = 4.9f;
     private int  mLoanTerm = 30;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,11 +88,24 @@ public class CommercialLoanFragment extends Fragment{
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
         mFrameLoanYear = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
-
+        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
 
         mFrameLoan.setTitleText("贷款金额");
         mFrameLoan.setHasRightArrow(true);
         mFrameLoan.setContentText("7成"+mParam1);
+        mFrameLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Intent intent = new Intent(getContext(), CaculateSubActivity.class);
+//                intent.putExtra()
+//                startActivity(intent);
+
+//                replaceFragment(CommercialInputFragment.class.getName(),null);
+
+                mCallback.onReplaceFragment(CommercialInputFragment.class.getName());
+
+            }
+        });
 
 
         mFrameInterestRate.setTitleText("贷款利率");
@@ -100,5 +115,27 @@ public class CommercialLoanFragment extends Fragment{
         mFrameLoanYear.setTitleText("贷款年限");
         mFrameLoanYear.setContentText(mLoanTerm+"年");
         mFrameLoanYear.setHasRightArrow(true);
+
+
+    }
+    OnHeadlineSelectedListener mCallback;
+
+    public interface OnHeadlineSelectedListener {
+        public void onArticleSelected(int position);
+        public void onReplaceFragment(String fragmentName);
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnHeadlineSelectedListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 }

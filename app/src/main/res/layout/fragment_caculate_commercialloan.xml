@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:CommonFormLayout="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
@@ -12,24 +13,17 @@
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/frame_loan"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"/>
+            style="@style/caculate_CommonFormLayout"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/frame_interest_rate"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"/>
+            style="@style/caculate_CommonFormLayout"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/frame_loan_year"
-            android:layout_width="match_parent"
-            android:layout_height="44dp"/>
+            style="@style/caculate_CommonFormLayout"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_do_caculate"
-        android:layout_width="375dp"
-        android:layout_height="wrap_content"
-        />
+
 
 </LinearLayout>
