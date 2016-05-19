@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 /**
- * Created by cdj on 2016/5/9.
+ * Created by cdj onCallBackData 2016/5/9.
  */
 public class MyView extends View {
     public MyView(Context context) {

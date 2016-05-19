@@ -15,7 +15,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by cdj on 2016/2/1.
+ * Created by cdj onCallBackData 2016/2/1.
  */
 public class FragmentSecond extends Fragment {
     @Bind(R.id.iv_logotest)

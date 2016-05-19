@@ -109,7 +109,7 @@ public class GridViewWithHeaderAndFooter extends GridView {
 
     @Override
     public void setClipChildren(boolean clipChildren) {
-        // Ignore, since the header rows depend on not being clipped
+        // Ignore, since the header rows depend onCallBackData not being clipped
     }
 
     /**
@@ -169,7 +169,7 @@ public class GridViewWithHeaderAndFooter extends GridView {
         info.data = data;
         info.isSelectable = isSelectable;
         mHeaderViewInfos.add(info);
-        // in the case of re-adding a header view, or adding one later on,
+        // in the case of re-adding a header view, or adding one later onCallBackData,
         // we need to notify the observer
         if (adapter != null) {
             ((HeaderViewGridAdapter) adapter).notifyDataSetChanged();

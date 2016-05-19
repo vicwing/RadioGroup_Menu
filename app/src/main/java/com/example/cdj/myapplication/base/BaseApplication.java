@@ -7,7 +7,7 @@ import com.orhanobut.logger.Logger;
 import com.socks.library.KLog;
 
 /**
- * Created by cdj on 2016/3/7.
+ * Created by cdj onCallBackData 2016/3/7.
  */
 public class BaseApplication extends Application {
     @Override

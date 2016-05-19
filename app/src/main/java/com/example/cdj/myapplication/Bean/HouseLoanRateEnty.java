@@ -3,7 +3,7 @@ package com.example.cdj.myapplication.Bean;
 import java.io.Serializable;
 
 /**
- * Created by cdj on 2016/5/17.
+ * Created by cdj onCallBackData 2016/5/17.
  */
 public class HouseLoanRateEnty implements Serializable{
     /**

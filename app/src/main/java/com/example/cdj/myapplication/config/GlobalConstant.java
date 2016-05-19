@@ -1,7 +1,7 @@
 package com.example.cdj.myapplication.config;
 
 /**
- * Created by cdj on 2016/5/13.
+ * Created by cdj onCallBackData 2016/5/13.
  */
 public  class GlobalConstant {
     public static final String ImgSize_original = "original";

@@ -28,7 +28,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by cdj on 2016/2/1.
+ * Created by cdj onCallBackData 2016/2/1.
  */
 public class FragmentA extends Fragment {
     private Context mContext;

@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 
 /**
- * Created by cdj on 2016/2/1.
+ * Created by cdj onCallBackData 2016/2/1.
  */
 public class MyViewPager extends ViewPager {
     private float mLastMotionX;

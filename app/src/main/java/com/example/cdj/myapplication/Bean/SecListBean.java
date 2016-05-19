@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  *  二手房列表
- * Created by cdj on 2016/5/11.
+ * Created by cdj onCallBackData 2016/5/11.
  */
 public class SecListBean {
 

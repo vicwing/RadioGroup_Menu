@@ -181,7 +181,7 @@ public class MainActivity extends FragmentActivity {
 
 
     /**
-     * Created by Administrator on 2015/6/24.
+     * Created by Administrator onCallBackData 2015/6/24.
      */
     public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> list;
@@ -302,7 +302,7 @@ public class MainActivity extends FragmentActivity {
 //    @Override
 //    public boolean onOptionsItemSelected(MenuItem item) {
 //        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
+//        // automatically handle clicks onCallBackData the Home/Up button, so long
 //        // as you specify a parent activity in AndroidManifest.xml.
 //        int id = item.getItemId();
 //

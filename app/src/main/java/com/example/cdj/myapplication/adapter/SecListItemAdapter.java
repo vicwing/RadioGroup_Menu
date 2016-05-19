@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * 二手房列表页
- * Created by cdj on 2016/5/12.
+ * Created by cdj onCallBackData 2016/5/12.
  */
 public class SecListItemAdapter extends QuickAdapter<SecListItemEntity> {
 

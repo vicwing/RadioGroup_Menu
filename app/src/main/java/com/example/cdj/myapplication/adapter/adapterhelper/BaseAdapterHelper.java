@@ -8,7 +8,7 @@
  *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
+ * distributed under the License is distributed onCallBackData an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
@@ -106,7 +106,7 @@ public class BaseAdapterHelper {
 
     /**
      * This method allows you to retrieve a view and perform custom
-     * operations on it, not covered by the BaseAdapterHelper.<br/>
+     * operations onCallBackData it, not covered by the BaseAdapterHelper.<br/>
      * If you think it's a common use case, please consider creating
      * a new issue at https://github.com/JoanZapata/base-adapter-helper/issues.
      * @param viewId The id of the view you want to retrieve.
@@ -356,9 +356,9 @@ public class BaseAdapterHelper {
     }
 
     /**
-     * Sets the on click listener of the view.
+     * Sets the onCallBackData click listener of the view.
      * @param viewId   The view id.
-     * @param listener The on click listener;
+     * @param listener The onCallBackData click listener;
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setOnClickListener(int viewId, View.OnClickListener listener) {
@@ -368,9 +368,9 @@ public class BaseAdapterHelper {
     }
 
     /**
-     * Sets the on touch listener of the view.
+     * Sets the onCallBackData touch listener of the view.
      * @param viewId   The view id.
-     * @param listener The on touch listener;
+     * @param listener The onCallBackData touch listener;
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setOnTouchListener(int viewId, View.OnTouchListener listener) {
@@ -380,9 +380,9 @@ public class BaseAdapterHelper {
     }
 
     /**
-     * Sets the on long click listener of the view.
+     * Sets the onCallBackData long click listener of the view.
      * @param viewId   The view id.
-     * @param listener The on long click listener;
+     * @param listener The onCallBackData long click listener;
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setOnLongClickListener(int viewId, View.OnLongClickListener listener) {
@@ -394,7 +394,7 @@ public class BaseAdapterHelper {
     /**
      * Sets the listview or gridview's item click listener of the view
      * @param viewId  The view id.
-     * @param listener The item on click listener;
+     * @param listener The item onCallBackData click listener;
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setOnItemClickListener(int viewId,AdapterView.OnItemClickListener listener) {
@@ -499,7 +499,7 @@ public class BaseAdapterHelper {
         return (T) view;
     }
 
-    /** Retrieves the last converted object on this view. */
+    /** Retrieves the last converted object onCallBackData this view. */
     public Object getAssociatedObject() {
         return associatedObject;
     }

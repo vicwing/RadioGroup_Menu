@@ -17,7 +17,7 @@ import android.view.ViewConfiguration;
 import com.example.cdj.myapplication.R;
 
 /**
- * Created by 7heaven on 15/4/22.
+ * Created by 7heaven onCallBackData 15/4/22.
  */
 public class SegmentControl extends View {
 

@@ -1,25 +1,23 @@
 package com.example.cdj.myapplication.mainfunction.function4;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.sub.CommercialInputFragment;
-
-import butterknife.ButterKnife;
+import com.orhanobut.logger.Logger;
 
 /**
  * 商业贷款界面
- * Created by cdj on 2016/5/17.
+ * Created by cdj onCallBackData 2016/5/17.
  */
-public class CommercialLoanFragment extends Fragment{
+public class CommercialLoanFragment extends BackHandledBaseFragment{
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -78,7 +76,6 @@ public class CommercialLoanFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View layout = inflater.inflate(R.layout.fragment_caculate_commercialloan, null);
-        ButterKnife.bind(this, layout);
         init(layout);
         return layout;
     }
@@ -102,7 +99,7 @@ public class CommercialLoanFragment extends Fragment{
 
 //                replaceFragment(CommercialInputFragment.class.getName(),null);
 
-                mCallback.onReplaceFragment(CommercialInputFragment.class.getName());
+                mCallback.onReplaceFragment(CommercialInputFragment.class.getName(),null);
 
             }
         });
@@ -118,24 +115,53 @@ public class CommercialLoanFragment extends Fragment{
 
 
     }
-    OnHeadlineSelectedListener mCallback;
 
-    public interface OnHeadlineSelectedListener {
-        public void onArticleSelected(int position);
-        public void onReplaceFragment(String fragmentName);
+//    OnHeadlineSelectedListener mCallback;
+//
+//    @Override
+//    public void onAttach(Context context) {
+//        super.onAttach(context);
+//        // This makes sure that the container activity has implemented
+//        // the callback interface. If not, it throws an exception
+//        try {
+//            //
+//            mCallback = (OnHeadlineSelectedListener) context;
+//        } catch (ClassCastException e) {
+//            throw new ClassCastException(context.toString()
+//                    + " must implement OnHeadlineSelectedListener");
+//        }
+//    }
+
+    /**
+     * 进入子布局选择数据后确认提交后 ,返回刷新fragment
+     * @param text
+     */
+    public void refreshFragment(String text){
+        Logger.d(" 商业贷款界面  "+text);
+        mFrameLoan.setContentText(text);
     }
 
+    /**
+     * 获取贷款总额
+     * @return
+     */
+    public String getTotalPrice(){
+      return mFrameLoan.getContentText().toString().trim();
+    }
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
-        try {
-            mCallback = (OnHeadlineSelectedListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnHeadlineSelectedListener");
-        }
+    /**
+     * 获取利率
+     * @return
+     */
+    public String getIntrestRate(){
+        return mFrameInterestRate.getContentText().toString().trim();
+    }
+
+    /**
+     * 贷款年限
+     * @return
+     */
+    public String getLoanTerm(){
+        return mFrameLoanYear.getContentText().toString().trim();
     }
 }

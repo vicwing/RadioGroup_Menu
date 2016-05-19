@@ -12,17 +12,20 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
+import com.example.cdj.myapplication.cusview.CommomEditText;
 import com.orhanobut.logger.Logger;
 
 /**
  * 商业贷款输入金额
- * Created by cdj on 2016/5/18.
+ * Created by cdj onCallBackData 2016/5/18.
  */
 public class CommercialInputFragment extends BackHandledBaseFragment implements View.OnClickListener{
 
     View rootView;
 
     private ImageView iv_back;
+    private CommomEditText mCommomEditText;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,10 +50,24 @@ public class CommercialInputFragment extends BackHandledBaseFragment implements 
         iv_back.setOnClickListener(this);
         tv_title = (TextView) rootView.findViewById(R.id.tv_title);
 
+        tv_title.setText("商业贷款金额");
+
         edt_content= (EditText) rootView.findViewById(R.id.edt_content);
+
         tv_unit = (TextView) rootView.findViewById(R.id.tv_unit);
 
         tv_unit = (Button) rootView.findViewById(R.id.btn_commit);
+
+
+        mCommomEditText = (CommomEditText) rootView.findViewById(R.id.custom_edt_loan);
+        mCommomEditText.setOnCommitListener(new CommomEditText.OnCommitClickListener() {
+            @Override
+            public void onClick(String num) {
+//                Logger.d("提交的数字是 "+ num);
+                mCallback.onCallBackData(num);
+                getFragmentManager().popBackStack();
+            }
+        });
     }
 
 

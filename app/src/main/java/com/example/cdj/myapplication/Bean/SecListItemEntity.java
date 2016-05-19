@@ -1,7 +1,7 @@
 package com.example.cdj.myapplication.Bean;
 
 /**
- * Created by cdj on 2016/5/12.
+ * Created by cdj onCallBackData 2016/5/12.
  * 二手房详情页列表item 实体
  */
 public  class SecListItemEntity {

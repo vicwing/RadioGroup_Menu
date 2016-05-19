@@ -15,7 +15,7 @@ import com.example.cdj.myapplication.R;
 /**
  * 基础表单控件
  * 这是一个基础表单控件,提供设置标题和内容文本,文本颜色,标题左侧图标,是否有向右箭头等方法
- * Created by shidong on 16/5/12.
+ * Created by shidong onCallBackData 16/5/12.
  */
 public class CommonFormLayout extends RelativeLayout {
 

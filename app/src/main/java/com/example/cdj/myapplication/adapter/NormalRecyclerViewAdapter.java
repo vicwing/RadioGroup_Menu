@@ -10,7 +10,7 @@
 //import butterknife.ButterKnife;
 //
 ///**
-// * Created by cdj on 2016/1/7.
+// * Created by cdj onCallBackData 2016/1/7.
 // */
 //public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecyclerViewAdapter.NormalTextViewHolder> {
 //    private final LayoutInflater mLayoutInflater;
