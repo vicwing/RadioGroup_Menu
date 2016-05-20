@@ -10,22 +10,23 @@ import android.widget.Button;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.CommercialInputFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.SelectLoanNumFragment;
 import com.orhanobut.logger.Logger;
 
 /**
  * 商业贷款界面
  * Created by cdj onCallBackData 2016/5/17.
  */
-public class CommercialLoanFragment extends BackHandledBaseFragment{
+public class CommercialLoanFragment extends BackHandledBaseFragment implements  SubRefreshListener{
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
     // 这里的参数只是一个举例可以根据需求更改
-    private String mParam1;
-    private String mParam2;
+    private int totalPrice;
+    private float mInterestRate;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -33,12 +34,12 @@ public class CommercialLoanFragment extends BackHandledBaseFragment{
      *
      * @return Master_Fragment的实例.
      */
-    public static CommercialLoanFragment newInstance(String param1, String param2) {
+    public static CommercialLoanFragment newInstance(Bundle bundle) {
         CommercialLoanFragment fragment = new CommercialLoanFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+//        Bundle args = new Bundle();
+//        args.putString(ARG_PARAM1, price);
+//        args.putString(ARG_PARAM2, interstRate);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -51,23 +52,15 @@ public class CommercialLoanFragment extends BackHandledBaseFragment{
     CommonFormLayout mFrameInterestRate;//房贷利率
 
     CommonFormLayout mFrameLoanYear;//贷款年限
-
     private Button btn_do_caculate;
-
-    private int defaultPrice = 100;//默认贷款额
-    private  int totalPrice = defaultPrice;//贷款总额
-
-    private float mIntrestRate = 4.9f;
-    private int  mLoanTerm = 30;
-
+    private Fragment4 fragment4;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+             fragment4 = (Fragment4)  getParentFragment();
         }
     }
 
@@ -81,36 +74,32 @@ public class CommercialLoanFragment extends BackHandledBaseFragment{
     }
 
     private void init(View layout) {
-
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
         mFrameLoanYear = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
         btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
 
-        mFrameLoan.setTitleText("贷款金额");
-        mFrameLoan.setHasRightArrow(true);
-        mFrameLoan.setContentText("7成"+mParam1);
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), CaculateSubActivity.class);
-//                intent.putExtra()
-//                startActivity(intent);
-
-//                replaceFragment(CommercialInputFragment.class.getName(),null);
-
-                mCallback.onReplaceFragment(CommercialInputFragment.class.getName(),null);
-
+                if (getArguments().getBoolean(Fragment4.FROM_DETAIL)){
+                    mCallback.onReplaceFragment(SelectLoanNumFragment.class.getName(),getArguments());
+                }else{
+                    mCallback.onReplaceFragment(InputLoanNumFragment.class.getName(),getArguments());
+                }
             }
         });
 
+        mFrameLoan.setTitleText("贷款金额");
+        mFrameLoan.setHasRightArrow(true);
+        mFrameLoan.setContentText(fragment4.getTotalPrice()+"万元");
 
         mFrameInterestRate.setTitleText("贷款利率");
-        mFrameInterestRate.setContentText("最新基准利率"+mIntrestRate+"%");
+        mFrameInterestRate.setContentText("最新基准利率"+ fragment4.getIntrestRate() +"%");
         mFrameInterestRate.setHasRightArrow(true);
 
         mFrameLoanYear.setTitleText("贷款年限");
-        mFrameLoanYear.setContentText(mLoanTerm+"年");
+        mFrameLoanYear.setContentText(fragment4.getLoanTerm()+"年");
         mFrameLoanYear.setHasRightArrow(true);
 
 
@@ -163,5 +152,19 @@ public class CommercialLoanFragment extends BackHandledBaseFragment{
      */
     public String getLoanTerm(){
         return mFrameLoanYear.getContentText().toString().trim();
+    }
+
+    @Override
+    public void reFreshView() {
+//        if (fragment4.isFromDetail()
+        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        if (parentFragment!=null){
+            String text =  parentFragment.getTotalPrice() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成"+text : text);
+            mFrameInterestRate.setContentText("最新基准利率"+ parentFragment.getIntrestRate() +"%");
+            mFrameLoanYear.setContentText(parentFragment.getLoanTerm()+"年");
+            Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getTotalPrice()+" 利率 "+parentFragment.getIntrestRate()+
+                    " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
+        }
     }
 }

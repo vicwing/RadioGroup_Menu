@@ -104,9 +104,19 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
     }
 
     @Override
+    public void onCallBackData(float percent, int price) {
+        fragment4.setTotalPrice(price);
+        fragment4.setPercent(percent);
+        fragment4.getCurrentFragment().reFreshView();
+    }
+
+
+    @Override
     public void onReplaceFragment(String fragmentName,Bundle bundle) {
         addFragment(fragmentName,null);
     }
+
+
 
     /**
      * 处理返回键

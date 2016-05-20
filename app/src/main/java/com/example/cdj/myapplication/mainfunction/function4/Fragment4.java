@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.mainfunction.function4.sub.CaculateResultFragment;
 import com.orhanobut.logger.Logger;
@@ -22,33 +23,18 @@ import java.util.ArrayList;
 /**
  * Created by cdj onCallBackData 2016/5/6.
  */
-public class Fragment4 extends Fragment   {
+public class Fragment4 extends BackHandledBaseFragment {
 
-    public final static String HOUSE_STYLE = "houseStyle";
+    public final static String HOUSE_STYLE = "houseStyle";//房屋名称+类型+面积
+
     public final static String TOTAL_PRICE = "total_price";
-    public final static String INTREST_RATE = "intrest_rate";
+    public final static String INTREST_RATE = "intrest_rate";// 利率
     public final static String LOAN_TERM = "loan_term";
-
-
-    // 名字根据实际需求进行更改
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     TextView mTvHouseStyle;
     TextView mTvTotalPrice;
-
-    // 这里的参数只是一个举例可以根据需求更改
-    private String mParam1;
-    private String mParam2;
-
     private SegmentControl mSegmentControl;
     private FragmentActivity mActivity;
-
-    private int defaultPrice = 100;//默认贷款额
-    private int totalPrice = defaultPrice;//贷款总额
-
-    private float mIntrestRate = 4.9f;
-    private int mLoanTerm = 30;
 
     private ArrayList<Fragment> fragmentArrayList;
     private Fragment mCurrentFrgment;
@@ -64,23 +50,14 @@ public class Fragment4 extends Fragment   {
     public static Fragment4 newInstance(String param1, String param2) {
         Fragment4 fragment = new Fragment4();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+//        args.putString(ARG_PARAM1, param1);
+//        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
 
     public Fragment4() {
         // Required empty public constructor
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -93,23 +70,38 @@ public class Fragment4 extends Fragment   {
         return layout;
     }
 
+    private float percent = 0;//房贷几成
+    private int defaultPrice = 100;//默认贷款额
+    private int totalPrice = defaultPrice;//贷款总额
+
+    private float mIntrestRate = 4.9f;  //利率默认4.9
+    private int mLoanTerm = 30;//贷款期限
+
+    public static String FROM_DETAIL = "from_detail";
+    private boolean isFromDetail = true;
+
     private void init(View layout) {
         mActivity = getActivity();
-        String houseStyleStr = mActivity.getIntent().getStringExtra(HOUSE_STYLE);
-        if (!TextUtils.isEmpty(houseStyleStr)) {
 
-            layout.findViewById(R.id.rl_houses_style).setVisibility(View.VISIBLE);
+        if (getArguments() != null) {
+            String  mHouseSytle = getArguments().getString(HOUSE_STYLE);
+            if (!TextUtils.isEmpty(mHouseSytle)) {
+                isFromDetail = true;//来自详情页
+                layout.findViewById(R.id.rl_houses_style).setVisibility(View.VISIBLE);
+                ((TextView) layout.findViewById(R.id.tv_house_style)).setText(mHouseSytle+"xx大厦机房急停");
+            } else {
+                layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
+            }
+//            ((TextView) layout.findViewById(R.id.tv_house_style)).setText(TextUtils.isEmpty(mHouseSytle)? "": mHouseSytle);
+            String price = getArguments().getString(TOTAL_PRICE);
+            if (!TextUtils.isEmpty(price))
+                totalPrice = Integer.parseInt(price);
 
-            totalPrice = mActivity.getIntent().getIntExtra(TOTAL_PRICE, defaultPrice);
+            String intrestRate = getArguments().getString(INTREST_RATE);
+            if (!TextUtils.isEmpty(intrestRate))
+                mIntrestRate = Float.parseFloat(intrestRate);
+        }else{
 
-            mTvHouseStyle = (TextView) layout.findViewById(R.id.tv_house_style);
-
-            mTvHouseStyle.setText("宏宏大厦  3房1厅 112m2");
-
-            mTvTotalPrice = (TextView) layout.findViewById(R.id.tv_total_price);
-            mTvTotalPrice.setText(totalPrice);
-        } else {
-            layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
         }
 
         btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
@@ -133,15 +125,11 @@ public class Fragment4 extends Fragment   {
      */
     private void caculateData() {
         Logger.d("贷款总额  " + "  利率  " + " 公积金利率 " + "贷款期限  " + " stack" + getChildFragmentManager().getBackStackEntryCount());
-        CommercialLoanFragment commercialLoanFragment = (CommercialLoanFragment) fragmentArrayList.get(currentIndex);
-        String totalPrice = commercialLoanFragment.getTotalPrice();
-        String intrestRate = commercialLoanFragment.getIntrestRate();
-        String loanTerm = commercialLoanFragment.getLoanTerm();
         Bundle bundle = new Bundle();
-        bundle.putString(TOTAL_PRICE,totalPrice);
-        bundle.putString(INTREST_RATE,intrestRate);
-        bundle.putString(LOAN_TERM,LOAN_TERM);
-        mCallback.onReplaceFragment(CaculateResultFragment.class.getName(),null);
+        bundle.putInt(TOTAL_PRICE,totalPrice);
+        bundle.putFloat(INTREST_RATE,mIntrestRate);
+        bundle.putInt(LOAN_TERM,mLoanTerm);
+        mCallback.onReplaceFragment(CaculateResultFragment.class.getName(),bundle);
     }
 
 
@@ -150,8 +138,9 @@ public class Fragment4 extends Fragment   {
         mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {
-                changeFragment(index);
                 Logger.d("index" + index + "   fragmentStackCount  " + getFragmentManager().getBackStackEntryCount());
+                changeFragment(index);
+                getCurrentFragment().reFreshView();
             }
         });
 //        mSegmentControl.setBackgroundDrawableColor(getResources().getColor(R.color.black));
@@ -164,13 +153,22 @@ public class Fragment4 extends Fragment   {
 
     private void initFragment() {
         mSegmentControl.setSelectedIndex(0);
+        Bundle bundle = new Bundle();
+        bundle.putInt(TOTAL_PRICE,totalPrice);
+        bundle.putFloat(INTREST_RATE,mIntrestRate);
+        bundle.putBoolean(FROM_DETAIL,isFromDetail);
         fragmentArrayList = new ArrayList<Fragment>();
-        fragmentArrayList.add(CommercialLoanFragment.newInstance("新添加", null));
-        fragmentArrayList.add(AccumulationFunLoanFragment.newInstance("新添加", null));
-        fragmentArrayList.add(CombinedLoanFragment.newInstance("新添加", null));
+//        fragmentArrayList.add(CommercialLoanFragment.newInstance(String.valueOf(totalPrice), String.valueOf(mIntrestRate)));
+        fragmentArrayList.add(CommercialLoanFragment.newInstance(bundle));
+        fragmentArrayList.add(AccumulationFunLoanFragment.newInstance("", null));
+        fragmentArrayList.add(CombinedLoanFragment.newInstance("", null));
         changeFragment(0);
     }
 
+    /**
+     * 切换fragment
+     * @param index
+     */
     private void changeFragment(int index) {
         currentIndex = index;
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
@@ -186,7 +184,6 @@ public class Fragment4 extends Fragment   {
             fragment = fragmentArrayList.get(currentIndex);
         }
         mCurrentFrgment = fragment;
-
         //判断此Fragment是否已经添加到FragmentTransaction事物中
         if (!fragment.isAdded()) {
             ft.add(R.id.frame_caculate, fragment, fragment.getClass().getName());
@@ -196,7 +193,7 @@ public class Fragment4 extends Fragment   {
         ft.commit();
     }
 
-    OnHeadlineSelectedListener mCallback;
+//    OnHeadlineSelectedListener mCallback;
 
     @Override
     public void onAttach(Context context) {
@@ -212,29 +209,57 @@ public class Fragment4 extends Fragment   {
         }
     }
 
+    public boolean isFromDetail(){
+        return  isFromDetail;
+    }
 
-//    @Override
-//    public Animation onCreateAnimation(int transit, final boolean enter, int nextAnim) {
-//        final Animation anim = AnimationUtils.loadAnimation(getActivity(), nextAnim);
-//
-//            anim.setAnimationListener(new Animation.AnimationListener() {
-//
-//                public void onAnimationStart(Animation animation) {
-//                    //动画开始
-//                }
-//
-//                public void onAnimationRepeat(Animation animation) {
-//                    //动画循环
-//                }
-//
-//                public void onAnimationEnd(Animation animation) {
-//                    //动画结束
-//                    if (!enter) {
-//                          getActivity().finish();
-//                    }
-//                }
-//            });
-//        return anim;
-//    }
+    /**
+     * 贷款几成数
+     * @return
+     */
+    public void setPercent(float percent){
+        this.percent= percent;
+    }
 
+    public float getPercent(){
+        return  percent;
+    }
+
+    public int getTotalPrice(){
+        return  totalPrice;
+    }
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public void setIntrestRate(float intrestRate) {
+        mIntrestRate = intrestRate;
+    }
+
+    public float getIntrestRate(){
+        return  mIntrestRate;
+    }
+    public int getLoanTerm(){
+        return mLoanTerm;
+    }
+
+    public void setLoanTerm(int loanTerm) {
+        mLoanTerm = loanTerm;
+    }
+
+    public void setFromDetail(boolean fromDetail) {
+        isFromDetail = fromDetail;
+    }
+
+    public void refresth(float percent, int price) {
+//       / currentIndex
+    }
+
+    /**
+     * 获取当前显示的fragment实例.
+     * @return
+     */
+    public  SubRefreshListener  getCurrentFragment(){
+        return (SubRefreshListener) mCurrentFrgment;
+    }
 }

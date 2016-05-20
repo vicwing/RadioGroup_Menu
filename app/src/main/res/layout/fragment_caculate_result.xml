@@ -99,6 +99,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tv_xi_monthlypay"
                     style="@style/CommTextview"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -107,6 +108,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/tv_jin_monthlypay"
                     style="@style/CommTextview"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -115,6 +117,7 @@
                     />
             </LinearLayout>
             <TextView
+                android:id="@+id/tv_monthly_decline"
                 style="@style/CommTextview"
                 android:textColor="@color/grey_888888"
                 android:layout_marginTop="10dp"
@@ -141,6 +144,7 @@
                 />
 
             <TextView
+                android:id="@+id/tv_xi_total_interest"
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -149,6 +153,7 @@
                 />
 
             <TextView
+                android:id="@+id/tv_jin_total_interest"
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -174,14 +179,17 @@
                 />
 
             <TextView
+                android:id="@+id/tv_xi_total_principal_tInterest"
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 tools:text="25556644元"
+                android:contentDescription="本息总额"
                 />
 
             <TextView
+                android:id="@+id/tv_jin_total_principal_tInterest"
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"

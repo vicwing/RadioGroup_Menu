@@ -2,13 +2,16 @@ package com.example.cdj.myapplication.mainfunction.function4;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.SelectLoanNumFragment;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -17,7 +20,7 @@ import butterknife.ButterKnife;
  * 公积金贷款
  * Created by cdj onCallBackData 2016/5/17.
  */
-public class AccumulationFunLoanFragment extends Fragment{
+public class AccumulationFunLoanFragment extends BackHandledBaseFragment implements SubRefreshListener {
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -74,13 +77,25 @@ public class AccumulationFunLoanFragment extends Fragment{
         init(layout);
         return layout;
     }
-
+    Fragment4 fragment4;
     private void init(View layout) {
-
+         fragment4 = (Fragment4) getParentFragment();
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
         mFrameLoanYear = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
+
+
+        mFrameLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getArguments().getBoolean(Fragment4.FROM_DETAIL)){
+                    mCallback.onReplaceFragment(SelectLoanNumFragment.class.getName(),getArguments());
+                }else{
+                    mCallback.onReplaceFragment(InputLoanNumFragment.class.getName(),getArguments());
+                }
+            }
+        });
 
         mFrameLoan.setTitleText("公积金贷款金额");
         mFrameLoan.setHasRightArrow(true);
@@ -94,5 +109,18 @@ public class AccumulationFunLoanFragment extends Fragment{
         mFrameLoanYear.setTitleText("公积金贷款年限");
         mFrameLoanYear.setContentText(mLoanTerm+"年");
         mFrameLoanYear.setHasRightArrow(true);
+    }
+
+    @Override
+    public void reFreshView() {
+        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        if (parentFragment!=null){
+            String text =  parentFragment.getTotalPrice() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成"+text : text);
+            mFrameInterestRate.setContentText("最新基准利率"+ parentFragment.getIntrestRate() +"%");
+            mFrameLoanYear.setContentText(parentFragment.getLoanTerm()+"年");
+            Logger.d("price  "+parentFragment.getTotalPrice()+" 利率 "+parentFragment.getIntrestRate()+
+                    " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
+        }
     }
 }

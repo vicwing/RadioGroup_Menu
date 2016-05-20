@@ -19,7 +19,7 @@ import com.orhanobut.logger.Logger;
  * 商业贷款输入金额
  * Created by cdj onCallBackData 2016/5/18.
  */
-public class CommercialInputFragment extends BackHandledBaseFragment implements View.OnClickListener{
+public class InputLoanNumFragment extends BackHandledBaseFragment implements View.OnClickListener{
 
     View rootView;
 
@@ -31,7 +31,7 @@ public class CommercialInputFragment extends BackHandledBaseFragment implements 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         if (rootView==null)
-            rootView = inflater.inflate(R.layout.fragment_caculate_sub_commercialloan, null);
+            rootView = inflater.inflate(R.layout.fragment_caculate_sub_inputloan, null);
         return rootView;
     }
 

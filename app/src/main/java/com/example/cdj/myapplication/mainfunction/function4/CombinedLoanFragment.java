@@ -2,13 +2,16 @@ package com.example.cdj.myapplication.mainfunction.function4;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.SelectLoanNumFragment;
+import com.orhanobut.logger.Logger;
 
 import butterknife.ButterKnife;
 
@@ -16,7 +19,7 @@ import butterknife.ButterKnife;
  * 组合贷款
  * Created by cdj onCallBackData 2016/5/17.
  */
-public class CombinedLoanFragment extends Fragment{
+public class CombinedLoanFragment extends BackHandledBaseFragment implements SubRefreshListener{
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -25,6 +28,7 @@ public class CombinedLoanFragment extends Fragment{
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
+    private Fragment4 mParentFragment;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -36,7 +40,6 @@ public class CombinedLoanFragment extends Fragment{
         CombinedLoanFragment fragment = new CombinedLoanFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
-
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
@@ -75,7 +78,7 @@ public class CombinedLoanFragment extends Fragment{
     }
 
     private void init(View layout) {
-
+        mParentFragment = (Fragment4) getParentFragment();
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
 
@@ -83,6 +86,18 @@ public class CombinedLoanFragment extends Fragment{
         mFrameFundRate = (CommonFormLayout) layout.findViewById(R.id.frame_fundloan_rate);
 
         mFrameLoanYear = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
+
+
+        mFrameLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mParentFragment.isFromDetail()){
+                    mCallback.onReplaceFragment(SelectLoanNumFragment.class.getName(),getArguments());
+                }else{
+                    mCallback.onReplaceFragment(InputLoanNumFragment.class.getName(),getArguments());
+                }
+            }
+        });
 
 
         mFrameLoan.setTitleText("贷款金额");
@@ -108,5 +123,15 @@ public class CombinedLoanFragment extends Fragment{
         mFrameLoanYear.setTitleText("贷款年限");
         mFrameLoanYear.setContentText(mLoanTerm+"年");
         mFrameLoanYear.setHasRightArrow(true);
+    }
+
+    @Override
+    public void reFreshView() {
+        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        if (parentFragment!=null){
+            Logger.d(AccumulationFunLoanFragment.class.getSimpleName()+"price  "+parentFragment.getTotalPrice()+" 利率 "+parentFragment.getIntrestRate()+
+                    " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
+        }
+        Logger.d("组合贷款.................");
     }
 }

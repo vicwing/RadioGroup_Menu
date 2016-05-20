@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_common_title"
+        style="@style/CommTextview"
+        android:textColor="@color/black_33333"
+        tools:text="7成"
+        />
+
+    <TextView
+        android:layout_alignParentRight="true"
+        android:id="@+id/tv_common_content"
+        style="@style/CommTextview"
+        android:textColor="@color/grey_888888"
+        tools:text="800万元"
+        />
+</RelativeLayout>
