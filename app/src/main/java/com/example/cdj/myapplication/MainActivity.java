@@ -93,7 +93,7 @@ public class MainActivity extends FragmentActivity {
 //        for (int i = 0; i <1; i++) {
 //            frag = new FragmentA();
 //            bundle = new Bundle();
-//            bundle.putString("key", "hello world " + i);
+//            bundle.putString("KEY", "hello world " + i);
 //            frag.setArguments(bundle);
 //            fragmentList.add(frag);
 //        }
@@ -168,7 +168,7 @@ public class MainActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             FragmentA frag = new FragmentA();
             Bundle bundle = new Bundle();
-            bundle.putString("key", "hello world " + position);
+            bundle.putString("KEY", "hello world " + position);
             frag.setArguments(bundle);
             return frag;
         }

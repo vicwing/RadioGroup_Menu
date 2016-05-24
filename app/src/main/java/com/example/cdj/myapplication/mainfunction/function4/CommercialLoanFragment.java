@@ -10,10 +10,10 @@ import android.widget.Button;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InterestRateListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanPriceListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -81,14 +81,15 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
          mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
         btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
         final Bundle bundle = new Bundle();
-        bundle.putString(Fragment4.FROM_FRAGMENT,CommercialLoanFragment.class.getSimpleName());
+//        bundle.putInt(Fragment4.FROM_TAG,CommercialLoanFragment.class.getSimpleName());
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT);
                 if (fragment4.isFromDetail()){
-                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(),bundle);
+                    mCallback.onAddFragment(LoanAmountListFragment.class.getName(),bundle);
                 }else{
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(),bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
                 }
             }
         });
@@ -97,26 +98,25 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onAddFragment(InterestRateListFragment.class.getName(),bundle);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE);
+                mCallback.onAddFragment(LoanRateListFragment.class.getName(),bundle);
             }
         });
          mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM);
                 mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });
 
         mFrameLoan.setTitleText("贷款金额");
         mFrameLoan.setHasRightArrow(true);
-//        mFrameLoan.setContentText(fragment4.getTotalPrice()+"万元");
 
         mFrameInterestRate.setTitleText("贷款利率");
-//        mFrameInterestRate.setContentText("最新基准利率"+ fragment4.getInterestRate() +"%");
         mFrameInterestRate.setHasRightArrow(true);
 
          mFrameLoanTerm.setTitleText("贷款年限");
-//         mFrameLoanTerm.setContentText(fragment4.getLoanTerm()+"年");
          mFrameLoanTerm.setHasRightArrow(true);
 
         reFreshView();
@@ -133,7 +133,6 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
 
     @Override
     public void reFreshView() {
-//        if (fragment4.isFromDetail()
         Fragment4 parentFragment = (Fragment4) getParentFragment();
         if (parentFragment!=null){
             String price =  parentFragment.getTotalPrice() + "万元";

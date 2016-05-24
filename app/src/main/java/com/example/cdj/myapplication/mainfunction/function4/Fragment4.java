@@ -80,20 +80,36 @@ public class Fragment4 extends BackHandledBaseFragment {
     private float fundIntrestRate = 4.9f;  // 公积金:利率默认4.9
 
     private int mLoanTerm = 30;//贷款期限
+    public static String FROM_TAG = "from_tag";
 
-    public static String FROM_FRAGMENT = "from_fragment";
+    public static String KEY = "KEY";
+
+    public static final int FROMDETAIL_COMMERCIAL_AMOUNT = 0x01;
+    public static final int FROMDETAIL_COMMERCIAL_INTEREST_RATE = 0x02;
+    public static final int FROMDETAIL_COMMERCIAL_LOAN_TERM = 0x03;
+
+    public static final int FROMDETAIL_Fund_AMOUNT = 0x04;
+    public static final int FROMDETAIL_Fund_INTEREST_RATE = 0x05;
+    public static final int FROMDETAIL_Fund_LOAN_TERM = 0x06;
+
+    public static final int FROMDETAIL_COMBINED_COMERCIAL_AMOUNT = 0x07;
+    public static final int FROMDETAIL_COMBINED_FUND_AMOUNT = 0x08;
+    public static final int FROMDETAIL_COMBINED_COMERCIAL_RATE = 0x09;
+    public static final int FROMDETAIL_COMBINED_FUND_RATE = 0x10;
+    public static final int FROMDETAIL_COMBINED_LOANTERM = 0x11;
+
     public static String isFromList = "isFromList";
-    private boolean isFromDetail = true;
+    private boolean isFromDetail = false;
 
     private void init(View layout) {
         mActivity = getActivity();
 
         if (getArguments() != null) {
-            String  mHouseSytle = getArguments().getString(HOUSE_STYLE);
+            String mHouseSytle = getArguments().getString(HOUSE_STYLE);
             if (!TextUtils.isEmpty(mHouseSytle)) {
                 isFromDetail = true;//来自详情页
                 layout.findViewById(R.id.rl_houses_style).setVisibility(View.VISIBLE);
-                ((TextView) layout.findViewById(R.id.tv_house_style)).setText(mHouseSytle+"xx大厦机房急停");
+                ((TextView) layout.findViewById(R.id.tv_house_style)).setText(mHouseSytle + "xx大厦机房急停");
             } else {
                 layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
             }
@@ -105,7 +121,7 @@ public class Fragment4 extends BackHandledBaseFragment {
             String intrestRate = getArguments().getString(INTREST_RATE);
             if (!TextUtils.isEmpty(intrestRate))
                 mIntrestRate = Float.parseFloat(intrestRate);
-        }else{
+        } else {
 
         }
 
@@ -131,10 +147,10 @@ public class Fragment4 extends BackHandledBaseFragment {
     private void caculateData() {
         Logger.d("贷款总额  " + "  利率  " + " 公积金利率 " + "贷款期限  " + " stack" + getChildFragmentManager().getBackStackEntryCount());
         Bundle bundle = new Bundle();
-        bundle.putInt(TOTAL_PRICE,totalPrice);
-        bundle.putFloat(INTREST_RATE,mIntrestRate);
-        bundle.putInt(LOAN_TERM,mLoanTerm);
-        mCallback.onAddFragment(CaculateResultFragment.class.getName(),bundle);
+        bundle.putInt(TOTAL_PRICE, totalPrice);
+        bundle.putFloat(INTREST_RATE, mIntrestRate);
+        bundle.putInt(LOAN_TERM, mLoanTerm);
+        mCallback.onAddFragment(CaculateResultFragment.class.getName(), bundle);
     }
 
 
@@ -159,9 +175,9 @@ public class Fragment4 extends BackHandledBaseFragment {
     private void initFragment() {
         mSegmentControl.setSelectedIndex(0);
         Bundle bundle = new Bundle();
-        bundle.putInt(TOTAL_PRICE,totalPrice);
-        bundle.putFloat(INTREST_RATE,mIntrestRate);
-        bundle.putBoolean(FROM_FRAGMENT,isFromDetail);
+        bundle.putInt(TOTAL_PRICE, totalPrice);
+        bundle.putFloat(INTREST_RATE, mIntrestRate);
+        bundle.putBoolean(FROM_TAG, isFromDetail);
         fragmentArrayList = new ArrayList<Fragment>();
 //        fragmentArrayList.add(CommercialLoanFragment.newInstance(String.valueOf(totalPrice), String.valueOf(mIntrestRate)));
         fragmentArrayList.add(CommercialLoanFragment.newInstance(bundle));
@@ -172,6 +188,7 @@ public class Fragment4 extends BackHandledBaseFragment {
 
     /**
      * 切换fragment
+     *
      * @param index
      */
     private void changeFragment(int index) {
@@ -214,28 +231,31 @@ public class Fragment4 extends BackHandledBaseFragment {
         }
     }
 
-    public boolean isFromDetail(){
-        return  isFromDetail;
+    public boolean isFromDetail() {
+        return isFromDetail;
     }
 
-    public void setFromDetail(boolean isFromDetail){
+    public void setFromDetail(boolean isFromDetail) {
         this.isFromDetail = isFromDetail;
     }
+
     /**
      * 贷款几成数
+     *
      * @return
      */
-    public void setPercent(float percent){
-        this.percent= percent;
+    public void setPercent(float percent) {
+        this.percent = percent;
     }
 
-    public float getPercent(){
-        return  percent;
+    public float getPercent() {
+        return percent;
     }
 
-    public int getTotalPrice(){
-        return  totalPrice;
+    public int getTotalPrice() {
+        return totalPrice;
     }
+
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
@@ -244,10 +264,11 @@ public class Fragment4 extends BackHandledBaseFragment {
         mIntrestRate = intrestRate;
     }
 
-    public float getInterestRate(){
-        return  mIntrestRate;
+    public float getInterestRate() {
+        return mIntrestRate;
     }
-    public int getLoanTerm(){
+
+    public int getLoanTerm() {
         return mLoanTerm;
     }
 
@@ -273,13 +294,14 @@ public class Fragment4 extends BackHandledBaseFragment {
 
     /**
      * 获取当前显示的fragment实例.
+     *
      * @return
      */
-    public  SubRefreshListener  getCurrentFragment(){
+    public SubRefreshListener getCurrentFragment() {
         return (SubRefreshListener) mCurrentFrgment;
     }
 
-    public int getCurrentIndex(){
-        return  currentIndex;
+    public int getCurrentIndex() {
+        return currentIndex;
     }
 }

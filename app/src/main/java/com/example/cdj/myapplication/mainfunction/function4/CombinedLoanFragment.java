@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InterestRateListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanPriceListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
 
 import butterknife.ButterKnife;
@@ -83,7 +83,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
         final Bundle bundle = new Bundle();
-        bundle.putString(Fragment4.FROM_FRAGMENT, CombinedLoanFragment.class.getSimpleName());
+        bundle.putString(Fragment4.FROM_TAG, CombinedLoanFragment.class.getSimpleName());
 
 
         mFrameLoan.setTitleText("商贷金额");
@@ -92,11 +92,11 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_COMMERCIAL_LOAN_AMOUNT);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT);
                 if (mParentFragment.isFromDetail()) {
-                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(LoanAmountListFragment.class.getName(), bundle);
                 } else {
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
                 }
             }
         });
@@ -104,11 +104,11 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_COMMERCIAL_LOAN_AMOUNT);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE);
                 if (mParentFragment.isFromDetail()) {
-                    mCallback.onAddFragment(InterestRateListFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(LoanRateListFragment.class.getName(), bundle);
                 } else {
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
                 }
             }
         });
@@ -123,11 +123,11 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameFundLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_FUND_LOAN_AMOUNT);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT);
                 if (mParentFragment.isFromDetail()) {
-                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(LoanAmountListFragment.class.getName(), bundle);
                 } else {
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
                 }
             }
         });
@@ -135,11 +135,11 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameFundRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_FUND_LOAN_AMOUNT);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_FUND_RATE);
                 if (mParentFragment.isFromDetail()) {
-                    mCallback.onAddFragment(InterestRateListFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(LoanRateListFragment.class.getName(), bundle);
                 } else {
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
                 }
             }
         });
@@ -150,6 +150,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_LOANTERM);
                 mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });

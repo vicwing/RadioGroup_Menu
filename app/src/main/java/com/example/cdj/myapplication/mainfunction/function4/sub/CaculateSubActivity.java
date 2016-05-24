@@ -17,7 +17,7 @@ public class CaculateSubActivity extends FragmentActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame);
-        replaceFragment(InputLoanNumFragment.class.getName(),null);
+        replaceFragment(InputNumFragment.class.getName(),null);
     }
 
     /**

@@ -111,8 +111,10 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
             getFragmentManager().popBackStack();
         }else if (id==R.id.frame_other_price){
             Bundle bundle = new Bundle();
-            bundle.putString(Fragment4.FROM_FRAGMENT,LoanTermListFragment.class.getSimpleName());
-            mCallback.onAddFragment(InputLoanNumFragment.class.getName(),bundle);
+            bundle.putString(Fragment4.FROM_TAG,LoanTermListFragment.class.getSimpleName());
+            bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM);
+            bundle.putBoolean(Fragment4.isFromList, true);
+            mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
         }
     }
 }

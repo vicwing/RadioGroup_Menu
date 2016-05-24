@@ -9,9 +9,9 @@ import android.view.ViewGroup;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InterestRateListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanPriceListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
 
 /**
@@ -68,15 +68,16 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
         final  Bundle bundle = new Bundle();
-        bundle.putString(Fragment4.FROM_FRAGMENT,FundLoanFragment.class.getSimpleName());
+        bundle.putString(Fragment4.FROM_TAG,FundLoanFragment.class.getSimpleName());
 
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_AMOUNT);
                 if (fragment4.isFromDetail()){
-                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(),bundle);
+                    mCallback.onAddFragment(LoanAmountListFragment.class.getName(),bundle);
                 }else{
-                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(),bundle);
+                    mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
                 }
             }
         });
@@ -84,7 +85,8 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCallback.onAddFragment(InterestRateListFragment.class.getName(),bundle);
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_INTEREST_RATE);
+                mCallback.onAddFragment(LoanRateListFragment.class.getName(),bundle);
             }
         });
 
@@ -92,6 +94,7 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_LOAN_TERM);
                     mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });

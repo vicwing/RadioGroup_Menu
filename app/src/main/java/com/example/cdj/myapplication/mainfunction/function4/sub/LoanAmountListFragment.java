@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * 商业贷款金额 列表
  * Created by cdj on 2016/5/20.
  */
-public class LoanPriceListFragment extends BackHandledBaseFragment implements View.OnClickListener {
+public class LoanAmountListFragment extends BackHandledBaseFragment implements View.OnClickListener {
     private View rootView;
     private ImageView iv_back;
     private TextView tv_title;
@@ -39,6 +39,7 @@ public class LoanPriceListFragment extends BackHandledBaseFragment implements Vi
     private com.example.cdj.myapplication.cusview.CommonFormLayout frame_other_price;
     private Fragment4 fragment4;
     private String mFromFragment;
+    private int key;
 
     @Nullable
     @Override
@@ -71,7 +72,8 @@ public class LoanPriceListFragment extends BackHandledBaseFragment implements Vi
         Bundle bundle = getArguments();
         ArrayList<LoanPercent> loanPercentsData = null;
         if (bundle != null) {
-            mFromFragment = bundle.getString(Fragment4.FROM_FRAGMENT);
+            mFromFragment = bundle.getString(Fragment4.FROM_TAG);
+            key = bundle.getInt(Fragment4.KEY);
             int currentIndex = fragment4.getCurrentIndex();
             if (0 == currentIndex) {
                 tv_title.setText(R.string.caculate_commercial_title_loanprice);
@@ -79,11 +81,11 @@ public class LoanPriceListFragment extends BackHandledBaseFragment implements Vi
             } else if (1 == currentIndex) {
                 tv_title.setText(R.string.caculate_fund_title_price);
                 loanPercentsData = getLoanPercents(9);
-            }else {
-                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)){
+            } else {
+                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
                     tv_title.setText(R.string.caculate_commercial_title_loanprice);
                     loanPercentsData = getLoanPercents(8);
-                }else if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment)){
+                } else if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment)) {
                     tv_title.setText(R.string.caculate_fund_title_price);
                     loanPercentsData = getLoanPercents(9);
                 }
@@ -102,11 +104,24 @@ public class LoanPriceListFragment extends BackHandledBaseFragment implements Vi
                 LoanPercent item = (LoanPercent) parent.getAdapter().getItem(position);
 //                mCallback.onCallBackData(item.getPercent(), item.getPrice());
                 fragment4.setPercent(item.getPercent());
-                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)){
-                    fragment4.setTotalPrice( item.getPrice());
-                }else {
-                    fragment4.setFundTtotalPrice(item.getPrice());
+                switch (key){
+                    case Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT:
+                    case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
+                        fragment4.setTotalPrice(item.getPrice());
+                        break;
+                    case Fragment4.FROMDETAIL_Fund_AMOUNT:
+                    case Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT:
+                        fragment4.setFundTtotalPrice(item.getPrice());
+                        break;
+                    default:
+                        break;
                 }
+
+//                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
+//                    fragment4.setTotalPrice(item.getPrice());
+//                } else {
+//                    fragment4.setFundTtotalPrice(item.getPrice());
+//                }
                 fragment4.getCurrentFragment().reFreshView();
                 getFragmentManager().popBackStack();
             }
@@ -144,9 +159,20 @@ public class LoanPriceListFragment extends BackHandledBaseFragment implements Vi
             getFragmentManager().popBackStack();
         } else if (id == R.id.frame_other_price) {
             Bundle bundle = new Bundle();
-            bundle.putString(Fragment4.FROM_FRAGMENT, LoanPriceListFragment.class.getSimpleName());
+//            Bundle arguments = getArguments();
+//            if (arguments != null) {
+////                String fromCombined = arguments.getString(CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT);//商业贷款
+////                String fromCombined = arguments.getString(Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT);//商业贷款
+//                if (!TextUtils.isEmpty(fromCombined)) {
+//                    bundle.putString(Fragment4.KEY, fromCombined);
+//                } else {
+//                    bundle.putString(Fragment4.FROM_TAG, LoanPriceListFragment.class.getSimpleName());
+//                }
+//            }
+            bundle.putString(Fragment4.FROM_TAG, LoanAmountListFragment.class.getSimpleName());
+            bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT);
             bundle.putBoolean(Fragment4.isFromList, true);
-            mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+            mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
         }
     }
 }

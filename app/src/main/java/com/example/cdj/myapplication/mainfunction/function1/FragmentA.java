@@ -224,7 +224,7 @@ public class FragmentA extends Fragment {
 
 //        new LinearLayout.LayoutParams(getActivity(), LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT);
 //        TextView tv = new TextView(getActivity());
-//        tv.setText(getArguments().getString("key"));
+//        tv.setText(getArguments().getString("KEY"));
 //        tv.setText("测试内容1111");
 //        SpannableStringBuilder spanString = setSpanString();
 

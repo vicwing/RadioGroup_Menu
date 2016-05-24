@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
  * 商业贷款 利率列表 界面
  * Created by cdj on 2016/5/23.
  */
-public class InterestRateListFragment extends BackHandledBaseFragment implements View.OnClickListener {
+public class LoanRateListFragment extends BackHandledBaseFragment implements View.OnClickListener ,View.OnTouchListener{
 
     private View rootView;
     private ImageView iv_back;
@@ -42,6 +43,7 @@ public class InterestRateListFragment extends BackHandledBaseFragment implements
     private Fragment4 fragment4;
     private ArrayList<InterestRateListBean> mInterestRateLists;
     private String mFromFragment;
+    private int mCurrentIndex;
 
     @Nullable
     @Override
@@ -59,6 +61,8 @@ public class InterestRateListFragment extends BackHandledBaseFragment implements
     }
 
     private void initView() {
+//        rootView.setOnTouchListener(this);
+        rootView.setClickable(true);
         iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(this);
         tv_title = (TextView) rootView.findViewById(R.id.tv_title);
@@ -71,21 +75,16 @@ public class InterestRateListFragment extends BackHandledBaseFragment implements
 
         fragment4.getInterestRate();
 
-        mFromFragment = getArguments().getString(Fragment4.FROM_FRAGMENT);
-        int currentIndex = fragment4.getCurrentIndex();
-        if (0 == currentIndex) {
-//            if (CommercialLoanFragment.class.getSimpleName().equals(mFromFragment)){
-            tv_title.setText(R.string.caculate_commercial_title_loanprice);
+        mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
+        mCurrentIndex = fragment4.getCurrentIndex();
+        if (0 == mCurrentIndex) {
+            tv_title.setText(R.string.caculate_commercial_title_rate);
             mInterestRateLists = getInterestRateLists();
-//            }else{
-//                tv_title.setText(R.string.caculate_fund_title_interest_rate);
-//                mInterestRateLists = getFundInterestRateLists();
-//            }
-        } else if (1 == currentIndex) {
+        } else if (1 == mCurrentIndex) {
             tv_title.setText(R.string.caculate_fund_title_interest_rate);
             mInterestRateLists = getFundInterestRateLists();
         } else {
-            String mFromFragment = getArguments().getString(Fragment4.FROM_FRAGMENT);
+            String mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
             if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
                 tv_title.setText(R.string.caculate_commercial_title_loanprice);
                 mInterestRateLists = getInterestRateLists();
@@ -165,9 +164,26 @@ public class InterestRateListFragment extends BackHandledBaseFragment implements
             getFragmentManager().popBackStack();
         } else if (id == R.id.frame_other_price) {
             Bundle bundle = new Bundle();
-            bundle.putString(Fragment4.FROM_FRAGMENT, InterestRateListFragment.class.getSimpleName());
+            if (0==mCurrentIndex){
+                bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE);
+            }else if (1==mCurrentIndex){
+                bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_Fund_INTEREST_RATE);
+            }else {
+                String mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
+                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
+                    bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE);
+                } else {
+                    bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMBINED_FUND_RATE);
+                }
+            }
+            bundle.putString(Fragment4.FROM_TAG, LoanRateListFragment.class.getSimpleName());
             bundle.putBoolean(Fragment4.isFromList, true);
-            mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+            mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
         }
+    }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        return true;
     }
 }

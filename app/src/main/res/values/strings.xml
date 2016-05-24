@@ -5,11 +5,12 @@
     <string name="caculate_input_loanterm">请输入贷款年限</string>
     <string name="caculate_input_loan_totalprice">请输入贷款金额</string>
     <string name="caculate_commercial_title_loanprice">商业贷款金额</string>
+    <string name="caculate_commercial_title_rate">商业贷款金额</string>
     <string name="caculate_input_interest_rate">请输入年利率值</string>
     <string name="caculate_new_interest_rate">最新基准利率</string>
 
     <string name="caculate_fund_title_price">公积金贷款金额</string>
     <string name="caculate_fund_title_interest_rate">公积金贷款利率</string>
     <string name="caculate_fund_title_loan_term">公积金贷款年限</string>
-    <string name="caculate_input_fund_totalprice">请输入公积金贷款金额</string>
+    <string name="caculate_input_fund_interest_rate">请输入公积金贷款金额</string>
 </resources>

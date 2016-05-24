@@ -439,7 +439,7 @@ public class BaseAdapterHelper {
     /**
      * Sets the tag of the view.
      * @param viewId The view id.
-     * @param key    The key of tag;
+     * @param key    The KEY of tag;
      * @param tag    The tag;
      * @return The BaseAdapterHelper for chaining.
      */
