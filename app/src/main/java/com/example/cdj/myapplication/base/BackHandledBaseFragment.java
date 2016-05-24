@@ -15,7 +15,7 @@ import com.example.cdj.myapplication.mainfunction.function4.OnHeadlineSelectedLi
  * 实现了回调接口FragmentBackHandler,传递数据
  * Created by cdj onCallBackData 2016/5/18.
  */
-public abstract class BackHandledBaseFragment extends Fragment implements FragmentBackHandler {
+public abstract class BackHandledBaseFragment extends Fragment implements FragmentBackHandler  {
 
     protected OnHeadlineSelectedListener mCallback;
 

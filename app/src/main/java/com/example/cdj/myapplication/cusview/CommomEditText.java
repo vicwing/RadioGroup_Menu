@@ -4,6 +4,7 @@ import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,12 +18,13 @@ import com.example.cdj.myapplication.R;
 /**
  * Created by cdj onCallBackData 2016/5/19.
  */
-public class CommomEditText  extends LinearLayout implements TextWatcher ,View.OnClickListener{
+public class CommomEditText extends LinearLayout implements TextWatcher, View.OnClickListener {
 
 
     private TextView tv_unit;
     private EditText edt_content;
     private Button btn_commit;
+
     public CommomEditText(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -33,7 +35,7 @@ public class CommomEditText  extends LinearLayout implements TextWatcher ,View.O
 
         View rootView = LayoutInflater.from(context).inflate(R.layout.layout_commom_edittext, this, true);
 
-        edt_content= (EditText) rootView.findViewById(R.id.edt_content);
+        edt_content = (EditText) rootView.findViewById(R.id.edt_content);
         edt_content.addTextChangedListener(this);
 
         tv_unit = (TextView) rootView.findViewById(R.id.tv_unit);
@@ -69,16 +71,28 @@ public class CommomEditText  extends LinearLayout implements TextWatcher ,View.O
 //        typedArray.recycle();
     }
 
-    public void setTextUnit(String text){
+    public void setTextUnit(String text) {
         tv_unit.setText(text);
     }
-    public void setTextUnit(int resId){
+
+    public void setTextUnit(int resId) {
         tv_unit.setText(resId);
     }
 
+    public void setEditHint(String text){
+        edt_content.setHint(text);
+    }
+    public void setEditHint(int text){
+        edt_content.setHint(text);
+    }
 
-    public void setInputType(int type){
+    public void setInputType(int type) {
         edt_content.setInputType(type);
+
+    }
+
+    public void setKeyListener(String text){
+        edt_content.setKeyListener(DigitsKeyListener.getInstance(text));
     }
 
     @Override
@@ -89,12 +103,13 @@ public class CommomEditText  extends LinearLayout implements TextWatcher ,View.O
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
 //        Logger.d("onTextChanged     "+s);
-        if (!TextUtils.isEmpty(s)){
+        if (!TextUtils.isEmpty(s)) {
             btn_commit.setEnabled(true);
-        }else{
+        } else {
             btn_commit.setEnabled(false);
         }
     }
+
     @Override
     public void afterTextChanged(Editable s) {
 //        Logger.d("afterTextChanged     "+s);
@@ -102,14 +117,16 @@ public class CommomEditText  extends LinearLayout implements TextWatcher ,View.O
 
     @Override
     public void onClick(View v) {
-            listener.onClick(edt_content.getText().toString().trim());
-    }
-    private OnCommitClickListener listener;
-    public void setOnCommitListener(OnCommitClickListener  listener){
-        this.listener=listener;
+        listener.onClick(edt_content.getText().toString().trim());
     }
 
-    public interface  OnCommitClickListener{
+    private OnCommitClickListener listener;
+
+    public void setOnCommitListener(OnCommitClickListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnCommitClickListener {
         void onClick(String num);
     }
 }

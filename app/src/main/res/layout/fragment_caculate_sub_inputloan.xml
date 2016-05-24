@@ -8,53 +8,6 @@
 
     <include
         layout="@layout/include_fragment_title"/>
-
-    <!--
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bg_white_f5f5f9"
-            android:orientation="vertical"
-            android:paddingTop="10dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:background="@color/white"
-                android:paddingLeft="15dp"
-                android:paddingRight="15dp">
-
-                <EditText
-                    android:id="@+id/edt_content"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:textColor="@color/black_33333"
-                    android:inputType="number"
-                    android:textCursorDrawable="@null"
-                    android:background="@null"
-                    android:textSize="@dimen/text_size_second"
-                    android:hint="请输入商业贷款金额"
-                    android:textColorHint="@color/grey_d3d3d3"/>
-
-                <TextView
-                    android:id="@+id/tv_unit"
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/text_size_second"
-                    android:layout_height="wrap_content"
-                    android:text="万元"
-                    android:textColor="@color/grey_888888"
-                    />
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/btn_commit"
-                style="@style/Common_Btn_style"
-                android:layout_marginTop="50dp"
-                />
-        </LinearLayout>-->
     <com.example.cdj.myapplication.cusview.CommomEditText
         android:id="@+id/custom_edt_loan"
         android:layout_width="match_parent"

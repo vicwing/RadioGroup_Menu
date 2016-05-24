@@ -10,8 +10,9 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.sub.InputLoanNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.SelectLoanNumFragment;
-import com.orhanobut.logger.Logger;
+import com.example.cdj.myapplication.mainfunction.function4.sub.InterestRateListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanPriceListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
 
 import butterknife.ButterKnife;
 
@@ -19,7 +20,7 @@ import butterknife.ButterKnife;
  * 组合贷款
  * Created by cdj onCallBackData 2016/5/17.
  */
-public class CombinedLoanFragment extends BackHandledBaseFragment implements SubRefreshListener{
+public class CombinedLoanFragment extends BackHandledBaseFragment implements SubRefreshListener {
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -56,16 +57,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
     CommonFormLayout mFrameFundLoan;//公积金贷款
     CommonFormLayout mFrameFundRate;//公积金贷款金额
 
-    CommonFormLayout mFrameLoanYear;//贷款年限
-
-
-
-
-    private int defaultPrice = 100;//默认贷款额
-    private  int totalPrice = defaultPrice;//贷款总额
-
-    private float mIntrestRate = 4.9f;
-    private int  mLoanTerm = 30;
+    CommonFormLayout mFrameLoanTerm;//贷款年限
 
 
     @Nullable
@@ -77,6 +69,9 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         return layout;
     }
 
+    public static String COMINED_COMMERCIAL_LOAN_AMOUNT = "Comined_Commercial_Loan_Amount";//商业贷款金额
+    public static String COMINED_FUND_LOAN_AMOUNT = "Comined_Fund_Loan_Amount";   //公积金贷款金额
+
     private void init(View layout) {
         mParentFragment = (Fragment4) getParentFragment();
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
@@ -85,53 +80,102 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameFundLoan = (CommonFormLayout) layout.findViewById(R.id.frame_fund_loan);
         mFrameFundRate = (CommonFormLayout) layout.findViewById(R.id.frame_fundloan_rate);
 
-        mFrameLoanYear = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
+        mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
+        final Bundle bundle = new Bundle();
+        bundle.putString(Fragment4.FROM_FRAGMENT, CombinedLoanFragment.class.getSimpleName());
+
+
+        mFrameLoan.setTitleText("商贷金额");
+        mFrameInterestRate.setTitleText("商贷利率");
 
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mParentFragment.isFromDetail()){
-                    mCallback.onReplaceFragment(SelectLoanNumFragment.class.getName(),getArguments());
-                }else{
-                    mCallback.onReplaceFragment(InputLoanNumFragment.class.getName(),getArguments());
+                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_COMMERCIAL_LOAN_AMOUNT);
+                if (mParentFragment.isFromDetail()) {
+                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(), bundle);
+                } else {
+                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                }
+            }
+        });
+
+        mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_COMMERCIAL_LOAN_AMOUNT);
+                if (mParentFragment.isFromDetail()) {
+                    mCallback.onAddFragment(InterestRateListFragment.class.getName(), bundle);
+                } else {
+                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
                 }
             }
         });
 
 
-        mFrameLoan.setTitleText("贷款金额");
-        mFrameLoan.setHasRightArrow(true);
-        mFrameLoan.setContentText("7成"+totalPrice);
 
-        mFrameInterestRate.setTitleText("贷款利率");
-        mFrameInterestRate.setContentText("最新基准利率"+mIntrestRate+"%");
-        mFrameInterestRate.setHasRightArrow(true);
 
         //公积金贷款
         mFrameFundLoan.setTitleText("公贷金额");
-        mFrameFundLoan.setContentText(totalPrice+"");
-        mFrameFundLoan.setHasRightArrow(true);
-
         mFrameFundRate.setTitleText("公贷利率");
-        mFrameFundRate.setContentText(mIntrestRate+"%");
-        mFrameFundRate.setHasRightArrow(true);
+
+        mFrameFundLoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_FUND_LOAN_AMOUNT);
+                if (mParentFragment.isFromDetail()) {
+                    mCallback.onAddFragment(LoanPriceListFragment.class.getName(), bundle);
+                } else {
+                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                }
+            }
+        });
+
+        mFrameFundRate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bundle.putString(Fragment4.FROM_FRAGMENT, COMINED_FUND_LOAN_AMOUNT);
+                if (mParentFragment.isFromDetail()) {
+                    mCallback.onAddFragment(InterestRateListFragment.class.getName(), bundle);
+                } else {
+                    mCallback.onAddFragment(InputLoanNumFragment.class.getName(), bundle);
+                }
+            }
+        });
 
 
+        mFrameLoanTerm.setTitleText("贷款年限");
 
+        mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
+            }
+        });
 
-        mFrameLoanYear.setTitleText("贷款年限");
-        mFrameLoanYear.setContentText(mLoanTerm+"年");
-        mFrameLoanYear.setHasRightArrow(true);
+        reFreshView();
     }
 
     @Override
     public void reFreshView() {
         Fragment4 parentFragment = (Fragment4) getParentFragment();
-        if (parentFragment!=null){
-            Logger.d(AccumulationFunLoanFragment.class.getSimpleName()+"price  "+parentFragment.getTotalPrice()+" 利率 "+parentFragment.getIntrestRate()+
-                    " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
+        if (parentFragment != null) {
+            //商业贷款
+            String price = parentFragment.getTotalPrice() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成" + price : price);
+
+            String interestRateText = parentFragment.getInterestRate() + "%";
+            mFrameInterestRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + interestRateText : interestRateText);
+
+            //公积金
+            String fundAmountText = parentFragment.getFundTtotalPrice() + "万元";
+            mFrameFundLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成" + fundAmountText : fundAmountText);
+
+            String funInterestRateText = parentFragment.getFundIntrestRate() + "%";
+            mFrameFundRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + funInterestRateText : funInterestRateText);
+
+            mFrameLoanTerm.setContentText(parentFragment.getLoanTerm() + "年");
         }
-        Logger.d("组合贷款.................");
     }
 }

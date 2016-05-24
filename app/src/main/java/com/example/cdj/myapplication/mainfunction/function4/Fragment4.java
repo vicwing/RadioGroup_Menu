@@ -70,14 +70,19 @@ public class Fragment4 extends BackHandledBaseFragment {
         return layout;
     }
 
-    private float percent = 0;//房贷几成
+    private float percent = 0.7f;//房贷几成
     private int defaultPrice = 100;//默认贷款额
-    private int totalPrice = defaultPrice;//贷款总额
+    private int totalPrice = defaultPrice;// 普通房贷:金额
+    private float mIntrestRate = 4.9f;  // 普通房贷:利率默认4.9
 
-    private float mIntrestRate = 4.9f;  //利率默认4.9
+
+    private int fundTtotalPrice = defaultPrice;// 公积金房贷:金额
+    private float fundIntrestRate = 4.9f;  // 公积金:利率默认4.9
+
     private int mLoanTerm = 30;//贷款期限
 
-    public static String FROM_DETAIL = "from_detail";
+    public static String FROM_FRAGMENT = "from_fragment";
+    public static String isFromList = "isFromList";
     private boolean isFromDetail = true;
 
     private void init(View layout) {
@@ -92,7 +97,7 @@ public class Fragment4 extends BackHandledBaseFragment {
             } else {
                 layout.findViewById(R.id.rl_houses_style).setVisibility(View.GONE);
             }
-//            ((TextView) layout.findViewById(R.id.tv_house_style)).setText(TextUtils.isEmpty(mHouseSytle)? "": mHouseSytle);
+
             String price = getArguments().getString(TOTAL_PRICE);
             if (!TextUtils.isEmpty(price))
                 totalPrice = Integer.parseInt(price);
@@ -129,7 +134,7 @@ public class Fragment4 extends BackHandledBaseFragment {
         bundle.putInt(TOTAL_PRICE,totalPrice);
         bundle.putFloat(INTREST_RATE,mIntrestRate);
         bundle.putInt(LOAN_TERM,mLoanTerm);
-        mCallback.onReplaceFragment(CaculateResultFragment.class.getName(),bundle);
+        mCallback.onAddFragment(CaculateResultFragment.class.getName(),bundle);
     }
 
 
@@ -156,11 +161,11 @@ public class Fragment4 extends BackHandledBaseFragment {
         Bundle bundle = new Bundle();
         bundle.putInt(TOTAL_PRICE,totalPrice);
         bundle.putFloat(INTREST_RATE,mIntrestRate);
-        bundle.putBoolean(FROM_DETAIL,isFromDetail);
+        bundle.putBoolean(FROM_FRAGMENT,isFromDetail);
         fragmentArrayList = new ArrayList<Fragment>();
 //        fragmentArrayList.add(CommercialLoanFragment.newInstance(String.valueOf(totalPrice), String.valueOf(mIntrestRate)));
         fragmentArrayList.add(CommercialLoanFragment.newInstance(bundle));
-        fragmentArrayList.add(AccumulationFunLoanFragment.newInstance("", null));
+        fragmentArrayList.add(FundLoanFragment.newInstance("", null));
         fragmentArrayList.add(CombinedLoanFragment.newInstance("", null));
         changeFragment(0);
     }
@@ -213,6 +218,9 @@ public class Fragment4 extends BackHandledBaseFragment {
         return  isFromDetail;
     }
 
+    public void setFromDetail(boolean isFromDetail){
+        this.isFromDetail = isFromDetail;
+    }
     /**
      * 贷款几成数
      * @return
@@ -236,7 +244,7 @@ public class Fragment4 extends BackHandledBaseFragment {
         mIntrestRate = intrestRate;
     }
 
-    public float getIntrestRate(){
+    public float getInterestRate(){
         return  mIntrestRate;
     }
     public int getLoanTerm(){
@@ -247,12 +255,20 @@ public class Fragment4 extends BackHandledBaseFragment {
         mLoanTerm = loanTerm;
     }
 
-    public void setFromDetail(boolean fromDetail) {
-        isFromDetail = fromDetail;
+    public int getFundTtotalPrice() {
+        return fundTtotalPrice;
     }
 
-    public void refresth(float percent, int price) {
-//       / currentIndex
+    public void setFundTtotalPrice(int fundTtotalPrice) {
+        this.fundTtotalPrice = fundTtotalPrice;
+    }
+
+    public float getFundIntrestRate() {
+        return fundIntrestRate;
+    }
+
+    public void setFundIntrestRate(float fundIntrestRate) {
+        this.fundIntrestRate = fundIntrestRate;
     }
 
     /**
@@ -261,5 +277,9 @@ public class Fragment4 extends BackHandledBaseFragment {
      */
     public  SubRefreshListener  getCurrentFragment(){
         return (SubRefreshListener) mCurrentFrgment;
+    }
+
+    public int getCurrentIndex(){
+        return  currentIndex;
     }
 }

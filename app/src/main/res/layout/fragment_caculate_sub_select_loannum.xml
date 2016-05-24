@@ -22,7 +22,7 @@
         android:paddingRight="15dp"/>
 
     <com.example.cdj.myapplication.cusview.CommonFormLayout
-        android:id="@+id/framen_other_price"
+        android:id="@+id/frame_other_price"
         style="@style/caculate_CommonFormLayout"
         android:layout_marginTop="15dp"
         android:background="@color/white"

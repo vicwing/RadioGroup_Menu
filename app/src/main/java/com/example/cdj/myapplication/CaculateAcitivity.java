@@ -30,6 +30,7 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSelectedListener {
 
 
+//    public final static String FROM_TAG = "from_tag";
     public final static String HOUSE_STYLE = "houseStyle";
     public final static String TOTAL_PRICE = "totalPrice";
 
@@ -65,7 +66,9 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
 //        addFragment(Fragment4.class.getName(),null);
          fragment4 = (Fragment4) Fragment.instantiate(this, Fragment4.class.getName(), null);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_container, fragment4, Fragment4.class.getName()).addToBackStack(null).commit();
+        transaction.add(R.id.frame_container, fragment4, Fragment4.class.getName());
+        transaction.addToBackStack(null);
+        transaction.commit();
     }
 
     /**
@@ -94,7 +97,6 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
         Logger.d("addFragment   "+ fragmentClassName+"\n  stackCount   "+getSupportFragmentManager().getBackStackEntryCount());
     }
 
-    public static String  INTENT_PARAMS ="INTENT_PARAMS";
     @Override
     public void onCallBackData(String num) {
         Logger.d("activity  oncallBackdata "+ num);
@@ -112,8 +114,8 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
 
 
     @Override
-    public void onReplaceFragment(String fragmentName,Bundle bundle) {
-        addFragment(fragmentName,null);
+    public void onAddFragment(String fragmentName, Bundle bundle) {
+        addFragment(fragmentName,bundle);
     }
 
 
@@ -126,7 +128,7 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
         if (!BackHandlerHelper.handleBackPress(this)) {
             super.onBackPressed();
         }
-        if (1==getSupportFragmentManager().getBackStackEntryCount()){
+        if (0==getSupportFragmentManager().getBackStackEntryCount()){
             finish();
         }
 

@@ -10,6 +10,6 @@ import android.os.Bundle;
  */
 public interface OnHeadlineSelectedListener {
     void onCallBackData(String  num);
-    void onReplaceFragment(String fragmentName, Bundle bundle);
+    void onAddFragment(String fragmentName, Bundle bundle);
     void onCallBackData(float percent,int price);
 }
