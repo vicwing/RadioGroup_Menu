@@ -14,4 +14,11 @@
     <string name="caculate_fund_title_loan_term">公积金贷款年限</string>
     <string name="caculate_input_fund_interest_rate">请输入公积金贷款金额</string>
     <string name="caculate_other_rate">其他利率</string>
+    <string name="caculate_unit_yuan">元</string>
+    <string name="caculate_result_desc">说明：
+        等额本息每期还款金额相同，即每月本金加利息总额相同，还贷压力均衡，但利息负担相对较多；
+        等额本金又叫‘递减还款法’,每月本金相同,利息不同,前期还款压力大,但以后的还款金额逐渐递减,利息总负担较少。
+        </string>
+
+
 </resources>

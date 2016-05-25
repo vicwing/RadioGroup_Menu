@@ -147,10 +147,10 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
 //            }
             mFrameInterestRate.setContentText(parentFragment.isShowCommercialRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
-            mFrameLoanTerm.setContentText(parentFragment.getLoanTerm()+"年");
+            mFrameLoanTerm.setContentText(parentFragment.getLoanYear()+"年");
 
             Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getCommercialAmount()+" 利率 "+parentFragment.getCommercialRate()+
-                    " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
+                    " 期数 "+parentFragment.getLoanYear()+ "  详情?  "+parentFragment.isFromDetail());
         }
     }
 }

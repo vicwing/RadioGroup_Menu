@@ -181,7 +181,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
             mFrameFundRate.setContentText(parentFragment.isShowFundRateDesc() ? funInterestRateText : fundRateDes+" " + funInterestRateText);
 //            mFrameFundRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + funInterestRateText : funInterestRateText);
 
-            mFrameLoanTerm.setContentText(parentFragment.getLoanTerm() + "年");
+            mFrameLoanTerm.setContentText(parentFragment.getLoanYear() + "年");
         }
     }
 }

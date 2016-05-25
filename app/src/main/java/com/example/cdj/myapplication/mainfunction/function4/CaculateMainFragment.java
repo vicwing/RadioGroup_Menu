@@ -293,7 +293,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
         return mCommercialRate;
     }
 
-    public int getLoanTerm() {
+    public int getLoanYear() {
         return mLoanTerm;
     }
 

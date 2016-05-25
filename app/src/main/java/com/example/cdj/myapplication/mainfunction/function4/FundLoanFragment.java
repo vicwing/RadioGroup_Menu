@@ -129,7 +129,7 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
 //            }
             mFrameInterestRate.setContentText(parentFragment.isShowFundRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
-            mFrameLoanTerm.setContentText(parentFragment.getLoanTerm()+"年");
+            mFrameLoanTerm.setContentText(parentFragment.getLoanYear()+"年");
         }
     }
 }

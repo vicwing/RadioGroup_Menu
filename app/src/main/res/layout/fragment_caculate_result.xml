@@ -52,7 +52,7 @@
             <TextView
                 style="@style/CommTextview"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:text="还款方式"
                 android:textColor="@color/grey_888888"
                 />
@@ -61,7 +61,7 @@
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="right"
                 android:text="等额本息"
                 />
 
@@ -79,10 +79,10 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="15dp"
             android:paddingBottom="15dp"
-            android:layout_height="wrap_content">
+            android:paddingTop="15dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -93,7 +93,7 @@
                 <TextView
                     style="@style/CommTextview"
                     android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:layout_weight="0.6"
                     android:text="月供金额"
                     android:textColor="@color/grey_888888"
                     />
@@ -103,7 +103,7 @@
                     style="@style/CommTextview"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:gravity="center"
+                    android:gravity="right"
                     tools:text="25556644元"
                     />
 
@@ -116,13 +116,14 @@
                     tools:text="25556644元"
                     />
             </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_monthly_decline"
                 style="@style/CommTextview"
-                android:textColor="@color/grey_888888"
-                android:layout_marginTop="10dp"
-                tools:text="每月递减33元"
                 android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/grey_888888"
+                tools:text="每月递减33元"
                 />
         </LinearLayout>
 
@@ -138,7 +139,7 @@
             <TextView
                 style="@style/CommTextview"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:text="总利息"
                 android:textColor="@color/grey_888888"
                 />
@@ -148,7 +149,7 @@
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="right"
                 tools:text="25556644元"
                 />
 
@@ -164,6 +165,7 @@
 
         <View
             style="@style/xpt_horizontal_line"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="44dp"
@@ -173,7 +175,7 @@
             <TextView
                 style="@style/CommTextview"
                 android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_weight="0.6"
                 android:text="本息总额"
                 android:textColor="@color/grey_888888"
                 />
@@ -183,9 +185,9 @@
                 style="@style/CommTextview"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                tools:text="25556644元"
                 android:contentDescription="本息总额"
+                android:gravity="right"
+                tools:text="25556644元"
                 />
 
             <TextView
@@ -209,4 +211,28 @@
         android:layout_marginTop="50dp"
         android:text="返回"
         />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/CommTextview"
+            android:text="@string/caculate_result_desc"
+            android:textColor="@color/grey_888888"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_connect_agent"
+            android:textColor="@color/grey_888888"
+            style="@style/CommTextview"
+            android:textSize="14sp"
+            />
+    </LinearLayout>
+
 </LinearLayout>
