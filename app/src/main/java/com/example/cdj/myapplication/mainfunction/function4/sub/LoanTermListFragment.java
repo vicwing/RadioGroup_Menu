@@ -18,7 +18,7 @@ import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.Bean.InterestRateListBean;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -37,7 +37,8 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
     private TextView tv_unit;
     private EditText edt_content;
     private ListView mListView;
-    private Fragment4 fragment4;
+    private CaculateMainFragment mCaculateMainFragment;
+    private int key;
 
     @Nullable
     @Override
@@ -67,21 +68,25 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
         mListView = (ListView) rootView.findViewById(R.id.lv_listview);
 
 
-        fragment4 = (Fragment4) getFragmentManager().findFragmentByTag(Fragment4.class.getName());
+        mCaculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
+        Bundle bundle = getArguments();
+        if (bundle!=null){
+            key = bundle.getInt(CaculateMainFragment.KEY, 0);
+        }
 
         mListView.setAdapter(new QuickAdapter<InterestRateListBean>(getActivity(), R.layout.item_list_caculate_commom_form, getLoanTermList()) {
             @Override
             protected void convert(BaseAdapterHelper helper, InterestRateListBean item) {
                 helper.setText(R.id.tv_common_title,item.getDescription()+"年");
-//                helper.setText(R.id.tv_common_content,item.getInterestRate()+"%");
+//                helper.setText(R.id.tv_common_content,item.getCommercialRate()+"%");
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 InterestRateListBean item = (InterestRateListBean) parent.getAdapter().getItem(position);
-                fragment4.setLoanTerm(Integer.parseInt(item.getDescription()));
-                fragment4.getCurrentFragment().reFreshView();
+                mCaculateMainFragment.setLoanTerm(Integer.parseInt(item.getDescription()));
+                mCaculateMainFragment.getCurrentFragment().reFreshView();
                 getFragmentManager().popBackStack();
             }
         });
@@ -111,9 +116,9 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
             getFragmentManager().popBackStack();
         }else if (id==R.id.frame_other_price){
             Bundle bundle = new Bundle();
-            bundle.putString(Fragment4.FROM_TAG,LoanTermListFragment.class.getSimpleName());
-            bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM);
-            bundle.putBoolean(Fragment4.isFromList, true);
+//            bundle.putString(Fragment4.FROM_TAG,LoanTermListFragment.class.getSimpleName());
+            bundle.putInt(CaculateMainFragment.KEY,key);
+            bundle.putBoolean(CaculateMainFragment.isFromList, true);
             mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
         }
     }

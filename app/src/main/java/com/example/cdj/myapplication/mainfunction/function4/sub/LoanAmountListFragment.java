@@ -18,8 +18,7 @@ import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.Bean.LoanPercent;
-import com.example.cdj.myapplication.mainfunction.function4.CombinedLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.orhanobut.logger.Logger;
 
 import java.math.BigDecimal;
@@ -37,9 +36,10 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
     private EditText edt_content;
     private ListView mListView;
     private com.example.cdj.myapplication.cusview.CommonFormLayout frame_other_price;
-    private Fragment4 fragment4;
+    private CaculateMainFragment mCaculateMainFragment;
     private String mFromFragment;
     private int key;
+    private ArrayList<LoanPercent> mLoanPercentsData;
 
     @Nullable
     @Override
@@ -67,31 +67,15 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
         frame_other_price.setOnClickListener(this);
 
         mListView = (ListView) rootView.findViewById(R.id.lv_listview);
-        fragment4 = (Fragment4) getFragmentManager().findFragmentByTag(Fragment4.class.getName());
+        mCaculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
 
         Bundle bundle = getArguments();
-        ArrayList<LoanPercent> loanPercentsData = null;
         if (bundle != null) {
-            mFromFragment = bundle.getString(Fragment4.FROM_TAG);
-            key = bundle.getInt(Fragment4.KEY);
-            int currentIndex = fragment4.getCurrentIndex();
-            if (0 == currentIndex) {
-                tv_title.setText(R.string.caculate_commercial_title_loanprice);
-                loanPercentsData = getLoanPercents(8);
-            } else if (1 == currentIndex) {
-                tv_title.setText(R.string.caculate_fund_title_price);
-                loanPercentsData = getLoanPercents(9);
-            } else {
-                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-                    tv_title.setText(R.string.caculate_commercial_title_loanprice);
-                    loanPercentsData = getLoanPercents(8);
-                } else if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment)) {
-                    tv_title.setText(R.string.caculate_fund_title_price);
-                    loanPercentsData = getLoanPercents(9);
-                }
-            }
+            mFromFragment = bundle.getString(CaculateMainFragment.FROM_TAG);
+            key = bundle.getInt(CaculateMainFragment.KEY);
+            intiContent();
         }
-        mListView.setAdapter(new QuickAdapter<LoanPercent>(getActivity(), R.layout.item_list_caculate_commom_form, loanPercentsData) {
+        mListView.setAdapter(new QuickAdapter<LoanPercent>(getActivity(), R.layout.item_list_caculate_commom_form, mLoanPercentsData) {
             @Override
             protected void convert(BaseAdapterHelper helper, LoanPercent item) {
                 helper.setText(R.id.tv_common_title, (int) (item.getPercent() * 10) + "成");
@@ -102,30 +86,50 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 LoanPercent item = (LoanPercent) parent.getAdapter().getItem(position);
-//                mCallback.onCallBackData(item.getPercent(), item.getPrice());
-                fragment4.setPercent(item.getPercent());
                 switch (key){
-                    case Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT:
-                    case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
-                        fragment4.setTotalPrice(item.getPrice());
+                    case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
+                    case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
+                        mCaculateMainFragment.setCommercialAmount(item.getPrice());
                         break;
-                    case Fragment4.FROMDETAIL_Fund_AMOUNT:
-                    case Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT:
-                        fragment4.setFundTtotalPrice(item.getPrice());
+                    case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
+                    case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
+                        mCaculateMainFragment.setFundAmount(item.getPrice());
                         break;
                     default:
                         break;
                 }
-
-//                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-//                    fragment4.setTotalPrice(item.getPrice());
-//                } else {
-//                    fragment4.setFundTtotalPrice(item.getPrice());
-//                }
-                fragment4.getCurrentFragment().reFreshView();
+                mCaculateMainFragment.setPercent(item.getPercent());
+                mCaculateMainFragment.getCurrentFragment().reFreshView();
                 getFragmentManager().popBackStack();
             }
         });
+    }
+
+    /**
+     * 初始化.要显示的内容
+     */
+    private void intiContent() {
+
+        switch (key) {
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
+                tv_title.setText(R.string.caculate_commercial_title_loan_amount);
+                mLoanPercentsData = getLoanPercents(8);
+                break;
+            case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
+                tv_title.setText(R.string.caculate_fund_title_amount);
+                mLoanPercentsData = getLoanPercents(9);
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
+                tv_title.setText(R.string.caculate_commercial_title_loan_amount);
+                mLoanPercentsData = getLoanPercents(8);
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
+                tv_title.setText(R.string.caculate_fund_title_amount);
+                mLoanPercentsData = getLoanPercents(9);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -143,7 +147,7 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
             BigDecimal b1 = new BigDecimal(Float.toString(percent));
             BigDecimal b2 = new BigDecimal(Float.toString(0.1f));
             percent = b1.subtract(b2).floatValue();
-            int result = (int) (fragment4.getTotalPrice() * percent);
+            int result = (int) (mCaculateMainFragment.getCommercialAmount() * percent);
             loanPercent.setPercent(percent);
             loanPercent.setPrice(result);
             loanPercents.add(loanPercent);
@@ -159,19 +163,8 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
             getFragmentManager().popBackStack();
         } else if (id == R.id.frame_other_price) {
             Bundle bundle = new Bundle();
-//            Bundle arguments = getArguments();
-//            if (arguments != null) {
-////                String fromCombined = arguments.getString(CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT);//商业贷款
-////                String fromCombined = arguments.getString(Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT);//商业贷款
-//                if (!TextUtils.isEmpty(fromCombined)) {
-//                    bundle.putString(Fragment4.KEY, fromCombined);
-//                } else {
-//                    bundle.putString(Fragment4.FROM_TAG, LoanPriceListFragment.class.getSimpleName());
-//                }
-//            }
-            bundle.putString(Fragment4.FROM_TAG, LoanAmountListFragment.class.getSimpleName());
-            bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT);
-            bundle.putBoolean(Fragment4.isFromList, true);
+            bundle.putInt(CaculateMainFragment.KEY, key);
+            bundle.putBoolean(CaculateMainFragment.isFromList, true);
             mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
         }
     }

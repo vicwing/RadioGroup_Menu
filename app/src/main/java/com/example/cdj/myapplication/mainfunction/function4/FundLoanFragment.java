@@ -10,8 +10,8 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
 
 /**
@@ -60,21 +60,21 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         init(layout);
         return layout;
     }
-    Fragment4 fragment4;
+    CaculateMainFragment mCaculateMainFragment;
     private void init(View layout) {
-        fragment4 = (Fragment4) getParentFragment();
+        mCaculateMainFragment = (CaculateMainFragment) getParentFragment();
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
         mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
         final  Bundle bundle = new Bundle();
-        bundle.putString(Fragment4.FROM_TAG,FundLoanFragment.class.getSimpleName());
+        bundle.putString(CaculateMainFragment.FROM_TAG,FundLoanFragment.class.getSimpleName());
 
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_AMOUNT);
-                if (fragment4.isFromDetail()){
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_Fund_AMOUNT);
+                if (mCaculateMainFragment.isFromDetail()){
                     mCallback.onAddFragment(LoanAmountListFragment.class.getName(),bundle);
                 }else{
                     mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
@@ -85,7 +85,7 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_INTEREST_RATE);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE);
                 mCallback.onAddFragment(LoanRateListFragment.class.getName(),bundle);
             }
         });
@@ -94,12 +94,12 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
         mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_Fund_LOAN_TERM);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_Fund_LOAN_TERM);
                     mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });
 
-        mFrameLoan.setTitleText(R.string.caculate_fund_title_price);
+        mFrameLoan.setTitleText(R.string.caculate_fund_title_amount);
         mFrameLoan.setHasRightArrow(true);
 //        mFrameLoan.setContentText("7成"+totalPrice);
 
@@ -116,14 +116,18 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
 
     @Override
     public void reFreshView() {
-        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        CaculateMainFragment parentFragment = (CaculateMainFragment) getParentFragment();
         if (parentFragment!=null){
 
-            String price =  parentFragment.getFundTtotalPrice() + "万元";
-            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成"+price : price);
+            String price =  parentFragment.getFundAmount() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成 "+price : price);
 
-            String interestRateText = parentFragment.getFundIntrestRate() + "%";
-            mFrameInterestRate.setContentText(parentFragment.isFromDetail()? getString(R.string.caculate_new_interest_rate )+ interestRateText : interestRateText);
+            String interestRateText = parentFragment.getFundRate() + "%";
+            String rateDescription = parentFragment.getFundRateDes();
+//            if (TextUtils.isEmpty(rateDescription)){
+//                rateDescription = getString(R.string.caculate_new_interest_rate);
+//            }
+            mFrameInterestRate.setContentText(parentFragment.isShowFundRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
             mFrameLoanTerm.setContentText(parentFragment.getLoanTerm()+"年");
         }

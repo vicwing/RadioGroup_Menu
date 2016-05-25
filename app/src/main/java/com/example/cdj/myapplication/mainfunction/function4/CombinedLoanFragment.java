@@ -10,8 +10,8 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
 
 import butterknife.ButterKnife;
@@ -29,7 +29,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
-    private Fragment4 mParentFragment;
+    private CaculateMainFragment mParentFragment;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -73,7 +73,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
     public static String COMINED_FUND_LOAN_AMOUNT = "Comined_Fund_Loan_Amount";   //公积金贷款金额
 
     private void init(View layout) {
-        mParentFragment = (Fragment4) getParentFragment();
+        mParentFragment = (CaculateMainFragment) getParentFragment();
         mFrameLoan = (CommonFormLayout) layout.findViewById(R.id.frame_loan);
         mFrameInterestRate = (CommonFormLayout) layout.findViewById(R.id.frame_interest_rate);
 
@@ -83,7 +83,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoanTerm = (CommonFormLayout) layout.findViewById(R.id.frame_loan_year);
 
         final Bundle bundle = new Bundle();
-        bundle.putString(Fragment4.FROM_TAG, CombinedLoanFragment.class.getSimpleName());
+        bundle.putString(CaculateMainFragment.FROM_TAG, CombinedLoanFragment.class.getSimpleName());
 
 
         mFrameLoan.setTitleText("商贷金额");
@@ -92,7 +92,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT);
                 if (mParentFragment.isFromDetail()) {
                     mCallback.onAddFragment(LoanAmountListFragment.class.getName(), bundle);
                 } else {
@@ -104,12 +104,12 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE);
-                if (mParentFragment.isFromDetail()) {
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE);
+//                if (mParentFragment.isFromDetail()) {
                     mCallback.onAddFragment(LoanRateListFragment.class.getName(), bundle);
-                } else {
-                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
-                }
+//                } else {
+//                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
+//                }
             }
         });
 
@@ -123,7 +123,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameFundLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT);
                 if (mParentFragment.isFromDetail()) {
                     mCallback.onAddFragment(LoanAmountListFragment.class.getName(), bundle);
                 } else {
@@ -135,12 +135,12 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameFundRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_FUND_RATE);
-                if (mParentFragment.isFromDetail()) {
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMBINED_FUND_RATE);
+//                if (mParentFragment.isFromDetail()) {
                     mCallback.onAddFragment(LoanRateListFragment.class.getName(), bundle);
-                } else {
-                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
-                }
+//                } else {
+//                    mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
+//                }
             }
         });
 
@@ -150,7 +150,7 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
         mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMBINED_LOANTERM);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMBINED_LOANTERM);
                 mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });
@@ -160,21 +160,26 @@ public class CombinedLoanFragment extends BackHandledBaseFragment implements Sub
 
     @Override
     public void reFreshView() {
-        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        CaculateMainFragment parentFragment = (CaculateMainFragment) getParentFragment();
         if (parentFragment != null) {
             //商业贷款
-            String price = parentFragment.getTotalPrice() + "万元";
-            mFrameLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成" + price : price);
+            String price = parentFragment.getCommercialAmount() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成 " + price : price);
 
-            String interestRateText = parentFragment.getInterestRate() + "%";
-            mFrameInterestRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + interestRateText : interestRateText);
+            String interestRateText = parentFragment.getCommercialRate() + "%";
+            String commercialRateDesc = parentFragment.getCommercialRateDesc();
+            mFrameInterestRate.setContentText(parentFragment.isShowCommercialRateDesc() ? interestRateText : commercialRateDesc+" " + interestRateText);
+
+//            mFrameInterestRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + interestRateText : interestRateText);
 
             //公积金
-            String fundAmountText = parentFragment.getFundTtotalPrice() + "万元";
-            mFrameFundLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成" + fundAmountText : fundAmountText);
+            String fundAmountText = parentFragment.getFundAmount() + "万元";
+            mFrameFundLoan.setContentText(parentFragment.isFromDetail() ? (int) (parentFragment.getPercent() * 10) + "成 " + fundAmountText : fundAmountText);
 
-            String funInterestRateText = parentFragment.getFundIntrestRate() + "%";
-            mFrameFundRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + funInterestRateText : funInterestRateText);
+            String funInterestRateText = parentFragment.getFundRate() + "%";
+            String fundRateDes = parentFragment.getFundRateDes();
+            mFrameFundRate.setContentText(parentFragment.isShowFundRateDesc() ? funInterestRateText : fundRateDes+" " + funInterestRateText);
+//            mFrameFundRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate) + funInterestRateText : funInterestRateText);
 
             mFrameLoanTerm.setContentText(parentFragment.getLoanTerm() + "年");
         }

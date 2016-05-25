@@ -11,9 +11,9 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -55,14 +55,14 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
 
     CommonFormLayout  mFrameLoanTerm;//贷款年限
     private Button btn_do_caculate;
-    private Fragment4 fragment4;
+    private CaculateMainFragment mCaculateMainFragment;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-             fragment4 = (Fragment4)  getParentFragment();
+             mCaculateMainFragment = (CaculateMainFragment)  getParentFragment();
         }
     }
 
@@ -85,8 +85,8 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
         mFrameLoan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT);
-                if (fragment4.isFromDetail()){
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT);
+                if (mCaculateMainFragment.isFromDetail()){
                     mCallback.onAddFragment(LoanAmountListFragment.class.getName(),bundle);
                 }else{
                     mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
@@ -98,14 +98,14 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
         mFrameInterestRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE);
                 mCallback.onAddFragment(LoanRateListFragment.class.getName(),bundle);
             }
         });
          mFrameLoanTerm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                bundle.putInt(Fragment4.KEY,Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM);
+                bundle.putInt(CaculateMainFragment.KEY, CaculateMainFragment.FROMDETAIL_COMMERCIAL_LOAN_TERM);
                 mCallback.onAddFragment(LoanTermListFragment.class.getName(),bundle);
             }
         });
@@ -133,18 +133,23 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements  
 
     @Override
     public void reFreshView() {
-        Fragment4 parentFragment = (Fragment4) getParentFragment();
+        CaculateMainFragment parentFragment = (CaculateMainFragment) getParentFragment();
         if (parentFragment!=null){
-            String price =  parentFragment.getTotalPrice() + "万元";
-            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成"+price : price);
+            String price =  parentFragment.getCommercialAmount() + "万元";
+            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成 "+price : price);
 
-//            mFrameInterestRate.setContentText("最新基准利率" + parentFragment.getInterestRate() +"%");
-            String interestRateText = parentFragment.getInterestRate() + "%";
-            mFrameInterestRate.setContentText(parentFragment.isFromDetail() ? getString(R.string.caculate_new_interest_rate )+ interestRateText : interestRateText);
+//            mFrameInterestRate.setContentText("最新基准利率" + parentFragment.getCommercialRate() +"%");
+            String interestRateText = parentFragment.getCommercialRate() + "%";
+
+            String rateDescription = parentFragment.getCommercialRateDesc();
+//            if (TextUtils.isEmpty(rateDescription)){
+//                rateDescription = getString(R.string.caculate_new_interest_rate);
+//            }
+            mFrameInterestRate.setContentText(parentFragment.isShowCommercialRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
             mFrameLoanTerm.setContentText(parentFragment.getLoanTerm()+"年");
 
-            Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getTotalPrice()+" 利率 "+parentFragment.getInterestRate()+
+            Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getCommercialAmount()+" 利率 "+parentFragment.getCommercialRate()+
                     " 期数 "+parentFragment.getLoanTerm()+ "  详情?  "+parentFragment.isFromDetail());
         }
     }

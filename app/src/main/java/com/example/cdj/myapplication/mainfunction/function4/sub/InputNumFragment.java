@@ -1,10 +1,12 @@
 package com.example.cdj.myapplication.mainfunction.function4.sub;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,10 +15,7 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommomEditText;
-import com.example.cdj.myapplication.mainfunction.function4.CombinedLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.CommercialLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
-import com.example.cdj.myapplication.mainfunction.function4.FundLoanFragment;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -32,7 +31,7 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
     private String mFromFragment;
     private int key;
     private boolean isFromList;
-    private Fragment4 mFragment4;
+    private CaculateMainFragment mCaculateMainFragment;
     private int mCurrentIndex; //当前fragment 下标
 
     @Nullable
@@ -70,120 +69,87 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
 
         mCommomEditText = (CommomEditText) rootView.findViewById(R.id.custom_edt_loan);
 
-        mFragment4 = (Fragment4) getFragmentManager().findFragmentByTag(Fragment4.class.getName());
-        mCurrentIndex = mFragment4.getCurrentIndex();
+        mCaculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
+        mCurrentIndex = mCaculateMainFragment.getCurrentIndex();
         Bundle bundle = getArguments();
         if (bundle != null) {
-            mFromFragment = bundle.getString(Fragment4.FROM_TAG);
-            key = bundle.getInt(Fragment4.KEY);
-            isFromList = bundle.getBoolean(Fragment4.isFromList);
-            initNewKey();
-//            if (mFragment4.isFromDetail()) {//直接进入
-//                if (0 == mCurrentIndex) {//商业贷款
-//                    initCommercialAmountText();
-//                } else if (1 == mCurrentIndex) { //公积金贷款
-//                    initFundAmountText();
-//                } else {
-//                    if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-//                        initCommercialAmountText();
-//                    } else {
-//                        initFundAmountText();
-//                    }
-//                }
-//            } else {
-////                if (LoanPriceListFragment.class.getSimpleName().equals(mFromFragment)) {//商业贷款
-////                    initCommercialAmountText();
-////                } else if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment) || CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {//组合贷款 : 商业贷款
-////                    initFundAmountText();
-////                } else if (FundLoanFragment.class.getSimpleName().equals(mFromFragment)) {// 公积金贷款:
-////                    initFundAmountText();
-////                } else if (InterestRateListFragment.class.getSimpleName().equals(mFromFragment)) {//商业贷款利率
-////                    tv_title.setText(R.string.caculate_input_interest_rate);
-////                    mCommomEditText.setTextUnit("%");
-////                    mCommomEditText.setKeyListener("0123456789.");
-////                    mCommomEditText.setEditHint(R.string.caculate_input_interest_rate);
-////                } else if (LoanTermListFragment.class.getSimpleName().equals(mFromFragment)) {//贷款期限
-////                    tv_title.setText(R.string.caculate_input_loanterm);
-////                    mCommomEditText.setTextUnit("年");
-////                    mCommomEditText.setEditHint(R.string.caculate_input_loanterm);
-////                }
-//                if (0 == mCurrentIndex) {//商业贷款
-//                    if (LoanPriceListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initCommercialAmountText();
-//                    } else if (InterestRateListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initCommecialInterate();
-//                    } else if (LoanTermListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initCommecialInterate();
-//                    }
-//                } else if (1 == mCurrentIndex) {// 公积金贷款:
-//                    if (LoanPriceListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initFundAmountText();
-//                    } else if (InterestRateListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initFundInterate();
-//                    } else if (LoanTermListFragment.class.getSimpleName().equals(mFromFragment)) {
-//                        initLoanTerm();
-//                    }
-//                } else   {//组合贷款
-//                    if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment)){
-//
-//                    }else{
-//
-//                    }
-//                }
-//            }
+            mFromFragment = bundle.getString(CaculateMainFragment.FROM_TAG);
+            key = bundle.getInt(CaculateMainFragment.KEY);
+            isFromList = bundle.getBoolean(CaculateMainFragment.isFromList);
+            initContent();
         }
 
 
         mCommomEditText.setOnCommitListener(new CommomEditText.OnCommitClickListener() {
             @Override
             public void onClick(String num) {
-                Fragment4 fragment4 = (Fragment4) getFragmentManager().findFragmentByTag(Fragment4.class.getName());
+                CaculateMainFragment caculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
 //                oldOnclik(num, fragment4);
-                    newOnclick(fragment4 , num);
-                fragment4.setFromDetail(false);
+                switchViewRefresh(caculateMainFragment, num);
+                caculateMainFragment.setFromDetail(false);
                 if (isFromList) {//来自列表.回退要2次
-                    popBackToMain(fragment4);
+                    popBackToMain(caculateMainFragment);
                 } else {
                     getFragmentManager().popBackStack();
-                    fragment4.getCurrentFragment().reFreshView();
+                    caculateMainFragment.getCurrentFragment().reFreshView();
                 }
             }
         });
+
+        openInputMethod();
     }
 
-    private void newOnclick(Fragment4 fragment4,String num) {
+    /**
+     * 打开输入法
+     */
+    private void openInputMethod() {
+        edt_content.setFocusable(true);
+        edt_content.requestFocus();
+        InputMethodManager imm = (InputMethodManager)getActivity(). getSystemService(Context.INPUT_METHOD_SERVICE);
+        // 接受软键盘输入的编辑文本或其它视图
+        imm.showSoftInput(edt_content,InputMethodManager.SHOW_FORCED);
+    }
+
+    /**
+     * 根据key,指定刷新的view
+     * @param caculateMainFragment
+     * @param num
+     */
+    private void switchViewRefresh(CaculateMainFragment caculateMainFragment, String num) {
         switch (key) {
-            case Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT:
-                fragment4.setTotalPrice(Integer.parseInt(num));
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
+                caculateMainFragment.setCommercialAmount(Integer.parseInt(num));
                 break;
-            case Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
-                fragment4.setIntrestRate(Float.parseFloat(num));
-                break;
-
-            case Fragment4.FROMDETAIL_Fund_AMOUNT:
-                fragment4.setFundTtotalPrice(Integer.parseInt(num));
-                break;
-            case Fragment4.FROMDETAIL_Fund_INTEREST_RATE:
-                fragment4.setFundIntrestRate(Float.parseFloat(num));
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
+                caculateMainFragment.setCommercialRate(Float.parseFloat(num));
                 break;
 
-            case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT://组合贷款金额
-                fragment4.setTotalPrice(Integer.parseInt(num));
+            case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
+                caculateMainFragment.setFundAmount(Integer.parseInt(num));
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT:
-                fragment4.setFundTtotalPrice(Integer.parseInt(num));
+            case CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE:
+                caculateMainFragment.setFundRate(Float.parseFloat(num));
                 break;
 
-            case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE://组合贷款利率
-                fragment4.setIntrestRate(Float.parseFloat(num));
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT://组合贷款金额
+                caculateMainFragment.setCommercialAmount(Integer.parseInt(num));
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_FUND_RATE:
-                fragment4.setFundIntrestRate(Float.parseFloat(num));
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
+                caculateMainFragment.setFundAmount(Integer.parseInt(num));
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_LOANTERM:
-            case Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM:
-            case Fragment4.FROMDETAIL_Fund_LOAN_TERM:
-                fragment4.setLoanTerm(Integer.parseInt(num));
+
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE://组合贷款利率
+                caculateMainFragment.setShowCommercialRateDesc(true);
+                caculateMainFragment.setCommercialRate(Float.parseFloat(num));
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_RATE:
+                caculateMainFragment.setShowFundRateDesc(true);
+                caculateMainFragment.setFundRate(Float.parseFloat(num));
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_LOANTERM:
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_LOAN_TERM:
+            case CaculateMainFragment.FROMDETAIL_Fund_LOAN_TERM:
+                caculateMainFragment.setLoanTerm(Integer.parseInt(num));
                 break;
             default:
                 break;
@@ -191,76 +157,44 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
 
     }
 
-    @Deprecated
-    private void oldOnclik(String num, Fragment4 fragment4) {
-        int currentIndex = fragment4.getCurrentIndex();
-        if (CommercialLoanFragment.class.getSimpleName().equals(mFromFragment)) {//商业贷款界面直接进入
-            fragment4.setTotalPrice(Integer.parseInt(num));
-        } else if (FundLoanFragment.class.getSimpleName().equals(mFromFragment)) {//公积金界面直接进入
-            fragment4.setFundTtotalPrice(Integer.parseInt(num));
-        } else if (CombinedLoanFragment.COMINED_FUND_LOAN_AMOUNT.equals(mFromFragment)) {//组合贷款 商业贷款金额:界面直接进入
-            fragment4.setTotalPrice(Integer.parseInt(num));
-        } else if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {//组合贷款 公积金贷款金额:界面直接进入
-            fragment4.setFundTtotalPrice(Integer.parseInt(num));
-        } else if (LoanAmountListFragment.class.getSimpleName().equals(mFromFragment)) {  //贷款列表选择页
-            if (currentIndex == 0) {
-                fragment4.setTotalPrice(Integer.parseInt(num));
-            } else if (currentIndex == 1) {
-                fragment4.setFundTtotalPrice(Integer.parseInt(num));
-            } else {//组合贷款
-                fragment4.setTotalPrice(Integer.parseInt(num));
-                fragment4.setFundTtotalPrice(Integer.parseInt(num));
-            }
-        } else if (LoanRateListFragment.class.getSimpleName().equals(mFromFragment)) {//利率列表选择页
-            if (currentIndex == 0) {
-                fragment4.setIntrestRate(Float.parseFloat(num));
-            } else if (currentIndex == 1) {
-                fragment4.setFundIntrestRate(Float.parseFloat(num));
-            } else {
-                fragment4.setIntrestRate(Float.parseFloat(num));
-                fragment4.setFundIntrestRate(Float.parseFloat(num));
-            }
-        } else if (LoanTermListFragment.class.getSimpleName().equals(mFromFragment)) {//贷款期限
-            fragment4.setLoanTerm(Integer.parseInt(num));
-        }
-    }
-
-    private void initNewKey() {
+    /**
+     * 根据传入的 key 初始化显示的内容.
+     */
+    private void initContent() {
 
         switch (key) {
-            case Fragment4.FROMDETAIL_COMMERCIAL_AMOUNT:
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
                 initCommercialAmountText();
                 break;
-            case Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
                 initCommecialInterate();
                 break;
-            case Fragment4.FROMDETAIL_Fund_AMOUNT:
+            case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
                 initFundAmountText();
                 break;
-            case Fragment4.FROMDETAIL_Fund_INTEREST_RATE:
+            case CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE:
                 initFundInterate();
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
                 initCommercialAmountText();
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_FUND_AMOUNT:
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
                 initFundAmountText();
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE:
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE:
                 initCommecialInterate();
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_FUND_RATE:
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_RATE:
                 initFundInterate();
                 break;
-            case Fragment4.FROMDETAIL_COMBINED_LOANTERM:
-            case Fragment4.FROMDETAIL_COMMERCIAL_LOAN_TERM:
-            case Fragment4.FROMDETAIL_Fund_LOAN_TERM:
+            case CaculateMainFragment.FROMDETAIL_COMBINED_LOANTERM:
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_LOAN_TERM:
+            case CaculateMainFragment.FROMDETAIL_Fund_LOAN_TERM:
                 initLoanTerm();
                 break;
             default:
                 break;
         }
-
     }
 
     /**
@@ -297,7 +231,7 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
      * 公积金贷款初始化
      */
     private void initFundAmountText() {
-        tv_title.setText(R.string.caculate_fund_title_price);
+        tv_title.setText(R.string.caculate_fund_title_amount);
         mCommomEditText.setTextUnit("万元");
         mCommomEditText.setEditHint(R.string.caculate_input_fund_interest_rate);
     }
@@ -306,13 +240,13 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
      * 商业贷款初始化
      */
     private void initCommercialAmountText() {
-        tv_title.setText(R.string.caculate_commercial_title_loanprice);
+        tv_title.setText(R.string.caculate_commercial_title_loan_amount);
         mCommomEditText.setTextUnit("万元");
-        mCommomEditText.setEditHint(R.string.caculate_input_loan_totalprice);
+        mCommomEditText.setEditHint(R.string.caculate_input_loan_amount);
     }
 
-    private void popBackToMain(Fragment4 fragment4) {
-        fragment4.getCurrentFragment().reFreshView();
+    private void popBackToMain(CaculateMainFragment caculateMainFragment) {
+        caculateMainFragment.getCurrentFragment().reFreshView();
 //        fragment4.setFromDetail(false);
         getFragmentManager().popBackStack();
         getFragmentManager().popBackStack();

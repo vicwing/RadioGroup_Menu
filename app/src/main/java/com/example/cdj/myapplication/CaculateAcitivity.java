@@ -15,7 +15,7 @@ import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
 import com.example.cdj.myapplication.mainfunction.function4.BackHandlerHelper;
 import com.example.cdj.myapplication.mainfunction.function4.CommercialLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.example.cdj.myapplication.mainfunction.function4.OnHeadlineSelectedListener;
 import com.orhanobut.logger.Logger;
 
@@ -58,15 +58,15 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
     private Fragment mCurrentFrgment;
     private int currentIndex = 0;
     private Button btn_do_caculate;
-    Fragment4 fragment4;
+    CaculateMainFragment mCaculateMainFragment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame);
 //        addFragment(Fragment4.class.getName(),null);
-         fragment4 = (Fragment4) Fragment.instantiate(this, Fragment4.class.getName(), null);
+         mCaculateMainFragment = (CaculateMainFragment) Fragment.instantiate(this, CaculateMainFragment.class.getName(), null);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_container, fragment4, Fragment4.class.getName());
+        transaction.add(R.id.frame_container, mCaculateMainFragment, CaculateMainFragment.class.getName());
         transaction.addToBackStack(null);
         transaction.commit();
     }
@@ -100,16 +100,16 @@ public class CaculateAcitivity  extends FragmentActivity implements OnHeadlineSe
     @Override
     public void onCallBackData(String num) {
         Logger.d("activity  oncallBackdata "+ num);
-        CommercialLoanFragment commercialLoanFragment = (CommercialLoanFragment) fragment4.getChildFragmentManager().findFragmentByTag(CommercialLoanFragment.class.getName());
+        CommercialLoanFragment commercialLoanFragment = (CommercialLoanFragment) mCaculateMainFragment.getChildFragmentManager().findFragmentByTag(CommercialLoanFragment.class.getName());
         commercialLoanFragment.refreshFragment(num);
 //        fragment4.onCallBackData(num);
     }
 
     @Override
     public void onCallBackData(float percent, int price) {
-        fragment4.setTotalPrice(price);
-        fragment4.setPercent(percent);
-        fragment4.getCurrentFragment().reFreshView();
+        mCaculateMainFragment.setCommercialAmount(price);
+        mCaculateMainFragment.setPercent(percent);
+        mCaculateMainFragment.getCurrentFragment().reFreshView();
     }
 
 

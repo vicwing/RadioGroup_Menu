@@ -19,8 +19,7 @@ import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.function4.Bean.InterestRateListBean;
-import com.example.cdj.myapplication.mainfunction.function4.CombinedLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.example.cdj.myapplication.utils.PreciseCompute;
 import com.orhanobut.logger.Logger;
 
@@ -30,7 +29,7 @@ import java.util.ArrayList;
  * 商业贷款 利率列表 界面
  * Created by cdj on 2016/5/23.
  */
-public class LoanRateListFragment extends BackHandledBaseFragment implements View.OnClickListener ,View.OnTouchListener{
+public class LoanRateListFragment extends BackHandledBaseFragment implements View.OnClickListener, View.OnTouchListener {
 
     private View rootView;
     private ImageView iv_back;
@@ -40,10 +39,11 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
     private TextView tv_unit;
     private EditText edt_content;
     private ListView mListView;
-    private Fragment4 fragment4;
+    private CaculateMainFragment mCaculateMainFragment;
     private ArrayList<InterestRateListBean> mInterestRateLists;
     private String mFromFragment;
     private int mCurrentIndex;
+    private int key;
 
     @Nullable
     @Override
@@ -69,29 +69,15 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
 
         commonFormLayout = (CommonFormLayout) rootView.findViewById(R.id.frame_other_price);
         commonFormLayout.setOnClickListener(this);
-        commonFormLayout.setTitleText("其他利率");
+        commonFormLayout.setTitleText(R.string.caculate_other_rate);
         mListView = (ListView) rootView.findViewById(R.id.lv_listview);
-        fragment4 = (Fragment4) getFragmentManager().findFragmentByTag(Fragment4.class.getName());
+        mCaculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
 
-        fragment4.getInterestRate();
-
-        mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
-        mCurrentIndex = fragment4.getCurrentIndex();
-        if (0 == mCurrentIndex) {
-            tv_title.setText(R.string.caculate_commercial_title_rate);
-            mInterestRateLists = getInterestRateLists();
-        } else if (1 == mCurrentIndex) {
-            tv_title.setText(R.string.caculate_fund_title_interest_rate);
-            mInterestRateLists = getFundInterestRateLists();
-        } else {
-            String mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
-            if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-                tv_title.setText(R.string.caculate_commercial_title_loanprice);
-                mInterestRateLists = getInterestRateLists();
-            } else {
-                tv_title.setText(R.string.caculate_fund_title_interest_rate);
-                mInterestRateLists = getFundInterestRateLists();
-            }
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            mFromFragment = arguments.getString(CaculateMainFragment.FROM_TAG);
+            key = arguments.getInt(CaculateMainFragment.KEY);
+            initContent();
         }
         mListView.setAdapter(new QuickAdapter<InterestRateListBean>(getActivity(), R.layout.item_list_caculate_commom_form, mInterestRateLists) {
             @Override
@@ -104,14 +90,24 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 InterestRateListBean item = (InterestRateListBean) parent.getAdapter().getItem(position);
-
-                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-                    fragment4.setIntrestRate(Float.valueOf(item.getInterestRate()));
-                } else {
-                    fragment4.setFundIntrestRate(Float.valueOf(item.getInterestRate()));
+                switch (key){
+                    case CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
+                    case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE:
+                        mCaculateMainFragment.setShowCommercialRateDesc(false);
+                        mCaculateMainFragment.setCommercialRateDesc(item.getDescription());
+                        mCaculateMainFragment.setCommercialRate(Float.valueOf(item.getInterestRate()));
+                        break;
+                    case CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE:
+                    case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_RATE:
+                        mCaculateMainFragment.setShowFundRateDesc(false);
+                        mCaculateMainFragment.setFundRate(Float.valueOf(item.getInterestRate()));
+                        mCaculateMainFragment.setFundRateDes(item.getDescription());
+                        break;
+                    default:
+                        break;
                 }
-//                fragment4.setIntrestRate(Float.valueOf(item.getInterestRate()));
-                fragment4.getCurrentFragment().reFreshView();
+
+                mCaculateMainFragment.getCurrentFragment().reFreshView();
                 getFragmentManager().popBackStack();
             }
         });
@@ -120,14 +116,39 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
     }
 
     /**
+     * 初始化.要显示的内容
+     */
+    private void initContent() {
+        switch (key) {
+            case CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
+                tv_title.setText(R.string.caculate_commercial_title_rate);
+                mInterestRateLists = getInterestRateLists();
+                break;
+            case CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE:
+                tv_title.setText(R.string.caculate_fund_title_interest_rate);
+                mInterestRateLists = getFundInterestRateLists();
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE:
+                tv_title.setText(R.string.caculate_commercial_title_loan_amount);
+                mInterestRateLists = getInterestRateLists();
+                break;
+            case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_RATE:
+                tv_title.setText(R.string.caculate_fund_title_interest_rate);
+                mInterestRateLists = getFundInterestRateLists();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
      * 获取商业贷款利率list数据
-     *
      * @return
      */
     @NonNull
     private ArrayList<InterestRateListBean> getInterestRateLists() {
         ArrayList<InterestRateListBean> interestRateListBeen = new ArrayList<>();
-        float intrestRate = fragment4.getInterestRate();
+        float intrestRate = CaculateMainFragment.mDefaultCommercialRate;
         java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("0.00");
         interestRateListBeen.add(new InterestRateListBean("最新基准利率上浮1.2倍", decimalFormat.format(PreciseCompute.mul(intrestRate, 1.2f))));
         interestRateListBeen.add(new InterestRateListBean("最新基准利率上浮1.1倍", decimalFormat.format(PreciseCompute.mul(intrestRate, 1.1f))));
@@ -148,7 +169,7 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
     @NonNull
     private ArrayList<InterestRateListBean> getFundInterestRateLists() {
         ArrayList<InterestRateListBean> interestRateListBeen = new ArrayList<>();
-        float intrestRate = fragment4.getInterestRate();
+        float intrestRate =  CaculateMainFragment.mDefaultFundRate;
         java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("0.00");
         interestRateListBeen.add(new InterestRateListBean("最新基准利率上浮1.2倍", decimalFormat.format(PreciseCompute.mul(intrestRate, 1.2f))));
         interestRateListBeen.add(new InterestRateListBean("最新基准利率上浮1.1倍", decimalFormat.format(PreciseCompute.mul(intrestRate, 1.1f))));
@@ -164,20 +185,8 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
             getFragmentManager().popBackStack();
         } else if (id == R.id.frame_other_price) {
             Bundle bundle = new Bundle();
-            if (0==mCurrentIndex){
-                bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMMERCIAL_INTEREST_RATE);
-            }else if (1==mCurrentIndex){
-                bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_Fund_INTEREST_RATE);
-            }else {
-                String mFromFragment = getArguments().getString(Fragment4.FROM_TAG);
-                if (CombinedLoanFragment.COMINED_COMMERCIAL_LOAN_AMOUNT.equals(mFromFragment)) {
-                    bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMBINED_COMERCIAL_RATE);
-                } else {
-                    bundle.putInt(Fragment4.KEY, Fragment4.FROMDETAIL_COMBINED_FUND_RATE);
-                }
-            }
-            bundle.putString(Fragment4.FROM_TAG, LoanRateListFragment.class.getSimpleName());
-            bundle.putBoolean(Fragment4.isFromList, true);
+            bundle.putBoolean(CaculateMainFragment.isFromList, true);
+            bundle.putInt(CaculateMainFragment.KEY, key);
             mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
         }
     }

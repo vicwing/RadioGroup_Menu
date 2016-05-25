@@ -12,7 +12,7 @@ import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
-import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -100,7 +100,7 @@ public class MainActivity extends FragmentActivity {
         fragmentList.add(new FragmentA());
         fragmentList.add(new FragmentSecond());
         fragmentList.add(Fragment3.newInstance(null,null));
-        fragmentList.add(Fragment4.newInstance(null,null));
+        fragmentList.add(CaculateMainFragment.newInstance(null,null));
         //ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
 

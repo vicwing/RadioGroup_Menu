@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
+import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
 
 /**
  * Created by cdj on 2016/5/19.
@@ -69,5 +70,18 @@ public class CaculateResultFragment extends BackHandledBaseFragment  {
         tv_monthly_decline = (TextView) rootView.findViewById(R.id.tv_monthly_decline);
         tv_jin_total_principal_tInterest = (TextView) rootView.findViewById(R.id.tv_jin_total_principal_tInterest);
 
+
+        CaculateMainFragment parentFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
+
+        int commercialAmount = parentFragment.getCommercialAmount();
+        float interestRate = parentFragment.getCommercialRate();
+
+        int fundAmount = parentFragment.getFundAmount();
+        float fundRate = parentFragment.getFundRate();
+
+        int loanTerm = parentFragment.getLoanTerm();
+
+        int currentIndex = parentFragment.getCurrentIndex();
+//        if (0==currentIndex)
     }
 }

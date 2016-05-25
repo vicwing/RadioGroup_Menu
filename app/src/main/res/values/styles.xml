@@ -1,5 +1,6 @@
 <resources
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:CommonFormLayout="http://schemas.android.com/apk/com.example.cdj.myapplication.cusview" >
 
     <!-- Base application theme. -->
@@ -47,10 +48,13 @@
 
     <!--计算器CommonFormLayout style-->
     <style name="caculate_CommonFormLayout">
+        <item name="android:background">@color/white</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">44dp</item>
         <item name="contentTextColor">@color/black_33333</item>
         <item name="CommonFormLayout_titleTextColor">@color/grey_888888</item>
+        <item name="hasRightArrow">true</item>
+
     </style>
 
     <!--所有的提交按钮的背景-->
