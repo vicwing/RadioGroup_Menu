@@ -125,9 +125,6 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
 
             String interestRateText = parentFragment.getFundRate() + "%";
             String rateDescription = parentFragment.getFundRateDes();
-//            if (TextUtils.isEmpty(rateDescription)){
-//                rateDescription = getString(R.string.caculate_new_interest_rate);
-//            }
             mFrameInterestRate.setContentText(parentFragment.isShowFundRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
             mFrameLoanTerm.setContentText(parentFragment.getLoanYear()+"年");

@@ -20,7 +20,17 @@ public class MyClass {
         System.out.println("pow  "+pow);
 
         int monthPay = equalityInterestResult(commercialAmount, monthRate, loanTerm*12);
+
         System.out.println("等额本息 月供   "+monthPay);
+
+        if (true){
+            System.out.println("111111111111111111111");
+        }
+        if (true){
+            System.out.println("22222222222222222222");
+        }else if (true){
+            System.out.println("33333333333333333333333333");
+        }
 
     }
     // 等额本息 月供;

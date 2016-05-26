@@ -20,6 +20,7 @@
         android:id="@+id/tv_title"
         style="@style/Common_Title_style"
         tools:text="商业贷款金额"
+        android:textSize="@dimen/activity_actionbar_title_size"
         android:layout_centerInParent="true"
         />
 </RelativeLayout>

@@ -15,13 +15,26 @@ import com.example.cdj.myapplication.R;
 /**
  * 基础表单控件
  * 这是一个基础表单控件,提供设置标题和内容文本,文本颜色,标题左侧图标,是否有向右箭头等方法
- * Created by shidong onCallBackData 16/5/12.
+ * <p/>
+ * <declare-styleable name="CommonFormLayout">
+ * <attr name="leftImage" format="reference" />
+ * <attr name="hasRightArrow" format="boolean" />
+ * <attr name="titleText" format="string|reference" />
+ * <attr name="contentText" format="string|reference" />
+ * <attr name="titleTextColor" format="color|reference" />
+ * <attr name="contentTextColor" format="color|reference" />
+ * <attr name="hasTopLine" format="boolean" />
+ * </declare-styleable>
+ * <p/>
+ * Created by shidong on 16/5/12.
  */
 public class CommonFormLayout extends RelativeLayout {
 
     private final TextView tv_common_title;
     private final TextView tv_common_content;
     private final View view_top_line;
+    private final View view_bottom_long;
+    private final View view_bottom_short;
 
     public CommonFormLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -34,6 +47,8 @@ public class CommonFormLayout extends RelativeLayout {
         tv_common_title = (TextView) findViewById(R.id.tv_common_title);
         tv_common_content = (TextView) findViewById(R.id.tv_common_content);
         view_top_line = findViewById(R.id.view_top_line);
+        view_bottom_long = findViewById(R.id.view_bottom_long);
+        view_bottom_short = findViewById(R.id.view_bottom_short);
 
         //获取属性并解析
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.CommonFormLayout);
@@ -46,17 +61,23 @@ public class CommonFormLayout extends RelativeLayout {
                 tv_common_content.setText(typedArray.getText(itemId));
             } else if (itemId == R.styleable.CommonFormLayout_hasRightArrow) {
                 if (typedArray.getBoolean(itemId, false)) {
-                    tv_common_content.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.qf_right_arrow), null);
+                    tv_common_content.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.qf_right_arrow), null);
+                    setBackgroundResource(R.drawable.operate_bg);
                 }
             } else if (itemId == R.styleable.CommonFormLayout_leftImage) {
                 tv_common_title.setCompoundDrawablesWithIntrinsicBounds(typedArray.getDrawable(itemId), null, null, null);
-            } else if (itemId == R.styleable.CommonFormLayout_CommonFormLayout_titleTextColor) {
-                tv_common_title.setTextColor(typedArray.getColor(itemId, R.color.grey_333333));
+            } else if (itemId == R.styleable.CommonFormLayout_ctitleTextColor) {
+                tv_common_title.setTextColor(typedArray.getColor(itemId, getResources().getColor(R.color.grey_333333)));
             } else if (itemId == R.styleable.CommonFormLayout_contentTextColor) {
-                tv_common_content.setTextColor(typedArray.getColor(itemId, R.color.grey_888888));
+                tv_common_content.setTextColor(typedArray.getColor(itemId, getResources().getColor(R.color.grey_888888)));
             } else if (itemId == R.styleable.CommonFormLayout_hasTopLine) {
                 if (typedArray.getBoolean(itemId, false)) {
                     view_top_line.setVisibility(VISIBLE);
+                }
+            } else if (itemId == R.styleable.CommonFormLayout_isShotBottomLine) {
+                if (typedArray.getBoolean(itemId, false)) {
+                    view_bottom_short.setVisibility(VISIBLE);
+                    view_bottom_long.setVisibility(GONE);
                 }
             }
         }
@@ -88,7 +109,7 @@ public class CommonFormLayout extends RelativeLayout {
      */
     public void setHasRightArrow(boolean hasRightArrow) {
         if (hasRightArrow) {
-            tv_common_content.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.mipmap.qf_right_arrow), null);
+            tv_common_content.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources().getDrawable(R.drawable.qf_right_arrow), null);
         } else {
             tv_common_content.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }

@@ -64,7 +64,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View layout = inflater.inflate(R.layout.content_main4, null);
+        final View layout = inflater.inflate(R.layout.fragment_mortgage_caculator_main, null);
         initSegmentControl(layout);
         init(layout);
         initFragment();
@@ -137,7 +137,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
         btn_do_caculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                caculateData();
+                startResulFragment();
             }
         });
 
@@ -152,7 +152,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
     /**
      * 计算房贷结果
      */
-    private void caculateData() {
+    private void startResulFragment() {
         Logger.d("贷款总额  " + "  利率  " + " 公积金利率 " + "贷款期限  " + " stack" + getChildFragmentManager().getBackStackEntryCount());
         Bundle bundle = new Bundle();
         bundle.putInt(TOTAL_PRICE, mCommercialAmount);

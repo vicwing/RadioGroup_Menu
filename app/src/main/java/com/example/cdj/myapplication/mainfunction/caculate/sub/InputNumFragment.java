@@ -39,7 +39,7 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         if (rootView == null)
-            rootView = inflater.inflate(R.layout.fragment_caculate_sub_inputloan, null);
+            rootView = inflater.inflate(R.layout.fragment_caculator_sub_input, null);
         return rootView;
     }
 

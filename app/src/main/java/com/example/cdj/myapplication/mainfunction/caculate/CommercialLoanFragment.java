@@ -139,19 +139,14 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements S
             String price =  parentFragment.getCommercialAmount() + "万元";
             mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成 "+price : price);
 
-//            mFrameInterestRate.setContentText("最新基准利率" + parentFragment.getCommercialRate() +"%");
             String interestRateText = parentFragment.getCommercialRate() + "%";
-
             String rateDescription = parentFragment.getCommercialRateDesc();
-//            if (TextUtils.isEmpty(rateDescription)){
-//                rateDescription = getString(R.string.caculate_new_interest_rate);
-//            }
             mFrameInterestRate.setContentText(parentFragment.isShowCommercialRateDesc() ? interestRateText : rateDescription+" " + interestRateText);
 
             mFrameLoanTerm.setContentText(parentFragment.getLoanYear()+"年");
 
-            Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getCommercialAmount()+" 利率 "+parentFragment.getCommercialRate()+
-                    " 期数 "+parentFragment.getLoanYear()+ "  详情?  "+parentFragment.isFromDetail());
+//            Logger.d(CommercialLoanFragment.class.getSimpleName()+"price  "+parentFragment.getCommercialAmount()+" 利率 "+parentFragment.getCommercialRate()+
+//                    " 期数 "+parentFragment.getLoanYear()+ "  详情?  "+parentFragment.isFromDetail());
         }
     }
 }
