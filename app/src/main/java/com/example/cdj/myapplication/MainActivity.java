@@ -12,7 +12,7 @@ import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
-import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;

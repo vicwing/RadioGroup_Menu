@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4;
+package com.example.cdj.myapplication.mainfunction.caculate;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,17 +10,18 @@ import android.widget.Button;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanAmountListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanRateListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanTermListFragment;
 import com.orhanobut.logger.Logger;
 
 /**
  * 商业贷款界面
  * Created by cdj onCallBackData 2016/5/17.
  */
-public class CommercialLoanFragment extends BackHandledBaseFragment implements  SubRefreshListener{
+public class CommercialLoanFragment extends BackHandledBaseFragment implements SubRefreshListener {
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";

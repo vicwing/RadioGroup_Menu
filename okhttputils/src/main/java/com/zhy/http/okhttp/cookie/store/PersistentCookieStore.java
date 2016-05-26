@@ -34,7 +34,7 @@ import okhttp3.HttpUrl;
  * from http://stackoverflow.com/questions/25461792/persistent-cookie-store-using-okhttp-2-on-android
  * <p/>
  * <br/>
- * A persistent cookie store which implements the Apache HttpClient CookieStore interface.
+ * A persistent cookie store which implements the Apache HttpClient CookieStore impl.
  * Cookies are stored and will persist on the user's device between application sessions since they
  * are serialized and stored in SharedPreferences. Instances of this class are
  * designed to be used with AsyncHttpClient#setCookieStore, but can also be used with a

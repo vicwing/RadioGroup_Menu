@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.Bean;
+package com.example.cdj.myapplication.mainfunction.caculate.Bean;
 
 /**
  * 房贷利率

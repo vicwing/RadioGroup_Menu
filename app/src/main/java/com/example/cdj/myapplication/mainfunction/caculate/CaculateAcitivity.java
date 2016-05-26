@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication;
+package com.example.cdj.myapplication.mainfunction.caculate;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,13 +10,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
+import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
-import com.example.cdj.myapplication.mainfunction.function4.BackHandlerHelper;
-import com.example.cdj.myapplication.mainfunction.function4.CommercialLoanFragment;
-import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
-import com.example.cdj.myapplication.mainfunction.function4.OnHeadlineSelectedListener;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;

@@ -1,15 +1,23 @@
-package com.example.cdj.myapplication.mainfunction.function4;
+package com.example.cdj.myapplication.mainfunction.caculate;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 
+import com.example.cdj.myapplication.mainfunction.caculate.impl.FragmentBackHandler;
+
 import java.util.List;
 
 /**
- * Created by cdj onCallBackData 2016/5/18.
+ * 将back事件分发给 FragmentManager 中管理的子Fragment，如果该 FragmentManager 中的所有Fragment都
+ * 没有处理back事件，则尝试 FragmentManager.popBackStack()
+ *
+ * @return 如果处理了back键则返回 <b>true</b>
+ * @see #handleBackPress(Fragment)
+ * @see #handleBackPress(FragmentActivity)
  */
 public class BackHandlerHelper {
+
     /**
      * 将back事件分发给 FragmentManager 中管理的子Fragment，如果该 FragmentManager 中的所有Fragment都
      * 没有处理back事件，则尝试 FragmentManager.popBackStack()

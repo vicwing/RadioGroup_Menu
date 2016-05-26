@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4;
+package com.example.cdj.myapplication.mainfunction.caculate;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,9 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
-import com.example.cdj.myapplication.mainfunction.function4.sub.CaculateResultFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.CaculateResultFragment;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
@@ -246,7 +248,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
+        // the callback impl. If not, it throws an exception
         try {
             //
             mCallback = (OnHeadlineSelectedListener) context;
@@ -351,7 +353,6 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
 
     /**
      * 获取当前显示的fragment实例.
-     *
      * @return
      */
     public SubRefreshListener getCurrentFragment() {

@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.sub;
+package com.example.cdj.myapplication.mainfunction.caculate.sub;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommomEditText;
-import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.orhanobut.logger.Logger;
 
 /**

@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4;
+package com.example.cdj.myapplication.mainfunction.caculate;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,10 +9,11 @@ import android.view.ViewGroup;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.sub.InputNumFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanAmountListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanRateListFragment;
-import com.example.cdj.myapplication.mainfunction.function4.sub.LoanTermListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanAmountListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanRateListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanTermListFragment;
 
 /**
  * 公积金贷款

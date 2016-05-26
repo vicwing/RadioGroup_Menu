@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.sub;
+package com.example.cdj.myapplication.mainfunction.caculate.sub;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,8 +17,8 @@ import com.example.cdj.myapplication.adapter.adapterhelper.BaseAdapterHelper;
 import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
-import com.example.cdj.myapplication.mainfunction.function4.Bean.InterestRateListBean;
-import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.Bean.InterestRateListBean;
+import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;

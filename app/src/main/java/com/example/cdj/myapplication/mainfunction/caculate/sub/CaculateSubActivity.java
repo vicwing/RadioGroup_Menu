@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.sub;
+package com.example.cdj.myapplication.mainfunction.caculate.sub;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

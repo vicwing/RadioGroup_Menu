@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.sub;
+package com.example.cdj.myapplication.mainfunction.caculate.sub;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
-import com.example.cdj.myapplication.mainfunction.function4.CaculateMainFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

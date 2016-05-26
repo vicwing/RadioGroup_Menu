@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.mainfunction.function4.Bean;
+package com.example.cdj.myapplication.mainfunction.caculate.Bean;
 
 /**
  * Created by cdj on 2016/5/20.

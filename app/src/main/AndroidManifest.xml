@@ -30,11 +30,11 @@
                       </intent-filter>-->
         </activity>
         <activity
-            android:name=".mainfunction.function4.sub.CaculateSubActivity"
+            android:name=".mainfunction.caculate.sub.CaculateSubActivity"
             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             />
-        <activity android:name=".CaculateAcitivity">
+        <activity android:name=".mainfunction.caculate.CaculateAcitivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

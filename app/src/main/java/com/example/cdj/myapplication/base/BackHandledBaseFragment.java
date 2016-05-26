@@ -7,9 +7,9 @@ import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.mainfunction.function4.BackHandlerHelper;
-import com.example.cdj.myapplication.mainfunction.function4.FragmentBackHandler;
-import com.example.cdj.myapplication.mainfunction.function4.OnHeadlineSelectedListener;
+import com.example.cdj.myapplication.mainfunction.caculate.BackHandlerHelper;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.FragmentBackHandler;
+import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 
 /**
  * 实现了回调接口FragmentBackHandler,传递数据
@@ -34,7 +34,7 @@ public abstract class BackHandledBaseFragment extends Fragment implements Fragme
     public void onAttach(Context context) {
         super.onAttach(context);
         // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
+        // the callback impl. If not, it throws an exception
         try {
             //
             mCallback = (OnHeadlineSelectedListener) context;
