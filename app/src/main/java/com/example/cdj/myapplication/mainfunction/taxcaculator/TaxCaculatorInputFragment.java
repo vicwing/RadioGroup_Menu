@@ -87,17 +87,16 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
             @Override
             public void onClick(String num) {
                 TaxMainFragment taxMainFragment = (TaxMainFragment) getFragmentManager().findFragmentByTag(TaxMainFragment.class.getName());
-                //直接跳到顶层
-                getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
                 if (key == TaxMainFragment.TAX_HOUSE_AREA) {
                     taxMainFragment.setHouseArea(Integer.parseInt(num));
                 } else if (key == TaxMainFragment.TAX_HOUSE_PRICE) {
                     taxMainFragment.setHousePrice(Integer.parseInt(num));
                 } else if (key == TaxMainFragment.TAX_HOUSE_PAY_TYPE) {
-                    taxMainFragment.setPayTaxType(Integer.parseInt(num));
+                    taxMainFragment.setPayTaxType(num);
                 }
-
                 taxMainFragment.reFreshView();
+                //直接跳到顶层
+                getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
                 Logger.d("astack count == " + getFragmentManager().getBackStackEntryCount() );
             }
         });

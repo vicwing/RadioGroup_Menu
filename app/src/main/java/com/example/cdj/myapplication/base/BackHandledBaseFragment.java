@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
-import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.mainfunction.caculate.BackHandlerHelper;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.FragmentBackHandler;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
@@ -50,13 +49,13 @@ public abstract class BackHandledBaseFragment extends Fragment implements Fragme
 //        initView(view);
     }
 
-    protected void initView(View view) {
-        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFragmentManager().popBackStack();
-            }
-        });
-    }
+//    protected void initView(View view) {
+//        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getFragmentManager().popBackStack();
+//            }
+//        });
+//    }
 
 }

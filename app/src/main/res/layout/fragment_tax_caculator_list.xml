@@ -10,6 +10,12 @@
         layout="@layout/include_fragment_title"/>
 
 
+    <ListView
+        android:id="@+id/lv_listview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -27,6 +33,10 @@
             android:id="@+id/form_house_two"
             style="@style/caculate_CommonFormLayout"
             app:titleText="非普通住房"/>
-
+        <com.example.cdj.myapplication.cusview.CommonFormLayout
+            android:id="@+id/form_house_three"
+            style="@style/caculate_CommonFormLayout"
+            android:visibility="gone"
+            app:titleText="非普通住房"/>
     </LinearLayout>
 </LinearLayout>

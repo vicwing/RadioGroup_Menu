@@ -42,12 +42,14 @@
             android:id="@+id/form_house_type"
             style="@style/caculate_CommonFormLayout"
             app:hasTopLine="true"
+            app:contentText="@string/Tax_housetype_normal"
             app:isShotBottomLine="true"
             app:titleText="住宅类型"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/form_house_sale_only"
             style="@style/caculate_CommonFormLayout"
+            app:contentText="@string/Tax_housetype_onlyone"
             app:isShotBottomLine="true"
             app:titleText="卖方唯一"/>
 
@@ -55,18 +57,21 @@
             android:id="@+id/form_house_latest_sale"
             style="@style/caculate_CommonFormLayout"
             app:isShotBottomLine="true"
+            app:contentText="@string/Tax_housetype_5year"
             app:titleText="上次交易"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/form_house_pay_type"
             style="@style/caculate_CommonFormLayout"
             app:isShotBottomLine="true"
+            app:contentText="@string/Tax_housetype_total"
             app:titleText="计征方式"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/form_house_first_buy"
             style="@style/caculate_CommonFormLayout"
             app:isShotBottomLine="false"
+            app:contentText="@string/Tax_housetype_first"
             app:titleText="买房首套"/>
     </LinearLayout>
 

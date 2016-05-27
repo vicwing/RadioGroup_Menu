@@ -19,6 +19,22 @@
         等额本息每期还款金额相同，即每月本金加利息总额相同，还贷压力均衡，但利息负担相对较多；
         等额本金又叫‘递减还款法’,每月本金相同,利息不同,前期还款压力大,但以后的还款金额逐渐递减,利息总负担较少。
         </string>
+    <string name="Tax_housetype_normal">普通住宅</string>
+    <string name="Tax_housetype_not_normal">非普通住宅</string>
+
+    <string name="Tax_housetype_onlyone">唯一一套</string>
+    <string name="Tax_housetype_not_only">非唯一一套</string>
+
+    <string name="Tax_housetype_5year">满5年</string>
+    <string name="Tax_housetype_2and_5year">满2年不满5年</string>
+    <string name="Tax_housetype_not_2">不满2年</string>
+
+    <string name="Tax_housetype_total">总价</string>
+    <string name="Tax_housetype_chajia">差价</string>
+
+    <string name="Tax_housetype_first">首套</string>
+    <string name="Tax_housetype_not_first">非首套</string>
+    <string name="tax_caculator">税费计算器</string>
 
 
 </resources>

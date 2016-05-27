@@ -6,9 +6,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
+import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 import com.orhanobut.logger.Logger;
 
@@ -32,18 +34,28 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
     public static String FROM_TAG = "from_tag";
 
     public static String KEY = "KEY";
+    public static String ENUM = "enum";
 
+    private int defaultPrice = 100;
     private int mHouseArea;//房屋面积
-    private int mHousePrice;//房屋总价
+    private int mHousePrice = defaultPrice;//房屋总价
 
-    private int mHouseType;//住宅类型
-    private int mSaleOnlyOne;//卖方唯一
-    private int mLatestSale;//距离上次交易
-    private int mPayTaxType;//计征方式
-    private int mBuyFirst;//买方首套
+    private String mHouseType = "普通住房";//住宅类型
+    private String mSaleOnlyOne = "唯一一套";//卖方唯一
+    private String mLatestSale = "满5年";//距离上次交易
+    private String mPayTaxType = "总价";//计征方式
+    private String mBuyFirst = "首套";//买方首套
+
 
 
     private Button btn_do_caculate;
+    private CommonFormLayout form_house_area;
+    private CommonFormLayout form_house_price;
+    private CommonFormLayout mForm_house_type;
+    private CommonFormLayout form_house_sale_only;
+    private CommonFormLayout form_house_latest_sale;
+    private CommonFormLayout form_house_pay_type;
+    private CommonFormLayout form_house_first_buy;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -72,22 +84,56 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
         return layout;
     }
 
+    public static final String HOUSE_PRICE = "house_price";
+    public static final String HOUSE_AREA = "house_area";
 
     private void init(View layout) {
+        ((TextView) layout.findViewById(R.id.tv_title)).setText(R.string.tax_caculator);
 
-        layout.findViewById(R.id.form_house_area).setOnClickListener(this);
-        layout.findViewById(R.id.form_house_price).setOnClickListener(this);
+        form_house_area = (CommonFormLayout) layout.findViewById(R.id.form_house_area);
+        form_house_area.setOnClickListener(this);
+        form_house_price = (CommonFormLayout) layout.findViewById(R.id.form_house_price);
+        form_house_price.setOnClickListener(this);
 
-        layout.findViewById(R.id.form_house_type).setOnClickListener(this);
-        layout.findViewById(R.id.form_house_sale_only).setOnClickListener(this);
-        layout.findViewById(R.id.form_house_latest_sale).setOnClickListener(this);
-        layout.findViewById(R.id.form_house_pay_type).setOnClickListener(this);
-        layout.findViewById(R.id.form_house_first_buy).setOnClickListener(this);
+        mForm_house_type = (CommonFormLayout) layout.findViewById(R.id.form_house_type);
+        mForm_house_type.setOnClickListener(this);
+        form_house_sale_only = (CommonFormLayout) layout.findViewById(R.id.form_house_sale_only);
+        form_house_sale_only.setOnClickListener(this);
+        form_house_latest_sale = (CommonFormLayout) layout.findViewById(R.id.form_house_latest_sale);
+        form_house_latest_sale.setOnClickListener(this);
+        form_house_pay_type = (CommonFormLayout) layout.findViewById(R.id.form_house_pay_type);
+        form_house_pay_type.setOnClickListener(this);
+        form_house_first_buy = (CommonFormLayout) layout.findViewById(R.id.form_house_first_buy);
+        form_house_first_buy.setOnClickListener(this);
 
         layout.findViewById(R.id.btn_do_caculate).setOnClickListener(this);
         layout.findViewById(R.id.iv_back).setOnClickListener(this);
 
+        TaxType.HOUSE_TYPE.setName(getString(R.string.Tax_housetype_normal));
+        TaxType.SALE_ONLY.setName(getString(R.string.Tax_housetype_onlyone));
+        TaxType.LATEST_SALE.setName(getString(R.string.Tax_housetype_5year));
+        TaxType.PAYTAX_TYPE.setName(getString(R.string.Tax_housetype_total));
+        TaxType.FIRST_BUY.setName(getString(R.string.Tax_housetype_first));
 
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            defaultPrice = bundle.getInt(HOUSE_PRICE, 0);
+            mHousePrice = defaultPrice;
+
+            mHouseArea = bundle.getInt(HOUSE_AREA, 0);
+            form_house_area.setContentText(mHouseArea + "㎡");
+            form_house_price.setContentText(mHousePrice +"万元");
+            Logger.d("price  " + mHousePrice + "  defaultPrice " + defaultPrice + "  area  " + mHouseArea);
+        } else {
+            form_house_area.setContentText("");
+            form_house_price.setContentText("");
+
+            mForm_house_type.setContentText(TaxType.HOUSE_TYPE.getName());
+            form_house_sale_only.setContentText(TaxType.SALE_ONLY.getName());
+            form_house_latest_sale.setContentText(TaxType.LATEST_SALE.getName());
+            form_house_pay_type.setContentText(TaxType.PAYTAX_TYPE.getName());
+            form_house_first_buy.setContentText(TaxType.FIRST_BUY.getName());
+        }
     }
 
     /**
@@ -99,7 +145,7 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
 //        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
 //        bundle.putFloat(INTREST_RATE, mCommercialRate);
 //        bundle.putInt(LOAN_TERM, mLoanTerm);
-//        mCallback.onAddFragment(CaculateResultFragment.class.getName(), bundle);
+        mCallback.onAddFragment(TaxResultFragment.class.getName(), bundle);
     }
 
 
@@ -134,23 +180,37 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
             mCallback.onAddFragment(TaxCaculatorInputFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_type) {//住宅类型
             bundle.putInt(KEY, TAX_HOUSE_TYPE);
+            bundle.putSerializable(ENUM, TaxType.HOUSE_TYPE);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_sale_only) {//卖方唯一
             bundle.putInt(KEY, TAX_HOUSE_SALE_ONLY);
+            bundle.putSerializable(ENUM, TaxType.SALE_ONLY);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_latest_sale) {//距离上次交易
             bundle.putInt(KEY, TAX_HOUSE_LATEST_SALE);
+            bundle.putSerializable(ENUM, TaxType.LATEST_SALE);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_pay_type) {//计征方式
             bundle.putInt(KEY, TAX_HOUSE_PAY_TYPE);
+            bundle.putSerializable(ENUM, TaxType.PAYTAX_TYPE);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_first_buy) {//买方首套
             bundle.putInt(KEY, TAX_HOUSE_FIRST_BUY);
+            bundle.putSerializable(ENUM, TaxType.FIRST_BUY);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         }
     }
 
     public void reFreshView() {
+
+        form_house_area.setContentText(mHouseArea + "㎡");
+        form_house_price.setContentText(mHousePrice +"万元");
+
+        mForm_house_type.setContentText(TaxType.HOUSE_TYPE.getName());
+        form_house_sale_only.setContentText(TaxType.SALE_ONLY.getName());
+        form_house_latest_sale.setContentText(TaxType.LATEST_SALE.getName());
+        form_house_pay_type.setContentText(TaxType.PAYTAX_TYPE.getName());
+        form_house_first_buy.setContentText(TaxType.FIRST_BUY.getName());
 
     }
 
@@ -189,43 +249,56 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
         mHousePrice = housePrice;
     }
 
-    public int getHouseType() {
-        return mHouseType;
-    }
-
-    public void setHouseType(int houseType) {
-        mHouseType = houseType;
-    }
-
-    public int getSaleOnlyOne() {
-        return mSaleOnlyOne;
-    }
-
-    public void setSaleOnlyOne(int saleOnlyOne) {
-        mSaleOnlyOne = saleOnlyOne;
-    }
-
-    public int getLatestSale() {
-        return mLatestSale;
-    }
-
-    public void setLatestSale(int latestSale) {
-        mLatestSale = latestSale;
-    }
-
-    public int getPayTaxType() {
-        return mPayTaxType;
-    }
-
-    public void setPayTaxType(int payTaxType) {
-        mPayTaxType = payTaxType;
-    }
-
-    public int getBuyFirst() {
+    public String getBuyFirst() {
         return mBuyFirst;
     }
 
-    public void setBuyFirst(int buyFirst) {
+    public void setBuyFirst(String buyFirst) {
         mBuyFirst = buyFirst;
     }
+
+    public String getPayTaxType() {
+        return mPayTaxType;
+    }
+
+    public void setPayTaxType(String payTaxType) {
+        mPayTaxType = payTaxType;
+    }
+
+    public String getLatestSale() {
+        return mLatestSale;
+    }
+
+    public void setLatestSale(String latestSale) {
+        mLatestSale = latestSale;
+    }
+
+    public String getHouseType() {
+        return mHouseType;
+    }
+
+    public void setHouseType(String houseType) {
+        mHouseType = houseType;
+    }
+
+    public String getSaleOnlyOne() {
+        return mSaleOnlyOne;
+    }
+
+    public void setSaleOnlyOne(String saleOnlyOne) {
+        mSaleOnlyOne = saleOnlyOne;
+    }
+
+//    public enum TaxType {
+//        HOUSE_TYPE, SALE_ONLY, LATEST_SALE, PAYTAX_TYPE, FIRST_BUY;
+//        private String name;
+//
+//        public String getName() {
+//            return name;
+//        }
+//
+//        public void setName(String name) {
+//            this.name = name;
+//        }
+//    }
 }
