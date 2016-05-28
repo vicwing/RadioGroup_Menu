@@ -67,17 +67,17 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
         Bundle bundle = getArguments();
         if (bundle != null) {
             key = bundle.getInt(CaculateMainFragment.KEY);
-            if (key == TaxMainFragment.TAX_HOUSE_AREA) {
+            if (key == TaxMainFragment.KEY_TAX_HOUSE_AREA) {
                 tv_title.setText("房屋面积");
                 mCommomEditText.setTextUnit("㎡");
                 mCommomEditText.setEditHint("请输入房屋的面积");
 //                edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin, mMax)});
-            } else if (key == TaxMainFragment.TAX_HOUSE_PRICE) {
+            } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                 tv_title.setText("房屋总价");
                 mCommomEditText.setTextUnit(R.string.caculate_unit_yuan);
                 mCommomEditText.setEditHint("请输入房屋总价");
 
-            } else if (key == TaxMainFragment.TAX_HOUSE_PRICE) {
+            } else if (key == TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE) {
                 tv_title.setText("买卖差价");
                 mCommomEditText.setTextUnit(R.string.caculate_unit_yuan);
                 mCommomEditText.setEditHint("请输入房屋本次卖出与上次买入的差价");
@@ -87,17 +87,19 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
             @Override
             public void onClick(String num) {
                 TaxMainFragment taxMainFragment = (TaxMainFragment) getFragmentManager().findFragmentByTag(TaxMainFragment.class.getName());
-                if (key == TaxMainFragment.TAX_HOUSE_AREA) {
+                if (key == TaxMainFragment.KEY_TAX_HOUSE_AREA) {
                     taxMainFragment.setHouseArea(Integer.parseInt(num));
-                } else if (key == TaxMainFragment.TAX_HOUSE_PRICE) {
+                } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                     taxMainFragment.setHousePrice(Integer.parseInt(num));
-                } else if (key == TaxMainFragment.TAX_HOUSE_PAY_TYPE) {
-                    taxMainFragment.setPayTaxType(num);
+                } else if (key == TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE) {//差价
+                      TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
+                      taxMainFragment.setDifferencePrice(Integer.parseInt(num));
+
+                    Logger.d("输入框  计征方式  "+TaxType.PAYTAX_TYPE.getName() );
                 }
                 taxMainFragment.reFreshView();
                 //直接跳到顶层
                 getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
-                Logger.d("astack count == " + getFragmentManager().getBackStackEntryCount() );
             }
         });
 

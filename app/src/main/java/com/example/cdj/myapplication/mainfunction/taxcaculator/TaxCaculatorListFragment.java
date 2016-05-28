@@ -105,19 +105,19 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
 
             switch (mTaxType) {
                 case HOUSE_TYPE:
-                    TaxType.HOUSE_TYPE.setName(getString(R.string.Tax_housetype_not_normal));
+                    TaxType.HOUSE_TYPE.setName(TaxMainFragment.HOUSE_NORMAL);
                     break;
                 case SALE_ONLY:
-                    TaxType.SALE_ONLY.setName(getString(R.string.Tax_housetype_onlyone));
+                    TaxType.SALE_ONLY.setName(TaxMainFragment.ONLYONE);
                     break;
                 case LATEST_SALE:
-                    TaxType.LATEST_SALE.setName(getString(R.string.Tax_housetype_5year));
+                    TaxType.LATEST_SALE.setName(TaxMainFragment.OVER_5_YEARS);
                     break;
                 case PAYTAX_TYPE:
-                    TaxType.PAYTAX_TYPE.setName(getString(R.string.Tax_housetype_total));
+                    TaxType.PAYTAX_TYPE.setName(TaxMainFragment.TOTAL_PRICE);
                     break;
                 case FIRST_BUY:
-                    TaxType.FIRST_BUY.setName(getString(R.string.Tax_housetype_first));
+                    TaxType.FIRST_BUY.setName(TaxMainFragment.Buy_First);
                     break;
             }
             getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
@@ -125,27 +125,38 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
 
         } else if (id == R.id.form_house_two) {
 
-            switch (mTaxType) {
-                case HOUSE_TYPE:
-                    TaxType.HOUSE_TYPE.setName(getString(R.string.Tax_housetype_not_normal));
-                    break;
-                case SALE_ONLY:
-                    TaxType.SALE_ONLY.setName(getString(R.string.Tax_housetype_not_only));
-                    break;
-                case LATEST_SALE:
-                    TaxType.LATEST_SALE.setName(getString(R.string.Tax_housetype_2and_5year));
-                    break;
-                case PAYTAX_TYPE:
-                    TaxType.PAYTAX_TYPE.setName(getString(R.string.Tax_housetype_chajia));
-                    break;
-                case FIRST_BUY:
-                    TaxType.FIRST_BUY.setName(getString(R.string.Tax_housetype_not_first));
-                    break;
+            if (mTaxType == TaxType.PAYTAX_TYPE) { //计征方式是差价时. 打开 TaxCaculatorInputFragment 输入界面
+                Bundle bundle = new Bundle();
+                bundle.putInt(TaxMainFragment.KEY, TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE);
+                mCallback.onAddFragment(TaxCaculatorInputFragment.class.getName(), bundle);
+//                TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
+            } else {
+                switch (mTaxType) {
+                    case HOUSE_TYPE:
+                        TaxType.HOUSE_TYPE.setName(TaxMainFragment.House_NOT_NORMAL);
+                        break;
+                    case SALE_ONLY:
+                        TaxType.SALE_ONLY.setName(TaxMainFragment.NOT_ONLYONE);
+                        break;
+                    case LATEST_SALE:
+                        TaxType.LATEST_SALE.setName(TaxMainFragment.OVER_2_5_YEARS);
+                        break;
+
+                    case FIRST_BUY:
+                        TaxType.FIRST_BUY.setName(TaxMainFragment.NOT_BUY_FIRST);
+                        break;
+//                    case PAYTAX_TYPE://差价
+//                        Bundle bundle = new Bundle();
+//                        bundle.putInt(TaxMainFragment.KEY, TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE);
+//                        mCallback.onAddFragment(TaxCaculatorInputFragment.class.getName(), bundle);
+//                        TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
+//                        break;
+                }
+                getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
+                taxMainFragment.reFreshView();
             }
-            getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
-            taxMainFragment.reFreshView();
         } else if (id == R.id.form_house_three) {
-            TaxType.LATEST_SALE.setName(getString(R.string.Tax_housetype_not_2));
+            TaxType.LATEST_SALE.setName(TaxMainFragment.OVER_2_5_YEARS);
             getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
             taxMainFragment.reFreshView();
         }

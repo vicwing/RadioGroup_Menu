@@ -36,5 +36,12 @@
     <string name="Tax_housetype_not_first">非首套</string>
     <string name="tax_caculator">税费计算器</string>
 
-
+     <string name="tax_caculator_result_desc">
+            说明：
+            计算结果中不包括印花税、工本印花税费等小额费用。
+            由于税费具有地域性较强的特点，Q房网税费计算结果仅供参考。
+            计税价格为各地国土局评估价，并非您实际购房的价格。
+        </string>
+    <string name="tax_caculator_contact_agent">如需了解更多，请与附近的经纪人沟通。</string>
+    <string name="caculator_contact_agent1">如需了解更多房贷信息，请与附近的经纪人联系。</string>
 </resources>

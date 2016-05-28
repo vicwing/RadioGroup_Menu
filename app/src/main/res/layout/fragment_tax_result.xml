@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/bg_white_f5f5f9"
+              android:orientation="vertical">
+
+    <include
+        layout="@layout/include_fragment_title"/>
+
+
+    <com.example.cdj.myapplication.cusview.CommonFormLayout
+        style="@style/caculate_CommonFormLayout"
+        android:layout_marginTop="10dp"
+        app:contentText="税额"
+        app:hasRightArrow="false"
+        app:hasTopLine="true"
+        app:isShotBottomLine="true"
+        app:titleText="税种"
+        />
+
+    <com.example.cdj.myapplication.cusview.CommonFormLayout
+        android:id="@+id/form_contract_tax"
+        style="@style/caculate_CommonFormLayout"
+        app:hasRightArrow="false"
+        app:titleText="契税"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:background="@color/white"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tv_add_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+
+            android:text="增值税"
+            android:textColor="@color/grey_888888"/>
+
+        <ImageView
+            android:id="@+id/iv_value_add_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/tv_add_title"
+            android:padding="5dp"
+            android:src="@drawable/tax_caculator_valueaddtax"/>
+
+        <TextView
+            android:id="@+id/tv_value_add_tax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:textColor="@color/black_33333"
+            tools:text="20000元"/>
+    </RelativeLayout>
+
+    <View
+        style="@style/xpt_horizontal_line"/>
+
+    <com.example.cdj.myapplication.cusview.CommonFormLayout
+        android:id="@+id/form_personal_tax"
+        style="@style/caculate_CommonFormLayout"
+        app:hasRightArrow="false"
+        app:titleText="个人所得税"
+        />
+
+    <com.example.cdj.myapplication.cusview.CommonFormLayout
+        android:id="@+id/tv_total_tax"
+        style="@style/caculate_CommonFormLayout"
+        app:hasRightArrow="false"
+        app:titleText="合计"
+        />
+
+
+    <Button
+        android:id="@+id/tv_finish"
+        style="@style/Common_Btn_style"
+        android:layout_marginTop="40dp"
+        android:text="完成"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+
+        <TextView
+            style="@style/CommTextview"
+            android:text="@string/tax_caculator_result_desc"
+            android:textColor="@color/grey_888888"
+            android:textSize="14sp"
+            />
+
+        <TextView
+            android:id="@+id/tv_connect_agent"
+            style="@style/CommTextview"
+            android:textColor="@color/grey_888888"
+            android:textSize="14sp"
+            />
+    </LinearLayout>
+
+</LinearLayout>

@@ -300,9 +300,10 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
      */
     private void setAgentTextView() {
         tv_connect_agent.setHighlightColor(getResources().getColor(android.R.color.transparent));
-        SpannableString spanableInfo = new SpannableString("如需了解更多房贷信息，请与附近的经纪人联系。");
-        spanableInfo.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange_ff9933)), 13, spanableInfo.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-        spanableInfo.setSpan(new Clickable(clickListener), 13, spanableInfo.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        SpannableString spanableInfo = new SpannableString(getString(R.string.caculator_contact_agent1));
+        int start = 13;
+        spanableInfo.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.orange_ff9933)), start, spanableInfo.length(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        spanableInfo.setSpan(new Clickable(clickListener), start, spanableInfo.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         tv_connect_agent.setText(spanableInfo);
         tv_connect_agent.setMovementMethod(LinkMovementMethod.getInstance());
 
