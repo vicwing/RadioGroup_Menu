@@ -3,6 +3,7 @@ package com.example.cdj.myapplication.cusview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -183,4 +184,7 @@ public class CommonFormLayout extends RelativeLayout {
         tv_common_content.setTextColor(resId);
     }
 
+    public void  addTextChangedListener(TextWatcher watcher){
+        tv_common_content.addTextChangedListener(watcher);
+    }
 }

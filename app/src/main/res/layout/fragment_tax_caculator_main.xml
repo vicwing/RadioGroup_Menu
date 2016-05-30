@@ -80,6 +80,7 @@
         android:id="@+id/btn_do_caculate"
         style="@style/Common_Btn_style"
         android:layout_marginTop="50dp"
+        android:enabled="false"
         android:text="立即计算"
         />
 

@@ -74,12 +74,12 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
 //                edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin, mMax)});
             } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                 tv_title.setText("房屋总价");
-                mCommomEditText.setTextUnit(R.string.caculate_unit_yuan);
+                mCommomEditText.setTextUnit("万元");
                 mCommomEditText.setEditHint("请输入房屋总价");
 
             } else if (key == TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE) {
                 tv_title.setText("买卖差价");
-                mCommomEditText.setTextUnit(R.string.caculate_unit_yuan);
+                mCommomEditText.setTextUnit("万元");
                 mCommomEditText.setEditHint("请输入房屋本次卖出与上次买入的差价");
             }
         }
@@ -92,12 +92,11 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
                 } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                     taxMainFragment.setHousePrice(Integer.parseInt(num));
                 } else if (key == TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE) {//差价
-                      TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
+//                      TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
                       taxMainFragment.setDifferencePrice(Integer.parseInt(num));
-
-                    Logger.d("输入框  计征方式  "+TaxType.PAYTAX_TYPE.getName() );
+//                    Logger.d("输入框  计征方式  "+TaxType.PAYTAX_TYPE.getName() );
                 }
-                taxMainFragment.reFreshView();
+//                taxMainFragment.reFreshView();
                 //直接跳到顶层
                 getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
             }

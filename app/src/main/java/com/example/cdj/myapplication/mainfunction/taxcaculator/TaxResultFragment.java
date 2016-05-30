@@ -38,7 +38,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
     private CommonFormLayout mForm_contract_tax;
     private CommonFormLayout mForm_personal_tax;
     private CommonFormLayout mTv_total_tax;
-    private TextView mTv_value_add_tax;
+    private TextView tv_value_add_tax;
     private View iv_value_add_desc;
     private TextView tv_connect_agent;
 
@@ -53,43 +53,99 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
 
     private void initView(View rootView) {
         rootView.setClickable(true);
+        rootView.findViewById(R.id.iv_back).setOnClickListener(this);
+        rootView.findViewById(R.id.btn_do_back).setOnClickListener(this);
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(R.string.tax_caculator);
         mForm_contract_tax = (CommonFormLayout) rootView.findViewById(R.id.form_contract_tax);
 
         iv_value_add_desc = rootView.findViewById(R.id.iv_value_add_desc);
-        mTv_value_add_tax = (TextView) rootView.findViewById(R.id.tv_value_add_tax);
+        tv_value_add_tax = (TextView) rootView.findViewById(R.id.tv_value_add_tax);
 
         mForm_personal_tax = (CommonFormLayout) rootView.findViewById(R.id.form_personal_tax);
         mTv_total_tax = (CommonFormLayout) rootView.findViewById(R.id.tv_total_tax);
 
         Logger.d("结果..." + TaxType.HOUSE_TYPE.getName() + TaxType.SALE_ONLY.getName() + "  " + TaxType.LATEST_SALE.getName());
-
-        int valueAddTax = getValueAddTax(1000000, 5, "非普通住房", "shenzhen", 200000);
-        Logger.d("增值税  "+valueAddTax);
-
         tv_connect_agent = (TextView) rootView.findViewById(R.id.tv_connect_agent);
-        setAgentTextView();
+        initAgentTextView();
+
+        TaxMainFragment mainFragment = (TaxMainFragment) getFragmentManager().findFragmentByTag(TaxMainFragment.class.getName());
+//        String housePrice = mainFragment.form_house_price.getContentText().toString();
+//        String houseArea = mainFragment.form_house_area.getContentText().toString();
+
+        String houseType = mainFragment.mForm_house_type.getContentText().toString();
+        String saleOnlyOne = mainFragment.form_house_sale_only.getContentText().toString();
+        String latestSale = mainFragment.form_house_latest_sale.getContentText().toString();
+        String payType = mainFragment.form_house_pay_type.getContentText().toString();
+        String buyFirstBuy = mainFragment.form_house_first_buy.getContentText().toString();
+
+
+        String currentCity = mainFragment.mCurrentCity;
+
+        int housePriceInt = mainFragment.getHousePrice() * 10000;
+        int houseAreaInt = mainFragment.getHouseArea();
+        int differencePrice = mainFragment.differencePrice * 10000;
+
+        int valueAddTax = getValueAddTax(housePriceInt, TaxUitls.getBuyHouseTime(latestSale), houseType, currentCity, differencePrice);
+
+        int contractTax = getContractTax(housePriceInt - valueAddTax, houseAreaInt, buyFirstBuy, currentCity);
+        int personaIncomeTax = getPersonaIncomeTax(housePriceInt - valueAddTax, TaxUitls.getBuyHouseTime(latestSale), TaxUitls.isOnlyHouse(saleOnlyOne));
+
+        mForm_contract_tax.setContentText(String.valueOf(contractTax) + "元");
+        tv_value_add_tax.setText(String.valueOf(valueAddTax) + "元");
+        mForm_personal_tax.setContentText(String.valueOf(personaIncomeTax) + "元");
+
+        mTv_total_tax.setContentText(String.valueOf(contractTax + valueAddTax + personaIncomeTax) + "元");
+        Logger.d("价格 " + housePriceInt + "  面积  " + houseAreaInt + " 住宅类型 " + houseType + "  卖方唯一 " + saleOnlyOne
+                + "  上次交易 " + latestSale + "  计征方式 " + payType + " 卖方首套  " + buyFirstBuy);
     }
+
+//    /**
+//     * 是否唯一一套
+//     * @param onlyOne
+//     * @return
+//     */
+//    public boolean isOnlyHouse(String onlyOne){
+//        if (onlyOne.equals(TaxMainFragment.ONLYONE)){
+//            return  true;
+//        }
+//        return false;
+//    }
+
+
+//    /**
+//     *  获取房屋年限
+//     * @param latestSale
+//     * @return
+//     */
+//    public int  getBuyHouseTime(String latestSale){
+//        if (latestSale.equals(TaxMainFragment.OVER_5_YEARS)){
+//            return 5;
+//        }else if(latestSale.equals(TaxMainFragment.OVER_2_5_YEARS)){
+//            return 3;
+//        }else  {
+//            return 1;
+//        }
+//    }
 
     /**
      * 获取增值税
      *
-     * @param totalPrice       房屋总价
-     * @param houseYear       房屋年限
+     * @param totalPrice      房屋总价
+     * @param buyHouseYear    购买房屋年限
      * @param houseType       普通住房/非普通住房
      * @param currentCity     当前城市
      * @param differencePrice 房屋差价
      * @return
      */
-    public int getValueAddTax(int totalPrice, int houseYear, String houseType, String currentCity, int differencePrice) {
-        if (houseYear < 2) {//未满2年
+    public int getValueAddTax(int totalPrice, int buyHouseYear, String houseType, String currentCity, int differencePrice) {
+        if (buyHouseYear < 2) {//未满2年
             return BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(2, RoundingMode.HALF_UP).intValue();
         } else {
-            if ("普通住房".equals(houseType)) {
+            if (TaxMainFragment.HOUSE_NORMAL.equals(houseType)) {
                 return 0;
             } else {//非普通住房
-                if (currentCity.equalsIgnoreCase(City.SHENZHEN.name) || currentCity.equalsIgnoreCase(City.GUANGZHOU.name) ||
-                        currentCity.equalsIgnoreCase(City.BEIJING.name) || currentCity.equalsIgnoreCase(City.SHANGHAI.name)) { //北上广深
+                if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
+                        currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) { //北上广深
                     return BigDecimal.valueOf(differencePrice * 0.056f).setScale(2, RoundingMode.HALF_UP).intValue();
                 } else {
                     return 0;
@@ -101,15 +157,16 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
 
     /**
      * 个人所得税
-     * @param totalPrice  房屋总价
-     * @param houseYear   房屋年限
-     * @param houseOnly   是否家庭唯一一套
+     *
+     * @param totalPrice   房屋总价
+     * @param buyHouseYear 房屋年限
+     * @param houseOnly    卖方 是否家庭唯一一套
      * @return
      */
-    public int getPersonaIncomeTax(int totalPrice, int houseYear, boolean houseOnly) {
+    public int getPersonaIncomeTax(int totalPrice, int buyHouseYear, boolean houseOnly) {
 
-        if (houseYear < 5 || isOnlyOne) {//满5年免征
-            return BigDecimal.valueOf(totalPrice).setScale(2, RoundingMode.HALF_UP).intValue();
+        if (buyHouseYear < 5 || houseOnly) {//满5年免征
+            return BigDecimal.valueOf(totalPrice * 0.01).setScale(2, RoundingMode.HALF_UP).intValue();
         } else {
             return 0;
         }
@@ -117,25 +174,28 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
 
     /**
      * 契税
-     * @param price       交易的价格(减去增值税后的价格)
-     * @param area        房子面积
-     * @param type        买方 是否首套,
-     * @param currentCity 当前城市
+     *
+     * @param price         交易的价格(减去增值税后的价格)
+     * @param area          房子面积
+     * @param buyerFirstOne 买方 是否首套,
+     * @param currentCity   当前城市
      * @return
      */
-    public int getContractTaxTax(int price, int area, String type, String currentCity) {
-        if ("首套".equals(type)) {
-            if (area > 90) {
+    public int getContractTax(int price, int area, String buyerFirstOne, String currentCity) {
+
+        int baseArea = 90;
+        if (TaxMainFragment.Buy_First.equals(buyerFirstOne)) {
+            if (area > baseArea) {
                 return BigDecimal.valueOf(price * 0.015f).setScale(1, RoundingMode.HALF_UP).intValue();
             } else {
                 return BigDecimal.valueOf(price * 0.01f).setScale(1, RoundingMode.HALF_UP).intValue();
             }
         } else {
-            if (currentCity.equalsIgnoreCase(City.SHENZHEN.name) || currentCity.equalsIgnoreCase(City.GUANGZHOU.name) ||
-                    currentCity.equalsIgnoreCase(City.BEIJING.name) || currentCity.equalsIgnoreCase(City.SHANGHAI.name)) {
+            if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
+                    currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) {
                 return BigDecimal.valueOf(price * 0.03f).setScale(1, RoundingMode.HALF_UP).intValue();
             } else {
-                if (area < 90) {
+                if (area < baseArea) {
                     return BigDecimal.valueOf(price * 0.01f).setScale(1, RoundingMode.HALF_UP).intValue();
                 } else {
                     return BigDecimal.valueOf(price * 0.02f).setScale(1, RoundingMode.HALF_UP).intValue();
@@ -147,27 +207,29 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        if (id==R.id.iv_value_add_desc){//弹框
+        if (id == R.id.iv_value_add_desc) {//弹框
 
-        }else if (id==R.id.iv_back){
-            getFragmentManager().popBackStack();
+        } else if (id == R.id.iv_back) {
+            getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
+        } else if (id == R.id.btn_do_back) {
+//            getFragmentManager().popBackStack();
+            getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
         }
     }
 
-    public enum City {
-        SHENZHEN("shenzhen"), GUANGZHOU("guangzhou"), BEIJING("beijing"), SHANGHAI("shanghai");
-        public String name;
-
-        City(String name) {
-            this.name = name;
-        }
-    }
+//    public enum EnumCity {
+//        SHENZHEN("shenzhen"), GUANGZHOU("guangzhou"), BEIJING("beijing"), SHANGHAI("shanghai");
+//        public String name;
+//        EnumCity(String name) {
+//            this.name = name;
+//        }
+//    }
 
 
     /**
      * 联系经纪人
      */
-    private void setAgentTextView() {
+    private void initAgentTextView() {
         tv_connect_agent.setHighlightColor(getResources().getColor(android.R.color.transparent));
         SpannableString spanableInfo = new SpannableString(getString(R.string.tax_caculator_contact_agent));
         int start = 9;
@@ -191,6 +253,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
         public Clickable(View.OnClickListener l) {
             mListener = l;
         }
+
         /**
          * 重写父类点击事件
          */
