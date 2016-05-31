@@ -27,10 +27,7 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
     View rootView;
     private ImageView iv_back;
     private CommomEditText mCommomEditText;
-    private boolean isFromList;
-    private CaculateMainFragment mCaculateMainFragment;
     private int key;
-    private String mFromFragment;
     private int mMin =1;
     private int mMax = 99999;
 
@@ -63,7 +60,6 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
         edt_content = (EditText) rootView.findViewById(R.id.edt_content);
         mCommomEditText = (CommomEditText) rootView.findViewById(R.id.custom_edt_loan);
         edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin,mMax)});
-//        mCaculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
         Bundle bundle = getArguments();
         if (bundle != null) {
             key = bundle.getInt(CaculateMainFragment.KEY);
@@ -71,7 +67,6 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
                 tv_title.setText("房屋面积");
                 mCommomEditText.setTextUnit("㎡");
                 mCommomEditText.setEditHint("请输入房屋的面积");
-//                edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin, mMax)});
             } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                 tv_title.setText("房屋总价");
                 mCommomEditText.setTextUnit("万元");
@@ -92,11 +87,8 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
                 } else if (key == TaxMainFragment.KEY_TAX_HOUSE_PRICE) {
                     taxMainFragment.setHousePrice(Integer.parseInt(num));
                 } else if (key == TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE) {//差价
-//                      TaxType.PAYTAX_TYPE.setName(TaxMainFragment.DIFFERENCE_PRICE);
                       taxMainFragment.setDifferencePrice(Integer.parseInt(num));
-//                    Logger.d("输入框  计征方式  "+TaxType.PAYTAX_TYPE.getName() );
                 }
-//                taxMainFragment.reFreshView();
                 //直接跳到顶层
                 getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
             }

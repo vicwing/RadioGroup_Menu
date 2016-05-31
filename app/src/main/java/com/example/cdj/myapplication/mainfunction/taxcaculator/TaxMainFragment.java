@@ -38,16 +38,14 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
 
     private static final String ARG_PARAM1 = "";
     private static final String ARG_PARAM2 = "";
-    public static String FROM_TAG = "from_tag";
 
     public static String KEY = "KEY";
-    public static String ENUM = "enum";
 
     private int defaultPrice = 100;
     private int mHouseArea;//房屋面积
     private int mHousePrice = defaultPrice;//房屋总价
 
-    public int differencePrice=0 ;//差价
+
 
     public static String HOUSE_NORMAL = "普通住房";//住宅类型
     public static String House_NOT_NORMAL = "非普通住房";//住宅类型
@@ -56,18 +54,17 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
     public static String NOT_ONLYONE = "非唯一一套";//卖方唯一
 
     public static String OVER_5_YEARS = "满5年";//距离上次交易
-    public static String OVER_2_5_YEARS = "满2年不满5年";//距离上次交易
-    public static String LESS_2_YEARS = "不满2年";//距离上次交易
+    public static String OVER_2_5_YEARS = "满2年";
+    public static String LESS_2_YEARS = "不满2年";
 
     public static String TOTAL_PRICE = "总价";//计征方式
-    public static String DIFFERENCE_PRICE = "差价";//计征方式
+    public static String DIFFERENCE_PRICE = "差价";
 
     public static String Buy_First = "首套";//买方首套
     public static String NOT_BUY_FIRST = "非首套";//买方首套
 
-
-
-//    private Button btn_do_caculate;
+    private int differencePrice=0 ;//差价
+    private String inputDifferenceStr ="请输入差价";
     public CommonFormLayout form_house_area;
     public CommonFormLayout form_house_price;
     public CommonFormLayout mForm_house_type;
@@ -77,7 +74,6 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
     public CommonFormLayout form_house_first_buy;
 
     private Button mBtn_do_caculate;
-    private String intpuDifferenceStr ="请输入差价";
 
 
     /**
@@ -106,9 +102,6 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
         init(layout);
         return layout;
     }
-
-    public static final String HOUSE_PRICE = "house_price";
-    public static final String HOUSE_AREA = "house_area";
 
     private void init(View layout) {
         ((TextView) layout.findViewById(R.id.tv_title)).setText(R.string.tax_caculator);
@@ -151,8 +144,8 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
 
         Bundle bundle = getArguments();
         if (bundle != null) {
-            defaultPrice = bundle.getInt(HOUSE_PRICE, 0);
-            mHouseArea = bundle.getInt(HOUSE_AREA, 0);
+            defaultPrice = bundle.getInt(TaxCaculatorActivity.HOUSE_PRICE, 0);
+            mHouseArea = bundle.getInt(TaxCaculatorActivity.HOUSE_AREA, 0);
             if (defaultPrice==0&&mHouseArea==0){
                 form_house_area.setContentText("");
                 form_house_price.setContentText("");
@@ -234,7 +227,7 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         } else if (id == R.id.form_house_pay_type) {//计征方式
 //            String typeText = form_house_pay_type.getContentText().toString();
-//            if (typeText.equals(intpuDifferenceStr)){
+//            if (typeText.equals(inputDifferenceStr)){
 //                bundle.putInt(TaxMainFragment.KEY, TaxMainFragment.KEY_TAX_DIFFERENCE_PRICE);
 //                mCallback.onAddFragment(TaxCaculatorInputFragment.class.getName(), bundle);
 //            }else {
@@ -243,7 +236,6 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
 //            }
         } else if (id == R.id.form_house_first_buy) {//买方首套
             bundle.putInt(KEY, TAX_HOUSE_FIRST_BUY);
-            bundle.putSerializable(ENUM, TaxType.FIRST_BUY);
             mCallback.onAddFragment(TaxCaculatorListFragment.class.getName(), bundle);
         }
     }
@@ -260,8 +252,8 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
 //
 //        if (TaxType.PAYTAX_TYPE.getName().equals(TOTAL_PRICE)){
 //            form_house_pay_type.setContentText(TaxType.PAYTAX_TYPE.getName());
-//        }else if (TaxType.PAYTAX_TYPE.getName().equals(intpuDifferenceStr)){
-//            form_house_pay_type.setContentText(intpuDifferenceStr);
+//        }else if (TaxType.PAYTAX_TYPE.getName().equals(inputDifferenceStr)){
+//            form_house_pay_type.setContentText(inputDifferenceStr);
 //        }else {
 //            form_house_pay_type.setContentText("差价 "+differencePrice+"万");
 //        }
@@ -295,7 +287,7 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
     public void setDifferencePrice(int differencePrice) {
         this.differencePrice = differencePrice;
         form_house_pay_type.setContentTextColor(getResources().getColor(R.color.black_33333));
-        form_house_pay_type.setContentText("差价 "+differencePrice+"万");
+        form_house_pay_type.setContentText("差价 "+differencePrice+"万元");
         verifyBtn();
     }
     /**
@@ -352,11 +344,11 @@ public class TaxMainFragment extends BackHandledBaseFragment implements View.OnC
             String latestContentText = form_house_latest_sale.getContentText().toString();
             Logger.d("!latestContentText.equals(LESS_2_YEARS)  "+!latestContentText.equals(LESS_2_YEARS));
             if (houseTypeContentText.equals(House_NOT_NORMAL)&&!latestContentText.equals(LESS_2_YEARS)){
-//                TaxType.PAYTAX_TYPE.setName(intpuDifferenceStr);
+//                TaxType.PAYTAX_TYPE.setName(inputDifferenceStr);
                 if (differencePrice==0){
-//                    form_house_pay_type.setContentText(intpuDifferenceStr);
+//                    form_house_pay_type.setContentText(inputDifferenceStr);
 //                    setDifferencePrice();
-                    form_house_pay_type.setContentText(intpuDifferenceStr);
+                    form_house_pay_type.setContentText(inputDifferenceStr);
                     form_house_pay_type.setContentTextColor(getResources().getColor(R.color.grey_d3d3d3));
                     return  false;
                 }

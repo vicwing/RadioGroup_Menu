@@ -22,6 +22,8 @@ import com.orhanobut.logger.Logger;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * Created by cdj on 2016/5/27.
@@ -83,7 +85,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
 
         int housePriceInt = mainFragment.getHousePrice() * 10000;
         int houseAreaInt = mainFragment.getHouseArea();
-        int differencePrice = mainFragment.differencePrice * 10000;
+        int differencePrice = mainFragment.getDifferencePrice() * 10000;
 
         int valueAddTax = getValueAddTax(housePriceInt, TaxUitls.getBuyHouseTime(latestSale), houseType, currentCity, differencePrice);
 
@@ -95,37 +97,18 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
         mForm_personal_tax.setContentText(String.valueOf(personaIncomeTax) + "元");
 
         mTv_total_tax.setContentText(String.valueOf(contractTax + valueAddTax + personaIncomeTax) + "元");
+
+
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.CHINESE);
+        tv_value_add_tax.setText(numberFormat.format(valueAddTax) + "元");
+        mForm_contract_tax.setContentText(numberFormat.format(contractTax) + "元");
+        mForm_personal_tax.setContentText(numberFormat.format(personaIncomeTax) + "元");
+
+        mTv_total_tax.setContentText(numberFormat.format(contractTax + valueAddTax + personaIncomeTax) + "元");
+
         Logger.d("价格 " + housePriceInt + "  面积  " + houseAreaInt + " 住宅类型 " + houseType + "  卖方唯一 " + saleOnlyOne
                 + "  上次交易 " + latestSale + "  计征方式 " + payType + " 卖方首套  " + buyFirstBuy);
     }
-
-//    /**
-//     * 是否唯一一套
-//     * @param onlyOne
-//     * @return
-//     */
-//    public boolean isOnlyHouse(String onlyOne){
-//        if (onlyOne.equals(TaxMainFragment.ONLYONE)){
-//            return  true;
-//        }
-//        return false;
-//    }
-
-
-//    /**
-//     *  获取房屋年限
-//     * @param latestSale
-//     * @return
-//     */
-//    public int  getBuyHouseTime(String latestSale){
-//        if (latestSale.equals(TaxMainFragment.OVER_5_YEARS)){
-//            return 5;
-//        }else if(latestSale.equals(TaxMainFragment.OVER_2_5_YEARS)){
-//            return 3;
-//        }else  {
-//            return 1;
-//        }
-//    }
 
     /**
      * 获取增值税
@@ -139,14 +122,15 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
      */
     public int getValueAddTax(int totalPrice, int buyHouseYear, String houseType, String currentCity, int differencePrice) {
         if (buyHouseYear < 2) {//未满2年
-            return BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(2, RoundingMode.HALF_UP).intValue();
+//            Logger.d("增值税价格"+BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP));
+            return BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
         } else {
             if (TaxMainFragment.HOUSE_NORMAL.equals(houseType)) {
                 return 0;
             } else {//非普通住房
                 if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
                         currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) { //北上广深
-                    return BigDecimal.valueOf(differencePrice * 0.056f).setScale(2, RoundingMode.HALF_UP).intValue();
+                    return BigDecimal.valueOf(differencePrice/1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
                 } else {
                     return 0;
                 }
@@ -158,7 +142,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
     /**
      * 个人所得税
      *
-     * @param totalPrice   房屋总价
+     * @param totalPrice   房屋总价 (减去增值税后的价格)
      * @param buyHouseYear 房屋年限
      * @param houseOnly    卖方 是否家庭唯一一套
      * @return
@@ -166,7 +150,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
     public int getPersonaIncomeTax(int totalPrice, int buyHouseYear, boolean houseOnly) {
 
         if (buyHouseYear < 5 || houseOnly) {//满5年免征
-            return BigDecimal.valueOf(totalPrice * 0.01).setScale(2, RoundingMode.HALF_UP).intValue();
+            return BigDecimal.valueOf(totalPrice * 0.01).setScale(0, RoundingMode.HALF_UP).intValue();
         } else {
             return 0;
         }
@@ -186,19 +170,19 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
         int baseArea = 90;
         if (TaxMainFragment.Buy_First.equals(buyerFirstOne)) {
             if (area > baseArea) {
-                return BigDecimal.valueOf(price * 0.015f).setScale(1, RoundingMode.HALF_UP).intValue();
+                return BigDecimal.valueOf(price * 0.015f).setScale(0, RoundingMode.HALF_UP).intValue();
             } else {
-                return BigDecimal.valueOf(price * 0.01f).setScale(1, RoundingMode.HALF_UP).intValue();
+                return BigDecimal.valueOf(price * 0.01f).setScale(0, RoundingMode.HALF_UP).intValue();
             }
         } else {
             if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
                     currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) {
-                return BigDecimal.valueOf(price * 0.03f).setScale(1, RoundingMode.HALF_UP).intValue();
+                return BigDecimal.valueOf(price * 0.03f).setScale(0, RoundingMode.HALF_UP).intValue();
             } else {
                 if (area < baseArea) {
-                    return BigDecimal.valueOf(price * 0.01f).setScale(1, RoundingMode.HALF_UP).intValue();
+                    return BigDecimal.valueOf(price * 0.01f).setScale(0, RoundingMode.HALF_UP).intValue();
                 } else {
-                    return BigDecimal.valueOf(price * 0.02f).setScale(1, RoundingMode.HALF_UP).intValue();
+                    return BigDecimal.valueOf(price * 0.02f).setScale(0, RoundingMode.HALF_UP).intValue();
                 }
             }
         }
@@ -267,7 +251,7 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
          */
         @Override
         public void updateDrawState(TextPaint ds) {
-//            ds.setColor(getResources().getColor(R.color.video_comment_like_number));
+
         }
     }
 }

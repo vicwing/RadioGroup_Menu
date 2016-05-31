@@ -3,34 +3,20 @@ package com.example;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class MyClass {
 
     public static void  main(String[] args){
-        int commercialAmount = 70;
-        float commercialRate =4.9f;
-        int loanTerm =30;
 
-//        float  monthRate = BigDecimal.valueOf(commercialRate/100/12).setScale(3,BigDecimal.ROUND_HALF_UP).floatValue();
-        float monthRate = commercialRate/100/12;
+        // 得到德国的格式
+        NumberFormat nf2 =
+                NumberFormat.getInstance(Locale.CHINESE);
+        System.out.println(nf2.format(15644546541l));
 
-        System.out.println("月利率  " +monthRate);
-
-        double pow = Math.pow(commercialRate, loanTerm);
-        System.out.println("pow  "+pow);
-
-        int monthPay = equalityInterestResult(commercialAmount, monthRate, loanTerm*12);
-
-        System.out.println("等额本息 月供   "+monthPay);
-
-        if (true){
-            System.out.println("111111111111111111111");
-        }
-        if (true){
-            System.out.println("22222222222222222222");
-        }else if (true){
-            System.out.println("33333333333333333333333333");
-        }
+        int i = BigDecimal.valueOf(5000000 / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
+        System.out.println("结果"+i );
 
     }
     // 等额本息 月供;

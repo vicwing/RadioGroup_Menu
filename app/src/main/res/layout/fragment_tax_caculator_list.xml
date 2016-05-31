@@ -27,16 +27,22 @@
             style="@style/caculate_CommonFormLayout"
             app:hasTopLine="true"
             app:isShotBottomLine="true"
+            app:ctitleTextColor="@color/black_33333"
+            app:hasRightArrow="false"
             app:titleText="普通住房"/>
 
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/form_house_two"
             style="@style/caculate_CommonFormLayout"
+            app:ctitleTextColor="@color/black_33333"
+            app:hasRightArrow="false"
             app:titleText="非普通住房"/>
         <com.example.cdj.myapplication.cusview.CommonFormLayout
             android:id="@+id/form_house_three"
             style="@style/caculate_CommonFormLayout"
             android:visibility="gone"
+            app:ctitleTextColor="@color/black_33333"
+            app:hasRightArrow="false"
             app:titleText="非普通住房"/>
     </LinearLayout>
 </LinearLayout>

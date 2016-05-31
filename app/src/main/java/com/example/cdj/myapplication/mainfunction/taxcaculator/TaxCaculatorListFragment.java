@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
@@ -21,8 +20,7 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
     private TextView tv_title;
     private CommonFormLayout form_house_one;
     private CommonFormLayout form_house_two;
-    //    private TaxType mTaxType;
-    private ListView lv_listview;
+
     private CommonFormLayout form_house_three;
     private int mKey;
     private TaxMainFragment mMainFragment;
@@ -49,8 +47,6 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
         form_house_three = (CommonFormLayout) rootView.findViewById(R.id.form_house_three);
         form_house_three.setOnClickListener(this);
 
-//        lv_listview = (ListView) rootView.findViewById(R.id.lv_listview);
-
         tv_title = (TextView) rootView.findViewById(R.id.tv_title);
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -59,55 +55,49 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
             switch (mKey) {
                 case TaxMainFragment.TAX_HOUSE_TYPE:
                     tv_title.setText("住宅类型");
-                    form_house_one.setContentText(R.string.Tax_housetype_normal);
-                    form_house_two.setContentText(R.string.Tax_housetype_not_normal);
+                    form_house_one.setTitleText(TaxMainFragment.HOUSE_NORMAL);
+                    form_house_two.setTitleText(TaxMainFragment.House_NOT_NORMAL);
                     break;
 //                case SALE_ONLY:
                 case TaxMainFragment.TAX_HOUSE_SALE_ONLY:
                     tv_title.setText("卖方家庭唯一一套");
-                    form_house_one.setContentText(R.string.Tax_housetype_onlyone);
-                    form_house_two.setContentText(R.string.Tax_housetype_not_only);
+                    form_house_one.setTitleText(TaxMainFragment.ONLYONE);
+                    form_house_two.setTitleText(TaxMainFragment.NOT_ONLYONE);
                     break;
                 case TaxMainFragment.TAX_HOUSE_LATEST_SALE:
                     tv_title.setText("距离上次交易");
-                    form_house_one.setContentText(R.string.Tax_housetype_5year);
-                    form_house_two.setContentText(R.string.Tax_housetype_2and_5year);
+                    form_house_one.setTitleText(TaxMainFragment.OVER_5_YEARS);
+                    form_house_two.setTitleText(TaxMainFragment.OVER_2_5_YEARS);
                     form_house_three.setVisibility(View.VISIBLE);
-                    form_house_three.setContentText(R.string.Tax_housetype_not_2);
+                    form_house_three.setTitleText(TaxMainFragment.LESS_2_YEARS);
                     break;
                 case TaxMainFragment.TAX_HOUSE_PAY_TYPE:
                     tv_title.setText("计征方式");
-                    form_house_one.setContentText(R.string.Tax_housetype_total);
-                    form_house_two.setContentText(R.string.Tax_housetype_chajia);
+                    form_house_one.setTitleText(TaxMainFragment.TOTAL_PRICE);
+                    form_house_two.setTitleText(TaxMainFragment.DIFFERENCE_PRICE);
 
                     String houseType = mMainFragment.mForm_house_type.getContentText().toString();
                     String latestStr = mMainFragment.form_house_latest_sale.getContentText().toString();
                     int buyHouseTime = TaxUitls.getBuyHouseTime(latestStr);
-                    if (houseType.equals(TaxMainFragment.House_NOT_NORMAL) && TaxUitls.isSpcialCcity(mMainFragment.mCurrentCity)&&buyHouseTime<2) {
+                    form_house_two.setHasRightArrow(true);
+                    if (houseType.equals(TaxMainFragment.House_NOT_NORMAL) && TaxUitls.isSpcialCcity(mMainFragment.mCurrentCity)) {
                         Logger.d("22222222222222222222222222222");
-                        form_house_one.setClickable(false);
-                        form_house_one.setContentTextColor(getResources().getColor(R.color.grey_888888));
+                        if (buyHouseTime>2){
+                            form_house_one.setClickable(false);
+                            form_house_one.setTitleTextColor(getResources().getColor(R.color.grey_d3d3d3));
+                        }else {
+                            form_house_two.setClickable(false);
+                            form_house_two.setHasRightArrow(false);
+                            form_house_two.setTitleTextColor(getResources().getColor(R.color.grey_d3d3d3));
+                        }
                     }
                     break;
                 case TaxMainFragment.TAX_HOUSE_FIRST_BUY:
                     tv_title.setText("卖方家庭首套");
-                    form_house_one.setContentText(R.string.Tax_housetype_first);
-                    form_house_two.setContentText(R.string.Tax_housetype_not_first);
+                    form_house_one.setTitleText(TaxMainFragment.Buy_First);
+                    form_house_two.setTitleText(TaxMainFragment.NOT_BUY_FIRST);
                     break;
             }
-//            if (TaxMainFragment.TAX_HOUSE_TYPE == key) {
-//                tv_title.setText("住宅类型");
-////                form_house_one.setContentText(R.st);
-//
-//            } else if (TaxMainFragment.TAX_HOUSE_SALE_ONLY == key) {
-//                tv_title.setText("卖方家庭唯一一套");
-//            } else if (TaxMainFragment.TAX_HOUSE_LATEST_SALE == key) {
-//                tv_title.setText("距离上次交易");
-//            } else if (TaxMainFragment.TAX_HOUSE_PAY_TYPE == key) {
-//                tv_title.setText("计征方式");
-//            } else if (TaxMainFragment.TAX_HOUSE_FIRST_BUY == key) {
-//                tv_title.setText("卖方家庭首套");
-//            }
         }
     }
 

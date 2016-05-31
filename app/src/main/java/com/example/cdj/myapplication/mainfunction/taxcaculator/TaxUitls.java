@@ -1,9 +1,12 @@
 package com.example.cdj.myapplication.mainfunction.taxcaculator;
 
 /**
+ * 税率计算器用到的辅助方法
  * Created by cdj on 2016/5/30.
  */
 public class TaxUitls {
+
+
 
     /**
      * 是否唯一一套
