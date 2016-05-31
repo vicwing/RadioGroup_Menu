@@ -5,22 +5,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
 
-import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
-import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 import com.orhanobut.logger.Logger;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 
 /**
  * 房贷计算器
@@ -29,40 +17,18 @@ import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 public class MortgageCaculatorAcitivity extends FragmentActivity implements OnHeadlineSelectedListener {
 
 
-//    public final static String FROM_TAG = "from_tag";
     public final static String HOUSE_STYLE = "houseStyle";
     public final static String TOTAL_PRICE = "totalPrice";
-
-    TextView mTvHouseStyle;
-    TextView mTvTotalPrice;
 
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
 
-    private PtrClassicFrameLayout mPtrFrameLayout;
-    private ListView mListView;
-    private QuickAdapter<SecListItemEntity> mAdapter;
-    private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
-    private LoadMoreListViewContainer loadMoreListViewContainer;
-    private SegmentControl mSegmentControl;
-
-    private int defaultPrice = 100;//默认贷款额
-    private int totalPrice = defaultPrice;//贷款总额
-
-    private float mIntrestRate = 4.9f;
-    private int mLoanTerm = 30;
-
-    private ArrayList<Fragment> fragmentArrayList;
-    private Fragment mCurrentFrgment;
-    private int currentIndex = 0;
-    private Button btn_do_caculate;
     CaculateMainFragment mCaculateMainFragment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame);
-//        addFragment(Fragment4.class.getName(),null);
 
         //当前的fragment 不加入栈中.
          mCaculateMainFragment = (CaculateMainFragment) Fragment.instantiate(this, CaculateMainFragment.class.getName(), null);

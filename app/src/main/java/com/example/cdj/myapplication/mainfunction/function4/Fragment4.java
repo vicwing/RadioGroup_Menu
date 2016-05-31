@@ -20,6 +20,7 @@ import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreUIHandler;
+import com.example.cdj.myapplication.mainfunction.caculate.MortgageCaculatorAcitivity;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.TaxCaculatorActivity;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -97,8 +98,8 @@ public class Fragment4 extends Fragment {
         mBtnStartCaculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(MortgageCaculatorAcitivity.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getActivity(),MortgageCaculatorAcitivity.class);
+                startActivity(intent);
             }
         });
         mBtnStartTaxCaculator.setOnClickListener(new View.OnClickListener() {
@@ -109,7 +110,6 @@ public class Fragment4 extends Fragment {
             }
         });
 //        initSegmentControl(layout);
-
         return layout;
     }
 
