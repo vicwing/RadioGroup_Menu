@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
@@ -49,6 +51,12 @@ public class Fragment4 extends Fragment {
     Button mBtnStartCaculator;
     @Bind(R.id.btn_start_tax_caculator)
     Button mBtnStartTaxCaculator;
+
+    @Bind(R.id.tv_go)
+    TextView mTextGo;
+
+    @Bind(R.id.tv_text_end)
+    TextView mTextEnd;
 
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
@@ -98,19 +106,52 @@ public class Fragment4 extends Fragment {
         mBtnStartCaculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),MortgageCaculatorAcitivity.class);
+                Intent intent = new Intent(getActivity(), MortgageCaculatorAcitivity.class);
                 startActivity(intent);
             }
         });
         mBtnStartTaxCaculator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(),TaxCaculatorActivity.class);
+                Intent intent = new Intent(getActivity(), TaxCaculatorActivity.class);
                 startActivity(intent);
             }
         });
 //        initSegmentControl(layout);
+        mTextGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                mTvTextgo.scrollTo();
+                scrollTo(layout);
+            }
+        });
+
+
+
         return layout;
+    }
+
+    /**
+     * 滚动的到指定的,view的位置
+     * @param layout
+     */
+    private void scrollTo(View layout) {
+        //        final boolean scrollDown = getIntent().getBooleanExtra(SCROLL_DOWN, false);
+        final ScrollView mRootScrollView = (ScrollView) layout.findViewById(R.id.scrollView);
+        mRootScrollView.post(new Runnable() {
+            @Override
+            public void run() {
+                //To change body of implemented methods use File | Settings | File Templates.
+//                    mRootScrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                int[] location = new int[2];
+                mTextEnd.getLocationOnScreen(location);
+                int offset = location[1] - mRootScrollView.getMeasuredHeight();
+                if (offset < 0) {
+                    offset = 0;
+                }
+                mRootScrollView.smoothScrollTo(0, offset);
+            }
+        });
     }
 
     private void initSegmentControl(View layout) {

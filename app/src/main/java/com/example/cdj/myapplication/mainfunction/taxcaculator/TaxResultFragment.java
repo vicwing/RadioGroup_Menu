@@ -20,8 +20,6 @@ import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.orhanobut.logger.Logger;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -87,10 +85,10 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
         int houseAreaInt = mainFragment.getHouseArea();
         int differencePrice = mainFragment.getDifferencePrice() * 10000;
 
-        int valueAddTax = getValueAddTax(housePriceInt, TaxUitls.getBuyHouseTime(latestSale), houseType, currentCity, differencePrice);
+        int valueAddTax = TaxCaculatorUitls.getValueAddTax(housePriceInt, TaxCaculatorUitls.getBuyHouseTime(latestSale), houseType, currentCity, differencePrice);
 
-        int contractTax = getContractTax(housePriceInt - valueAddTax, houseAreaInt, buyFirstBuy, currentCity);
-        int personaIncomeTax = getPersonaIncomeTax(housePriceInt - valueAddTax, TaxUitls.getBuyHouseTime(latestSale), TaxUitls.isOnlyHouse(saleOnlyOne));
+        int contractTax = TaxCaculatorUitls.getContractTax(housePriceInt - valueAddTax, houseAreaInt, buyFirstBuy, currentCity);
+        int personaIncomeTax = TaxCaculatorUitls.getPersonaIncomeTax(housePriceInt - valueAddTax, TaxCaculatorUitls.getBuyHouseTime(latestSale), TaxCaculatorUitls.isOnlyHouse(saleOnlyOne));
 
         mForm_contract_tax.setContentText(String.valueOf(contractTax) + "元");
         tv_value_add_tax.setText(String.valueOf(valueAddTax) + "元");
@@ -110,83 +108,6 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
                 + "  上次交易 " + latestSale + "  计征方式 " + payType + " 卖方首套  " + buyFirstBuy);
     }
 
-    /**
-     * 获取增值税
-     *
-     * @param totalPrice      房屋总价
-     * @param buyHouseYear    购买房屋年限
-     * @param houseType       普通住房/非普通住房
-     * @param currentCity     当前城市
-     * @param differencePrice 房屋差价
-     * @return
-     */
-    public int getValueAddTax(int totalPrice, int buyHouseYear, String houseType, String currentCity, int differencePrice) {
-        if (buyHouseYear < 2) {//未满2年
-//            Logger.d("增值税价格"+BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP));
-            return BigDecimal.valueOf(totalPrice / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
-        } else {
-            if (TaxMainFragment.HOUSE_NORMAL.equals(houseType)) {
-                return 0;
-            } else {//非普通住房
-                if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
-                        currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) { //北上广深
-                    return BigDecimal.valueOf(differencePrice/1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
-                } else {
-                    return 0;
-                }
-            }
-        }
-    }
-
-
-    /**
-     * 个人所得税
-     *
-     * @param totalPrice   房屋总价 (减去增值税后的价格)
-     * @param buyHouseYear 房屋年限
-     * @param houseOnly    卖方 是否家庭唯一一套
-     * @return
-     */
-    public int getPersonaIncomeTax(int totalPrice, int buyHouseYear, boolean houseOnly) {
-
-        if (buyHouseYear < 5 || houseOnly) {//满5年免征
-            return BigDecimal.valueOf(totalPrice * 0.01).setScale(0, RoundingMode.HALF_UP).intValue();
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * 契税
-     *
-     * @param price         交易的价格(减去增值税后的价格)
-     * @param area          房子面积
-     * @param buyerFirstOne 买方 是否首套,
-     * @param currentCity   当前城市
-     * @return
-     */
-    public int getContractTax(int price, int area, String buyerFirstOne, String currentCity) {
-
-        int baseArea = 90;
-        if (TaxMainFragment.Buy_First.equals(buyerFirstOne)) {
-            if (area > baseArea) {
-                return BigDecimal.valueOf(price * 0.015f).setScale(0, RoundingMode.HALF_UP).intValue();
-            } else {
-                return BigDecimal.valueOf(price * 0.01f).setScale(0, RoundingMode.HALF_UP).intValue();
-            }
-        } else {
-            if (currentCity.equalsIgnoreCase(EnumCity.SHENZHEN.name) || currentCity.equalsIgnoreCase(EnumCity.GUANGZHOU.name) ||
-                    currentCity.equalsIgnoreCase(EnumCity.BEIJING.name) || currentCity.equalsIgnoreCase(EnumCity.SHANGHAI.name)) {
-                return BigDecimal.valueOf(price * 0.03f).setScale(0, RoundingMode.HALF_UP).intValue();
-            } else {
-                if (area < baseArea) {
-                    return BigDecimal.valueOf(price * 0.01f).setScale(0, RoundingMode.HALF_UP).intValue();
-                } else {
-                    return BigDecimal.valueOf(price * 0.02f).setScale(0, RoundingMode.HALF_UP).intValue();
-                }
-            }
-        }
-    }
 
     @Override
     public void onClick(View v) {
@@ -200,15 +121,6 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
             getFragmentManager().popBackStack(TaxMainFragment.class.getName(), 0);
         }
     }
-
-//    public enum EnumCity {
-//        SHENZHEN("shenzhen"), GUANGZHOU("guangzhou"), BEIJING("beijing"), SHANGHAI("shanghai");
-//        public String name;
-//        EnumCity(String name) {
-//            this.name = name;
-//        }
-//    }
-
 
     /**
      * 联系经纪人

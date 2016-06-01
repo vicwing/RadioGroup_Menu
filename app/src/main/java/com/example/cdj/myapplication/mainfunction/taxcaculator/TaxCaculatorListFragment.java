@@ -78,9 +78,9 @@ public class TaxCaculatorListFragment extends BackHandledBaseFragment implements
 
                     String houseType = mMainFragment.mForm_house_type.getContentText().toString();
                     String latestStr = mMainFragment.form_house_latest_sale.getContentText().toString();
-                    int buyHouseTime = TaxUitls.getBuyHouseTime(latestStr);
+                    int buyHouseTime = TaxCaculatorUitls.getBuyHouseTime(latestStr);
                     form_house_two.setHasRightArrow(true);
-                    if (houseType.equals(TaxMainFragment.House_NOT_NORMAL) && TaxUitls.isSpcialCcity(mMainFragment.mCurrentCity)) {
+                    if (houseType.equals(TaxMainFragment.House_NOT_NORMAL) && TaxCaculatorUitls.isSpcialCcity(mMainFragment.mCurrentCity)) {
                         Logger.d("22222222222222222222222222222");
                         if (buyHouseTime>2){
                             form_house_one.setClickable(false);
