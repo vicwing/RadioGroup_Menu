@@ -187,7 +187,7 @@ public class LoanRateListFragment extends BackHandledBaseFragment implements Vie
             Bundle bundle = new Bundle();
             bundle.putBoolean(CaculateMainFragment.isFromList, true);
             bundle.putInt(CaculateMainFragment.KEY, key);
-            mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
+            mCallback.onAddFragment(MortCaculatorInputFragment.class.getName(), bundle);
         }
     }
 

@@ -23,25 +23,10 @@
                </intent-filter>
         </activity>
         <activity android:name=".RootViewActivity">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
         </activity>
         <activity android:name=".mainfunction.caculate.MortgageCaculatorAcitivity">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN"/>-->
-
-            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
         </activity>
         <activity android:name=".mainfunction.taxcaculator.TaxCaculatorActivity">
-           <!-- <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>-->
         </activity>
     </application>
 

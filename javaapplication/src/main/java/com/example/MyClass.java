@@ -3,21 +3,21 @@ package com.example;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.Locale;
 
 public class MyClass {
 
     public static void  main(String[] args){
 
         // 得到德国的格式
-        NumberFormat nf2 =
-                NumberFormat.getInstance(Locale.CHINESE);
-        System.out.println(nf2.format(15644546541l));
+//        NumberFormat nf2 = NumberFormat.getInstance(Locale.CHINESE);
+//        System.out.println(nf2.format(15644546541l));
+//        int i = BigDecimal.valueOf(5000000 / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
+//        System.out.println("结果"+i );
 
-        int i = BigDecimal.valueOf(5000000 / 1.05f * 0.056f).setScale(0, RoundingMode.HALF_UP).intValue();
-        System.out.println("结果"+i );
-
+        BigDecimal bigDecimal = BigDecimal.valueOf(Math.pow(1 + 1, 360)).setScale(4, RoundingMode.HALF_UP);
+        String s = bigDecimal.toString();
+//        double v = BigDecimal.valueOf(Math.pow(1 + 99, 360)).setScale(4, RoundingMode.HALF_UP).doubleValue();
+        System.out.println("result  "+s);
     }
     // 等额本息 月供;
     public static int equalityInterestResult(int commercialAmount, float monthRate, int loanTerm) {

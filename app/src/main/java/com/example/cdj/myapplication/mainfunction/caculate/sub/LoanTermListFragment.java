@@ -119,7 +119,7 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
 //            bundle.putString(Fragment4.FROM_TAG,LoanTermListFragment.class.getSimpleName());
             bundle.putInt(CaculateMainFragment.KEY,key);
             bundle.putBoolean(CaculateMainFragment.isFromList, true);
-            mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
+            mCallback.onAddFragment(MortCaculatorInputFragment.class.getName(),bundle);
         }
     }
 }

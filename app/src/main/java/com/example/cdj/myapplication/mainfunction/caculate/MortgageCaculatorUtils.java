@@ -73,7 +73,7 @@ public class MortgageCaculatorUtils {
      * @return
      */
     public static int getEqualityInterestMonthPay(int amount, float monthRate, int totalMonth) {
-        double pow = Math.pow(1 + monthRate, totalMonth);
+        double pow =BigDecimal.valueOf( Math.pow(1 + monthRate, totalMonth)).setScale(4,RoundingMode.HALF_UP).doubleValue();
         double monthPay = amount * (monthRate * pow) / (pow - 1);
         return BigDecimal.valueOf(monthPay).setScale(2, RoundingMode.HALF_UP).intValue();
     }

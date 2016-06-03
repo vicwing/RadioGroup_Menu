@@ -11,7 +11,7 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
-import com.example.cdj.myapplication.mainfunction.caculate.sub.InputNumFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.MortCaculatorInputFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanAmountListFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanTermListFragment;
@@ -90,7 +90,7 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements S
                 if (mCaculateMainFragment.isFromDetail()){
                     mCallback.onAddFragment(LoanAmountListFragment.class.getName(),bundle);
                 }else{
-                    mCallback.onAddFragment(InputNumFragment.class.getName(),bundle);
+                    mCallback.onAddFragment(MortCaculatorInputFragment.class.getName(),bundle);
                 }
             }
         });

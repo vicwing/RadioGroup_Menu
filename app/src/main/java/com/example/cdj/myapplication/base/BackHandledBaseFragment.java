@@ -46,16 +46,6 @@ public abstract class BackHandledBaseFragment extends Fragment implements Fragme
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        initView(view);
     }
-
-//    protected void initView(View view) {
-//        view.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getFragmentManager().popBackStack();
-//            }
-//        });
-//    }
 
 }

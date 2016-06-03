@@ -24,18 +24,20 @@ public class MortgageCaculatorAcitivity extends FragmentActivity implements OnHe
     private String mParam1;
     private String mParam2;
 
-    CaculateMainFragment mCaculateMainFragment;
+//    CaculateMainFragment mCaculateMainFragment;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.frame);
 
         //当前的fragment 不加入栈中.
-         mCaculateMainFragment = (CaculateMainFragment) Fragment.instantiate(this, CaculateMainFragment.class.getName(), null);
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_container, mCaculateMainFragment, CaculateMainFragment.class.getName());
-//        transaction.addToBackStack(null);
-        transaction.commit();
+//         mCaculateMainFragment = (CaculateMainFragment) Fragment.instantiate(this, CaculateMainFragment.class.getName(), null);
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.add(R.id.frame_container, mCaculateMainFragment, CaculateMainFragment.class.getName());
+////        transaction.addToBackStack(null);
+//        transaction.commit();
+        Bundle bundle = getIntent().getExtras();
+        addFragment(CaculateMainFragment.class.getName(), bundle);
     }
 
     /**
@@ -66,17 +68,17 @@ public class MortgageCaculatorAcitivity extends FragmentActivity implements OnHe
 
     @Override
     public void onCallBackData(String num) {
-        Logger.d("activity  oncallBackdata "+ num);
-        CommercialLoanFragment commercialLoanFragment = (CommercialLoanFragment) mCaculateMainFragment.getChildFragmentManager().findFragmentByTag(CommercialLoanFragment.class.getName());
-        commercialLoanFragment.refreshFragment(num);
+//        Logger.d("activity  oncallBackdata "+ num);
+//        CommercialLoanFragment commercialLoanFragment = (CommercialLoanFragment) mCaculateMainFragment.getChildFragmentManager().findFragmentByTag(CommercialLoanFragment.class.getName());
+//        commercialLoanFragment.refreshFragment(num);
 //        fragment4.onCallBackData(num);
     }
 
     @Override
     public void onCallBackData(float percent, int price) {
-        mCaculateMainFragment.setCommercialAmount(price);
-        mCaculateMainFragment.setPercent(percent);
-        mCaculateMainFragment.getCurrentFragment().reFreshView();
+//        mCaculateMainFragment.setCommercialAmount(price);
+//        mCaculateMainFragment.setPercent(percent);
+//        mCaculateMainFragment.getCurrentFragment().reFreshView();
     }
 
 
@@ -95,7 +97,7 @@ public class MortgageCaculatorAcitivity extends FragmentActivity implements OnHe
         if (!BackHandlerHelper.handleBackPress(this)) {
             super.onBackPressed();
         }
-        if (0==getSupportFragmentManager().getBackStackEntryCount()){
+        if (1==getSupportFragmentManager().getBackStackEntryCount()){
             finish();
         }
     }

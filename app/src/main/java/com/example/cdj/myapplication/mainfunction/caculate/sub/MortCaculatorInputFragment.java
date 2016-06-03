@@ -3,6 +3,8 @@ package com.example.cdj.myapplication.mainfunction.caculate.sub;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputFilter;
+import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +18,19 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommomEditText;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
+import com.example.cdj.myapplication.mainfunction.taxcaculator.CashierInputFilter;
+import com.example.cdj.myapplication.mainfunction.taxcaculator.InputFilterMinMax;
 import com.orhanobut.logger.Logger;
 
 /**
  * 商业贷款输入金额
  * Created by cdj onCallBackData 2016/5/18.
  */
-public class InputNumFragment extends BackHandledBaseFragment implements View.OnClickListener {
+public class MortCaculatorInputFragment extends BackHandledBaseFragment implements View.OnClickListener {
 
     View rootView;
+    private int mMin = 1;
+    private int mMax = 99999;
 
     private ImageView iv_back;
     private CommomEditText mCommomEditText;
@@ -105,13 +111,14 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
     private void openInputMethod() {
         edt_content.setFocusable(true);
         edt_content.requestFocus();
-        InputMethodManager imm = (InputMethodManager)getActivity(). getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         // 接受软键盘输入的编辑文本或其它视图
-        imm.showSoftInput(edt_content,InputMethodManager.SHOW_FORCED);
+        imm.showSoftInput(edt_content, InputMethodManager.SHOW_FORCED);
     }
 
     /**
      * 根据key,指定刷新的view
+     *
      * @param caculateMainFragment
      * @param num
      */
@@ -204,8 +211,11 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
         tv_title.setText(R.string.caculate_input_loanterm);
         mCommomEditText.setTextUnit("年");
         mCommomEditText.setEditHint(R.string.caculate_input_loanterm);
+        edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99)});
+
     }
 
+    private String rateFiltetStr = "0123456789.";
 
     /**
      * 公积金贷款利率
@@ -213,8 +223,9 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
     private void initFundInterate() {
         tv_title.setText(R.string.caculate_fund_title_interest_rate);
         mCommomEditText.setTextUnit("%");
-        mCommomEditText.setKeyListener("0123456789.");
         mCommomEditText.setEditHint(R.string.caculate_input_fund_interest_rate);
+        edt_content.setKeyListener(DigitsKeyListener.getInstance(rateFiltetStr));
+        edt_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5),new InputFilterMinMax(0, 99)});
     }
 
     /**
@@ -223,17 +234,24 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
     private void initCommecialInterate() {
         tv_title.setText(R.string.caculate_input_interest_rate);
         mCommomEditText.setTextUnit("%");
-        mCommomEditText.setKeyListener("0123456789.");
         mCommomEditText.setEditHint(R.string.caculate_input_interest_rate);
+        edt_content.setKeyListener(DigitsKeyListener.getInstance(rateFiltetStr));
+//        edt_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5)});
+//        edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(0, 99),new InputFilter.LengthFilter(5)});
+        edt_content.setFilters(new InputFilter[]{new CashierInputFilter(99)});
+//        edt_content.setFilters(new InputFilter[]{new EditInputFilter()});
+
     }
 
     /**
      * 公积金贷款初始化
      */
     private void initFundAmountText() {
+
         tv_title.setText(R.string.caculate_fund_title_amount);
         mCommomEditText.setTextUnit("万元");
         mCommomEditText.setEditHint(R.string.caculate_input_fund_interest_rate);
+        edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin, mMax)});
     }
 
     /**
@@ -243,6 +261,7 @@ public class InputNumFragment extends BackHandledBaseFragment implements View.On
         tv_title.setText(R.string.caculate_commercial_title_loan_amount);
         mCommomEditText.setTextUnit("万元");
         mCommomEditText.setEditHint(R.string.caculate_input_loan_amount);
+        edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin, mMax)});
     }
 
     private void popBackToMain(CaculateMainFragment caculateMainFragment) {

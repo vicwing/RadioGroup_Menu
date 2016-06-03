@@ -165,7 +165,7 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
             Bundle bundle = new Bundle();
             bundle.putInt(CaculateMainFragment.KEY, key);
             bundle.putBoolean(CaculateMainFragment.isFromList, true);
-            mCallback.onAddFragment(InputNumFragment.class.getName(), bundle);
+            mCallback.onAddFragment(MortCaculatorInputFragment.class.getName(), bundle);
         }
     }
 }
