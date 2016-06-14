@@ -17,8 +17,9 @@ import android.widget.Toast;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
+import com.example.cdj.myapplication.mainfunction.BigDecialUtils;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
-import com.example.cdj.myapplication.mainfunction.caculate.MortgageCaculatorUtils;
+import com.example.cdj.myapplication.mainfunction.caculate.MortCaculatorUtils;
 
 /**
  * Created by cdj on 2016/5/19.
@@ -35,9 +36,9 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
     private TextView tv_jin_total_interest;
     private TextView tv_monthly_decline;  //每月递减
     private TextView tv_jin_total_principal_tInterest;
-    private int mMonthPay;
-    private int mTotalInterest;
-    private int mTotalAmount;
+    private double mMonthPay;
+    private double mTotalInterest;
+    private double mTotalAmount;
     private int mFirstMonthPay;
     private float mDecreasePay;
     private int mEqualityCorpusTotalAmount;
@@ -104,27 +105,30 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
         int totalMonth = loanYear * 12;
         if (0 == currentIndex) {
             int amount = commercialAmount * 10000;
-            float monthRate =  MortgageCaculatorUtils.getMonthRate(commercialRate);
+            double monthRate =  MortCaculatorUtils.getMonthRate(commercialRate);
             setData(loanYear, amount, monthRate, totalMonth);
         } else if (1 == currentIndex) {
             int amount = fundAmount * 10000;
-            float monthRate =  MortgageCaculatorUtils.getMonthRate(fundRate);
+            double monthRate =  MortCaculatorUtils.getMonthRate(fundRate);
             setData(loanYear, amount, monthRate, totalMonth);
         } else {
             int cAmount = commercialAmount * 10000;
-            float cMonthRate =  MortgageCaculatorUtils.getMonthRate(commercialRate);
+            double cMonthRate =  MortCaculatorUtils.getMonthRate(commercialRate);
 
             int fAmount = fundAmount * 10000;
-            float fMonthRate = MortgageCaculatorUtils. getMonthRate(fundRate);
+            double fMonthRate = MortCaculatorUtils. getMonthRate(fundRate);
 
             setCombinedData(totalMonth, cAmount, cMonthRate, fAmount, fMonthRate);
         }
 
         //等额本息
         String unit = getString(R.string.caculate_unit_yuan);
-        tv_xi_monthlypay.setText(mMonthPay + unit);
-        tv_xi_total_interest.setText(mTotalInterest + unit);
-        tv_xi_total_principal_tInterest.setText(mTotalAmount + unit);
+//        tv_xi_monthlypay.setText(format.format(mMonthPay)+ unit);
+//        tv_xi_total_interest.setText(format.format(mTotalInterest) + unit);
+//        tv_xi_total_principal_tInterest.setText(format.format(mTotalAmount) + unit);
+        tv_xi_monthlypay.setText(BigDecialUtils.getBigDecimalInt(mMonthPay)+ unit);
+        tv_xi_total_interest.setText(BigDecialUtils.getBigDecimalInt(mTotalInterest) + unit);
+        tv_xi_total_principal_tInterest.setText(BigDecialUtils.getBigDecimalInt(mTotalAmount) + unit);
 
         tv_jin_monthlypay.setText(mFirstMonthPay + unit);
         tv_monthly_decline.setText("每月递减" + mDecreasePay + unit);
@@ -141,35 +145,36 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
      * @param fAmount
      * @param fMonthRate
      */
-    private void setCombinedData(int totalMonth, int cAmount, float cMonthRate, int fAmount, float fMonthRate) {
-        int cMonthPay = MortgageCaculatorUtils. getEqualityInterestMonthPay(cAmount, cMonthRate, totalMonth);
-        int fMonthPay = MortgageCaculatorUtils. getEqualityInterestMonthPay(fAmount, fMonthRate, totalMonth);
+    private void setCombinedData(int totalMonth, int cAmount, double cMonthRate, int fAmount, double fMonthRate) {
+        double cMonthPay = MortCaculatorUtils. getEqualityInterestMonthPay(cAmount, cMonthRate, totalMonth);
+        double fMonthPay = MortCaculatorUtils. getEqualityInterestMonthPay(fAmount, fMonthRate, totalMonth);
         mMonthPay =cMonthPay+ fMonthPay;
 
         //总利息
-        int cTotalInterest =  MortgageCaculatorUtils.getEqualityTotalInterest(cAmount, cMonthPay, totalMonth);
-        int ftotalInterest =  MortgageCaculatorUtils.getEqualityTotalInterest(fAmount, fMonthPay, totalMonth);
+        double cTotalInterest =  MortCaculatorUtils.getEqualityTotalInterest(cAmount, cMonthRate, totalMonth);
+        double ftotalInterest =  MortCaculatorUtils.getEqualityTotalInterest(fAmount, fMonthRate, totalMonth);
         mTotalInterest = cTotalInterest + ftotalInterest;
 
-        mTotalAmount =  MortgageCaculatorUtils.getEqualitTotalAmount(cAmount+fAmount, mTotalInterest);
+        mTotalAmount =  MortCaculatorUtils.getCombinedTotalAmount(cAmount+fAmount, mTotalInterest);
+
+
 
         //等额本金
-
-        int cFirstMonthPay =  MortgageCaculatorUtils.getFirstMonthPay(cAmount, cMonthRate, totalMonth);
-        int fFirstMonthPay =  MortgageCaculatorUtils.getFirstMonthPay(fAmount, fMonthRate, totalMonth);
+        int cFirstMonthPay =  MortCaculatorUtils.getFirstMonthPay(cAmount, cMonthRate, totalMonth);
+        int fFirstMonthPay =  MortCaculatorUtils.getFirstMonthPay(fAmount, fMonthRate, totalMonth);
         mFirstMonthPay = cFirstMonthPay+fFirstMonthPay;
 
 
-        float cDeclinePay =  MortgageCaculatorUtils.getDecreasePay(cAmount, cMonthRate, totalMonth);
-        float fDeclinePay =  MortgageCaculatorUtils.getDecreasePay(fAmount, fMonthRate, totalMonth);
+        float cDeclinePay =  MortCaculatorUtils.getDecreasePay(cAmount, cMonthRate, totalMonth);
+        float fDeclinePay =  MortCaculatorUtils.getDecreasePay(fAmount, fMonthRate, totalMonth);
         mDecreasePay = cDeclinePay+fDeclinePay;
 
 
-        int cTotalAmount =  MortgageCaculatorUtils.getEqualityCorpusTotalAmount(cAmount, cMonthRate, totalMonth);
-        int fTotalAmount =  MortgageCaculatorUtils.getEqualityCorpusTotalAmount(fAmount, fMonthRate, totalMonth);
+        int cTotalAmount =  MortCaculatorUtils.getEqualityCorpusTotalAmount(cAmount, cMonthRate, totalMonth);
+        int fTotalAmount =  MortCaculatorUtils.getEqualityCorpusTotalAmount(fAmount, fMonthRate, totalMonth);
         mEqualityCorpusTotalAmount = cTotalAmount + fTotalAmount;
 
-        mCorpusTotalInterest =  MortgageCaculatorUtils.getEqualityCorpusTotalInterest(mEqualityCorpusTotalAmount, cAmount+fAmount);
+        mCorpusTotalInterest =  MortCaculatorUtils.getEqualityCorpusTotalInterest(mEqualityCorpusTotalAmount, cAmount+fAmount);
     }
 
     /**
@@ -179,119 +184,18 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
      * @param monthRate
      * @param totalMonth
      */
-    private void setData(int loanYear, int amount, float monthRate, int totalMonth) {
-        mMonthPay =  MortgageCaculatorUtils.getEqualityInterestMonthPay(amount, monthRate, totalMonth);
-        mTotalInterest =  MortgageCaculatorUtils.getEqualityTotalInterest(amount, mMonthPay, totalMonth);
-        mTotalAmount =  MortgageCaculatorUtils.getEqualitTotalAmount(amount, mTotalInterest);
+    private void setData(int loanYear, int amount, double monthRate, int totalMonth) {
+
+        mMonthPay = MortCaculatorUtils.getEqualityInterestMonthPay(amount, monthRate, totalMonth);
+        mTotalInterest =  MortCaculatorUtils.getEqualityTotalInterest(amount, monthRate, totalMonth);
+        mTotalAmount =  MortCaculatorUtils.getEqualitTotalAmount(amount, monthRate, totalMonth);
 
         //等额本金
-        mFirstMonthPay =  MortgageCaculatorUtils.getFirstMonthPay(amount, monthRate, loanYear * 12);
-        mDecreasePay =  MortgageCaculatorUtils.getDecreasePay(amount, monthRate, totalMonth);
-        mEqualityCorpusTotalAmount =  MortgageCaculatorUtils.getEqualityCorpusTotalAmount(amount, monthRate, totalMonth);
-        mCorpusTotalInterest =  MortgageCaculatorUtils.getEqualityCorpusTotalInterest(mEqualityCorpusTotalAmount, amount);
+        mFirstMonthPay =  MortCaculatorUtils.getFirstMonthPay(amount, monthRate,totalMonth);
+        mDecreasePay =  MortCaculatorUtils.getDecreasePay(amount, monthRate, totalMonth);
+        mEqualityCorpusTotalAmount =  MortCaculatorUtils.getEqualityCorpusTotalAmount(amount, monthRate, totalMonth);
+        mCorpusTotalInterest =  MortCaculatorUtils.getEqualityCorpusTotalInterest(mEqualityCorpusTotalAmount, amount);
     }
-
-//    /**
-//     * 等额本金
-//     * 本息总额: 还款月数×(总贷款额×月利率-月利率×(总贷款额÷还款月数)*(还款月数-1)÷2+总贷款额÷还款月数
-//     *
-//     * @param amoun      本金
-//     * @param monthRate  月利率
-//     * @param totalMonth 总月数
-//     * @return
-//     */
-//    public int getEqualityCorpusTotalAmount(int amoun, float monthRate, int totalMonth) {
-//        float totalAmount = totalMonth * (amoun * monthRate - monthRate * (amoun / totalMonth) * (totalMonth - 1) / 2 + amoun / totalMonth);
-//        return BigDecimal.valueOf(totalAmount).setScale(2, RoundingMode.HALF_UP).intValue();
-//    }
-//
-//    /**
-//     * 等额本金
-//     * 总利息 :本息总额-本金
-//     *
-//     * @param totalAmount 本息总额
-//     * @param amount
-//     * @return
-//     */
-//    public int getEqualityCorpusTotalInterest(int totalAmount, int amount) {
-//        return totalAmount - amount;
-//    }
-//
-//    /**
-//     * 等额本金
-//     * 首月月供金额：(贷款本金÷还款月数)+(贷款本金)×月利率
-//     *
-//     * @param amount
-//     * @param monthRate
-//     * @param totalMonth
-//     * @return
-//     */
-//    public int getFirstMonthPay(int amount, float monthRate, int totalMonth) {
-//        float firstMonthPay = (amount / totalMonth) + amount * monthRate;
-//        return BigDecimal.valueOf(firstMonthPay).setScale(2, RoundingMode.HALF_UP).intValue();
-//    }
-//
-//    /**
-//     * 等额本金
-//     * 月供递减金额：贷款本金÷还款月数×月利率
-//     *
-//     * @param amount     本金
-//     * @param monthRate  月利率
-//     * @param totalMonth 还款总月数
-//     * @return
-//     */
-//    public float getDecreasePay(int amount, float monthRate, int totalMonth) {
-//        float v = amount / totalMonth * monthRate;
-//        return BigDecimal.valueOf(v).setScale(2, RoundingMode.HALF_UP).floatValue();
-//    }
-//
-//    /**
-//     * 等额本息  月供计算结果.
-//     *
-//     * @param amount     贷款本金
-//     * @param monthRate  月利率
-//     * @param totalMonth 贷款月数
-//     * @return
-//     */
-//    public static int getEqualityInterestMonthPay(int amount, float monthRate, int totalMonth) {
-//        double pow = Math.pow(1 + monthRate, totalMonth);
-//        double monthPay = amount * (monthRate * pow) / (pow - 1);
-//        return BigDecimal.valueOf(monthPay).setScale(2, RoundingMode.HALF_UP).intValue();
-//    }
-//
-//    /**
-//     * 等额本息 总利息
-//     *
-//     * @param amount     本金
-//     * @param monthPay   月供
-//     * @param totalMonth 还款总月数
-//     * @return
-//     */
-//    public static int getEqualityTotalInterest(int amount, int monthPay, int totalMonth) {
-//        return monthPay * totalMonth - amount;
-//    }
-//
-//    /**
-//     * 等额本息  本息总额
-//     *
-//     * @param amount      本金
-//     * @param totalInrest 总利息
-//     * @return
-//     */
-//    public static int getEqualitTotalAmount(int amount, int totalInrest) {
-//        return totalInrest + amount;
-//    }
-//
-//
-//    /**
-//     * 获取月利率
-//     *
-//     * @param rate
-//     * @return
-//     */
-//    private float getMonthRate(float rate) {
-//        return BigDecimal.valueOf(rate / 100 / 12).setScale(6, BigDecimal.ROUND_HALF_UP).floatValue();
-//    }
 
     /**
      * 联系经纪人

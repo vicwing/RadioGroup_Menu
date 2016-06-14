@@ -1,5 +1,6 @@
 package com.example.cdj.myapplication.mainfunction.taxcaculator;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -114,5 +115,12 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
         if (v.getId() == R.id.iv_back) {
             getFragmentManager().popBackStack();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        InputMethodManager imm = (InputMethodManager)getActivity(). getSystemService(Activity.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput( InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
     }
 }

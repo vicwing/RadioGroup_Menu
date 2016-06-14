@@ -120,7 +120,9 @@ public class CommercialLoanFragment extends BackHandledBaseFragment implements S
          mFrameLoanTerm.setTitleText("贷款年限");
          mFrameLoanTerm.setHasRightArrow(true);
 
-        reFreshView();
+//        reFreshView();
+
+
     }
 
     /**

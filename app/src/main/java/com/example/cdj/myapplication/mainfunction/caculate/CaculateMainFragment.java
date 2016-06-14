@@ -140,7 +140,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
                 startResulFragment();
             }
         });
-
+        btn_do_caculate.setEnabled(false);
         layout.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
