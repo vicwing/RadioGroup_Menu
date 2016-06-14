@@ -35,7 +35,7 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
     private TextView tv_unit;
     private EditText edt_content;
     private ListView mListView;
-    private com.example.cdj.myapplication.cusview.CommonFormLayout frame_other_price;
+    private CommonFormLayout frame_other_price;
     private CaculateMainFragment mCaculateMainFragment;
     private String mFromFragment;
     private int key;
@@ -89,11 +89,11 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
                 switch (key){
                     case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
                     case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT:
-                        mCaculateMainFragment.setCommercialAmount(item.getPrice());
+                        mCaculateMainFragment.setCommercialAmount(String.valueOf(item.getPrice()));
                         break;
                     case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
                     case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
-                        mCaculateMainFragment.setFundAmount(item.getPrice());
+                        mCaculateMainFragment.setFundAmount(String.valueOf(item.getPrice()));
                         break;
                     default:
                         break;
@@ -147,7 +147,7 @@ public class LoanAmountListFragment extends BackHandledBaseFragment implements V
             BigDecimal b1 = new BigDecimal(Float.toString(percent));
             BigDecimal b2 = new BigDecimal(Float.toString(0.1f));
             percent = b1.subtract(b2).floatValue();
-            int result = (int) (mCaculateMainFragment.getCommercialAmount() * percent);
+            int result = (int) (Integer.parseInt(mCaculateMainFragment.getCommercialAmount() )* percent);
             loanPercent.setPercent(percent);
             loanPercent.setPrice(result);
             loanPercents.add(loanPercent);

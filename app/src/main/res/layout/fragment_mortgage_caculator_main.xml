@@ -69,11 +69,11 @@
         android:id="@+id/frame_caculate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
-
+<!--
     <Button
         android:id="@+id/btn_do_caculate"
         android:layout_marginTop="50dp"
         style="@style/Common_Btn_style"
         android:text="立即计算"
-        />
+        />-->
 </LinearLayout>

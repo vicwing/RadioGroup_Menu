@@ -5,15 +5,16 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
-import com.example.cdj.myapplication.mainfunction.caculate.sub.MortCaculatorInputFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanAmountListFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanRateListFragment;
 import com.example.cdj.myapplication.mainfunction.caculate.sub.LoanTermListFragment;
+import com.example.cdj.myapplication.mainfunction.caculate.sub.MortCaculatorInputFragment;
 
 /**
  * 公积金贷款
@@ -28,6 +29,7 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
+    private CaculateMainFragment parentFragment;
 
     public FundLoanFragment() {
         // Required empty public constructor
@@ -39,12 +41,9 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
      *
      * @return Master_Fragment的实例.
      */
-    public static FundLoanFragment newInstance(String param1, String param2) {
+    public static FundLoanFragment newInstance(Bundle bundle) {
         FundLoanFragment fragment = new FundLoanFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -53,6 +52,8 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
     CommonFormLayout mFrameInterestRate;//房贷利率
 
     CommonFormLayout mFrameLoanTerm;//贷款年限
+
+    private Button btn_do_caculate;
 
     @Nullable
     @Override
@@ -100,28 +101,36 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
             }
         });
 
+
+
+        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
+        btn_do_caculate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                parentFragment. startResulFragment();
+            }
+        });
+
         mFrameLoan.setTitleText(R.string.caculate_fund_title_amount);
-        mFrameLoan.setHasRightArrow(true);
 //        mFrameLoan.setContentText("7成"+totalPrice);
 
 
         mFrameInterestRate.setTitleText(R.string.caculate_fund_title_interest_rate);
 //        mFrameInterestRate.setContentText(R.string.caculate_newbase_interest_rate+mIntrestRate+"%");
-        mFrameInterestRate.setHasRightArrow(true);
 
         mFrameLoanTerm.setTitleText(R.string.caculate_fund_title_loan_term);
 //        mFrameLoanTerm.setContentText(mLoanTerm+"年");
-        mFrameLoanTerm.setHasRightArrow(true);
+
         reFreshView();
     }
 
     @Override
     public void reFreshView() {
-        CaculateMainFragment parentFragment = (CaculateMainFragment) getParentFragment();
-        if (parentFragment!=null){
+        parentFragment = (CaculateMainFragment) getParentFragment();
+        if (parentFragment !=null){
 
-            String price =  parentFragment.getFundAmount() + "万元";
-            mFrameLoan.setContentText(parentFragment.isFromDetail()? (int)(parentFragment.getPercent()*10)+"成 "+price : price);
+            parentFragment. setFundAmountView(btn_do_caculate,mFrameLoan);
+
 
             String interestRateText = parentFragment.getFundRate() + "%";
             String rateDescription = parentFragment.getFundRateDes();
@@ -130,4 +139,6 @@ public class FundLoanFragment extends BackHandledBaseFragment implements SubRefr
             mFrameLoanTerm.setContentText(parentFragment.getLoanYear()+"年");
         }
     }
+
+
 }

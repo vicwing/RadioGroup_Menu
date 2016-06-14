@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
+import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.SubRefreshListener;
@@ -33,8 +34,6 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
     public final static String INTREST_RATE = "intrest_rate";// 利率
     public final static String LOAN_TERM = "loan_term";
 
-    TextView mTvHouseStyle;
-    TextView mTvTotalPrice;
     private SegmentControl mSegmentControl;
     private FragmentActivity mActivity;
 
@@ -78,13 +77,13 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
     public static float mDefaultCommercialRate =  4.9f; //商贷默认基准利率
     public static  float mDefaultFundRate =  3.25f; //公贷默认基准利率
 
-    private int mCommercialAmount = mDefaultAmount;// 普通房贷:金额
+    private String mCommercialAmount = "";// 普通房贷:金额
     private float mCommercialRate = mDefaultCommercialRate;  // 普通房贷:利率默认4.9
 
     private String mFundRateDes = "最新基准利率";
     private String mCommercialRateDesc = "最新基准利率";
 
-    private int mFundAmount = mDefaultAmount;// 公积金房贷:金额
+    private String mFundAmount = "";// 公积金房贷:金额
     private float mFundRate = mDefaultFundRate;// 公积金:利率默认4.9
 
     private int mLoanTerm = 30;//贷款期限
@@ -126,38 +125,43 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
             }
             String price = getArguments().getString(TOTAL_PRICE);
             if (!TextUtils.isEmpty(price))
-                mCommercialAmount = Integer.parseInt(price);
+                mCommercialAmount =price;
+//                mCommercialAmount = Integer.parseInt(price);
 
             String intrestRate = getArguments().getString(INTREST_RATE);
             if (!TextUtils.isEmpty(intrestRate))
                 mCommercialRate = Float.parseFloat(intrestRate);
         }
 
-        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
-        btn_do_caculate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startResulFragment();
-            }
-        });
-        btn_do_caculate.setEnabled(false);
-        layout.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().finish();
-            }
-        });
+//        isFromDetail = true;//来自详情页
+//        mCommercialAmount = "100";
+//        mFundAmount="200";
+
+//        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
+//        btn_do_caculate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startResulFragment();
+//            }
+//        });
+//        btn_do_caculate.setEnabled(false);
+//        layout.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                getActivity().finish();
+//            }
+//        });
     }
 
     /**
      * 计算房贷结果
      */
-    private void startResulFragment() {
+    public void startResulFragment() {
         Logger.d("贷款总额  " + "  利率  " + " 公积金利率 " + "贷款期限  " + " stack" + getChildFragmentManager().getBackStackEntryCount());
         Bundle bundle = new Bundle();
-        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
-        bundle.putFloat(INTREST_RATE, mCommercialRate);
-        bundle.putInt(LOAN_TERM, mLoanTerm);
+//        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
+//        bundle.putFloat(INTREST_RATE, mCommercialRate);
+//        bundle.putInt(LOAN_TERM, mLoanTerm);
         mCallback.onAddFragment(CaculateResultFragment.class.getName(), bundle);
     }
 
@@ -171,6 +175,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
                 if (currentIndex==0){
                     if (index==1){//商贷-->公贷
                         mFundAmount = mCommercialAmount;
+
                     } else if (index == 2) {//商贷-->组合贷
 //                        mFundAmount=0;
 //                        mFundRate =mDefaultFundRate;
@@ -178,6 +183,7 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
                 }else if(currentIndex==1){
                     if (index==0){//公贷-->商贷
                         mCommercialAmount  = mFundAmount;
+
                     } else if (index == 2) {//公贷-->组合贷
 //                        mCommercialAmount = 0;
                     }
@@ -188,7 +194,6 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
 
                     }
                 }
-
                 changeFragment(index);
                 getCurrentFragment().reFreshView();
             }
@@ -203,15 +208,15 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
 
     private void initFragment() {
         mSegmentControl.setSelectedIndex(0);
-        Bundle bundle = new Bundle();
-        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
-        bundle.putFloat(INTREST_RATE, mCommercialRate);
-        bundle.putBoolean(FROM_TAG, isFromDetail);
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
+//        bundle.putFloat(INTREST_RATE, mCommercialRate);
+//        bundle.putBoolean(FROM_TAG, isFromDetail);
         fragmentArrayList = new ArrayList<Fragment>();
 //        fragmentArrayList.add(CommercialLoanFragment.newInstance(String.valueOf(mCommercialAmount), String.valueOf(mCommercialRate)));
-        fragmentArrayList.add(CommercialLoanFragment.newInstance(bundle));
-        fragmentArrayList.add(FundLoanFragment.newInstance("", null));
-        fragmentArrayList.add(CombinedLoanFragment.newInstance("", null));
+        fragmentArrayList.add(CommercialLoanFragment.newInstance(null));
+        fragmentArrayList.add(FundLoanFragment.newInstance(null));
+        fragmentArrayList.add(CombinedLoanFragment.newInstance(null));
         changeFragment(0);
     }
 
@@ -279,11 +284,11 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
         return percent;
     }
 
-    public int getCommercialAmount() {
+    public String getCommercialAmount() {
         return mCommercialAmount;
     }
 
-    public void setCommercialAmount(int commercialAmount) {
+    public void setCommercialAmount(String commercialAmount) {
         this.mCommercialAmount = commercialAmount;
     }
 
@@ -303,11 +308,11 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
         mLoanTerm = loanTerm;
     }
 
-    public int getFundAmount() {
+    public String getFundAmount() {
         return mFundAmount;
     }
 
-    public void setFundAmount(int fundAmount) {
+    public void setFundAmount(String fundAmount) {
         this.mFundAmount = fundAmount;
     }
 
@@ -361,5 +366,39 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
 
     public int getCurrentIndex() {
         return currentIndex;
+    }
+
+    /**
+     * 商业贷款金额
+     * @param button
+     * @param commonFormLayout
+     */
+    public void setCommercialAmountView(Button button, CommonFormLayout commonFormLayout) {
+        String commercialAmount = getCommercialAmount();
+        if (!TextUtils.isEmpty(commercialAmount)){
+            button.setEnabled(true);
+            String price = commercialAmount + "万元";
+            commonFormLayout.setContentText(isFromDetail() ? (int) (getPercent() * 10) + "成 " + price : price);
+        }else {
+            button.setEnabled(false);
+            commonFormLayout.setContentText("");
+        }
+    }
+
+    /**
+     * 公积金贷款金额
+     * @param button
+     * @param commonFormLayout
+     */
+    public void setFundAmountView(Button button, CommonFormLayout commonFormLayout) {
+        String fundAmount = getFundAmount();
+        if (!TextUtils.isEmpty(fundAmount)){
+            button.setEnabled(true);
+            String price =  fundAmount + "万元";
+            commonFormLayout.setContentText(isFromDetail()? (int)(getPercent()*10)+"成 "+price : price);
+        }else {
+            button.setEnabled(false);
+            commonFormLayout.setContentText("");
+        }
     }
 }

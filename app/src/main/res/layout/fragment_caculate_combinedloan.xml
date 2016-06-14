@@ -48,4 +48,12 @@
         android:layout_marginTop="10dp"
         android:id="@+id/frame_loan_year"
         style="@style/caculate_CommonFormLayout"/>
+
+
+    <Button
+        android:id="@+id/btn_do_caculate"
+        android:layout_marginTop="50dp"
+        style="@style/Common_Btn_style"
+        android:text="立即计算"
+        />
 </LinearLayout>

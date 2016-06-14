@@ -93,12 +93,14 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
 //                oldOnclik(num, fragment4);
                 switchViewRefresh(caculateMainFragment, num);
                 caculateMainFragment.setFromDetail(false);
-                if (isFromList) {//来自列表.回退要2次
-                    popBackToMain(caculateMainFragment);
-                } else {
-                    getFragmentManager().popBackStack();
-                    caculateMainFragment.getCurrentFragment().reFreshView();
-                }
+                popBackToMain(caculateMainFragment);
+
+//                if (isFromList) {//来自列表.回退要2次
+//                    popBackToMain(caculateMainFragment);
+//                } else {
+//                    getFragmentManager().popBackStack();
+//                    caculateMainFragment.getCurrentFragment().reFreshView();
+//                }
             }
         });
 
@@ -125,24 +127,26 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
     private void switchViewRefresh(CaculateMainFragment caculateMainFragment, String num) {
         switch (key) {
             case CaculateMainFragment.FROMDETAIL_COMMERCIAL_AMOUNT:
-                caculateMainFragment.setCommercialAmount(Integer.parseInt(num));
+                caculateMainFragment.setCommercialAmount(num);
                 break;
             case CaculateMainFragment.FROMDETAIL_COMMERCIAL_INTEREST_RATE:
+                caculateMainFragment.setShowCommercialRateDesc(true);
                 caculateMainFragment.setCommercialRate(Float.parseFloat(num));
                 break;
 
             case CaculateMainFragment.FROMDETAIL_Fund_AMOUNT:
-                caculateMainFragment.setFundAmount(Integer.parseInt(num));
+                caculateMainFragment.setFundAmount(num);
                 break;
             case CaculateMainFragment.FROMDETAIL_Fund_INTEREST_RATE:
+                caculateMainFragment.setShowFundRateDesc(true);
                 caculateMainFragment.setFundRate(Float.parseFloat(num));
                 break;
 
             case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_AMOUNT://组合贷款金额
-                caculateMainFragment.setCommercialAmount(Integer.parseInt(num));
+                caculateMainFragment.setCommercialAmount(num);
                 break;
             case CaculateMainFragment.FROMDETAIL_COMBINED_FUND_AMOUNT:
-                caculateMainFragment.setFundAmount(Integer.parseInt(num));
+                caculateMainFragment.setFundAmount(num);
                 break;
 
             case CaculateMainFragment.FROMDETAIL_COMBINED_COMERCIAL_RATE://组合贷款利率
@@ -267,8 +271,9 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
     private void popBackToMain(CaculateMainFragment caculateMainFragment) {
         caculateMainFragment.getCurrentFragment().reFreshView();
 //        fragment4.setFromDetail(false);
-        getFragmentManager().popBackStack();
-        getFragmentManager().popBackStack();
+//        getFragmentManager().popBackStack();
+//        getFragmentManager().popBackStack();
+        getFragmentManager().popBackStack(CaculateMainFragment.class.getName(), 0);
         Logger.d("stack count == " + getFragmentManager().getBackStackEntryCount() + " indexAt ");
     }
 

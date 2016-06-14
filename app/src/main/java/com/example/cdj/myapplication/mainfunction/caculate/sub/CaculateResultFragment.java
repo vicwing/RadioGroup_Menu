@@ -6,6 +6,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
@@ -92,11 +93,19 @@ public class CaculateResultFragment extends BackHandledBaseFragment {
         setAgentTextView();
 
         CaculateMainFragment parentFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
-
-        int commercialAmount = parentFragment.getCommercialAmount();
+        int commercialAmount = 0;
+        if (!TextUtils.isEmpty(parentFragment.getCommercialAmount())){
+             commercialAmount = Integer.parseInt(parentFragment.getCommercialAmount());
+        }
+//        int commercialAmount = parentFragment.getCommercialAmount();
         float commercialRate = parentFragment.getCommercialRate();
 
-        int fundAmount = parentFragment.getFundAmount();
+        int fundAmount = 0 ;
+        if (!TextUtils.isEmpty(parentFragment.getFundAmount())){
+            fundAmount = Integer.parseInt(parentFragment.getFundAmount());
+        }
+//        int fundAmount = parentFragment.getFundAmount();
+
         float fundRate = parentFragment.getFundRate();
 
         int loanYear = parentFragment.getLoanYear();
