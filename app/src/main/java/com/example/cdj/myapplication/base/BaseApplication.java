@@ -19,5 +19,7 @@ public class BaseApplication extends Application {
 
 //        KLog.init(BuildConfig.LOG_DEBUG);
         KLog.init(true);
+
+//        String androidId = System.getString(getContentResolver(), System.ANDROID_ID);
     }
 }

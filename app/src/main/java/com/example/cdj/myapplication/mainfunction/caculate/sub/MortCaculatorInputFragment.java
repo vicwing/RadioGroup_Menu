@@ -20,6 +20,7 @@ import com.example.cdj.myapplication.cusview.CommomEditText;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.CashierInputFilter;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.InputFilterMinMax;
+import com.example.cdj.myapplication.utils.FixRepeatClick;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -280,7 +281,13 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_back) {
-            getFragmentManager().popBackStack();
+//            getFragmentManager().popBackStack();
+            if (FixRepeatClick.isFastDoubleClick()) {
+                return;
+            }else{
+                getFragmentManager().popBackStack();
+            }
+
         }
     }
 }

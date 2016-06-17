@@ -137,32 +137,13 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
 //        mCommercialAmount = "100";
 //        mFundAmount="200";
 
-//        btn_do_caculate = (Button) layout.findViewById(R.id.btn_do_caculate);
-//        btn_do_caculate.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                startResulFragment();
-//            }
-//        });
-//        btn_do_caculate.setEnabled(false);
-//        layout.findViewById(R.id.iv_back).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                getActivity().finish();
-//            }
-//        });
     }
 
     /**
      * 计算房贷结果
      */
     public void startResulFragment() {
-        Logger.d("贷款总额  " + "  利率  " + " 公积金利率 " + "贷款期限  " + " stack" + getChildFragmentManager().getBackStackEntryCount());
-        Bundle bundle = new Bundle();
-//        bundle.putInt(TOTAL_PRICE, mCommercialAmount);
-//        bundle.putFloat(INTREST_RATE, mCommercialRate);
-//        bundle.putInt(LOAN_TERM, mLoanTerm);
-        mCallback.onAddFragment(CaculateResultFragment.class.getName(), bundle);
+        mCallback.onAddFragment(CaculateResultFragment.class.getName(), null);
     }
 
 
@@ -177,15 +158,13 @@ public class CaculateMainFragment extends BackHandledBaseFragment {
                         mFundAmount = mCommercialAmount;
 
                     } else if (index == 2) {//商贷-->组合贷
-//                        mFundAmount=0;
-//                        mFundRate =mDefaultFundRate;
+                        mFundAmount="";
                     }
                 }else if(currentIndex==1){
                     if (index==0){//公贷-->商贷
                         mCommercialAmount  = mFundAmount;
-
                     } else if (index == 2) {//公贷-->组合贷
-//                        mCommercialAmount = 0;
+                        mCommercialAmount = "";
                     }
                 }else if(currentIndex==2){
                     if (index==0){//组合贷-->商贷

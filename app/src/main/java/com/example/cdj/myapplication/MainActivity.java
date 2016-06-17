@@ -13,6 +13,9 @@ import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
 import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.utils.device.DeviceStatusUtils;
+import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
+import com.orhanobut.logger.Logger;
 import com.socks.library.KLog;
 
 import java.util.ArrayList;
@@ -42,12 +45,19 @@ public class MainActivity extends FragmentActivity {
         initViewPager();
 
         KLog.d("abcdefg");
-
 //        initToolbar();
 //        initListView();
+        DeviceStatusUtils.getImieStatus(this);
+        DeviceStatusUtils.getSimNumber(this);
+        DeviceStatusUtils.getAndroidId(this);
+        String SerialNumber = android.os.Build.SERIAL;
+
+        DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(this);
+        Logger.d("SerialNumber  "+ SerialNumber);
+        Logger.d("deviceUuidFactory  "+ deviceUuidFactory.getDeviceUuid());
+
 
     }
-
     public void initView() {
 //        chat = new FragmentChat();
         chat = new FragmentA();

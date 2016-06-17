@@ -82,6 +82,7 @@ public class CommonFormLayout extends RelativeLayout {
                 }
             }
         }
+
     }
 
 
@@ -186,5 +187,10 @@ public class CommonFormLayout extends RelativeLayout {
 
     public void  addTextChangedListener(TextWatcher watcher){
         tv_common_content.addTextChangedListener(watcher);
+    }
+
+    public void setViewBackgroundDrawable11(Drawable background){
+        View view = findViewById(R.id.root_commom_formlayout);
+        view.setBackgroundDrawable(null);
     }
 }

@@ -19,7 +19,6 @@ import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.Bean.InterestRateListBean;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -112,7 +111,7 @@ public class LoanTermListFragment extends BackHandledBaseFragment implements Vie
     public void onClick(View v) {
         int id  =  v.getId();
         if (id == R.id.iv_back) {
-            Logger.d(this.getClass().getName() + "返回" + "  stackCount " + getFragmentManager().getBackStackEntryCount());
+//            Logger.d(this.getClass().getName() + "返回" + "  stackCount " + getFragmentManager().getBackStackEntryCount());
             getFragmentManager().popBackStack();
         }else if (id==R.id.frame_other_price){
             Bundle bundle = new Bundle();

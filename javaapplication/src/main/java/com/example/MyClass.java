@@ -18,6 +18,11 @@ public class MyClass {
         String s = bigDecimal.toString();
 //        double v = BigDecimal.valueOf(Math.pow(1 + 99, 360)).setScale(4, RoundingMode.HALF_UP).doubleValue();
         System.out.println("result  "+s);
+
+        java.text.DecimalFormat decimalFormat = new java.text.DecimalFormat("0.00");
+//        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
+
+        System.out.println("利率  "+decimalFormat.format(5.665));
     }
     // 等额本息 月供;
     public static int equalityInterestResult(int commercialAmount, float monthRate, int loanTerm) {
@@ -25,19 +30,9 @@ public class MyClass {
         System.out.println();
         int amount = commercialAmount * 10000;
         double pow = Math.pow(1 + monthRate, loanTerm);
-//        BigDecimal bigDecimal = BigDecimal.valueOf(pow).setScale(3, RoundingMode.HALF_UP);
-
-//        System.out.println("bigDecimal  "+bigDecimal);
         double monthPay = amount *(monthRate * pow)/ (pow - 1);
-//        double monthPay = amount *(monthRate *bigDecimal.doubleValue())/ (bigDecimal.doubleValue() - 1);
-//        double monthPay = amount * (rate * Math.pow(1 + rate, loanTerm)) / (Math.pow(1+rate, loanTerm) - 1);
-//        double monthPay = amount * (rate * (1 + rate)*loanTerm)  / ((1 + rate)*loanTerm - 1);
-//        double monthPay = amount * (rate * (1 + rate)*loanTerm)  / ((1 + rate)*loanTerm - 1);
-
-//         BigDecimal.valueOf(monthPay).setScale(2, RoundingMode.HALF_UP).intValue();
         System.out.println(BigDecimal.valueOf(monthPay).setScale(2, RoundingMode.HALF_UP).doubleValue());
         return  BigDecimal.valueOf(monthPay).setScale(2, RoundingMode.HALF_UP).intValue();
-//        return (int) monthPay;
     }
 
     /**

@@ -28,13 +28,6 @@ import java.util.Locale;
  */
 public class TaxResultFragment extends BackHandledBaseFragment implements View.OnClickListener {
 
-    private int contractTax;//契税
-    private int valueAddTax;//value added tax 增值税
-    private int personaIncomeTax;//个人所得税
-
-    private float mValueAddTaxRate = 0.05f;//增值税税率
-    private float mAddtionTax = 0.12f;//城建附加税
-    private boolean isOnlyOne = false;
     private CommonFormLayout mForm_contract_tax;
     private CommonFormLayout mForm_personal_tax;
     private CommonFormLayout mTv_total_tax;
@@ -53,10 +46,12 @@ public class TaxResultFragment extends BackHandledBaseFragment implements View.O
 
     private void initView(View rootView) {
         rootView.setClickable(true);
+
         rootView.findViewById(R.id.iv_back).setOnClickListener(this);
         rootView.findViewById(R.id.btn_do_back).setOnClickListener(this);
         ((TextView) rootView.findViewById(R.id.tv_title)).setText(R.string.tax_caculator);
         mForm_contract_tax = (CommonFormLayout) rootView.findViewById(R.id.form_contract_tax);
+        mForm_contract_tax.setViewBackgroundDrawable11(null);
 
         iv_value_add_desc = rootView.findViewById(R.id.iv_value_add_desc);
         tv_value_add_tax = (TextView) rootView.findViewById(R.id.tv_value_add_tax);
