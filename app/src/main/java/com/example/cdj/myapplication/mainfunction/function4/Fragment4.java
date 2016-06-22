@@ -3,36 +3,25 @@ package com.example.cdj.myapplication.mainfunction.function4;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
 import com.example.cdj.myapplication.Bean.SecListBean;
-import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.RootViewActivity;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
-import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
-import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
-import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
-import com.example.cdj.myapplication.loadmore.LoadMoreUIHandler;
 import com.example.cdj.myapplication.mainfunction.caculate.MortgageCaculatorAcitivity;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.TaxCaculatorActivity;
-import com.orhanobut.logger.Logger;
+import com.example.cdj.myapplication.utils.DateUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import okhttp3.Call;
 
 /**
@@ -57,18 +46,15 @@ public class Fragment4 extends Fragment {
 
     @Bind(R.id.tv_text_end)
     TextView mTextEnd;
+    @Bind(R.id.btn_login)
+    Button btnLogin;
 
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
 
-    private PtrClassicFrameLayout mPtrFrameLayout;
-    private ListView mListView;
-    private QuickAdapter<SecListItemEntity> mAdapter;
-    private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
-    private LoadMoreListViewContainer loadMoreListViewContainer;
-    private SegmentControl mSegmentControl;
     private int pageCount = 3;
+    private TextView tv_time;
 
     /**
      * 通过工厂方法来创建Fragment实例
@@ -125,14 +111,22 @@ public class Fragment4 extends Fragment {
                 scrollTo(layout);
             }
         });
-
-
-
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RootViewActivity.class);
+                startActivity(intent);
+            }
+        });
+        tv_time = (TextView) layout.findViewById(R.id.tv_time);
+        tv_time.setText(DateUtil.timeStamp2Date(System.currentTimeMillis(),DateUtil.DateStyle.YYYY_MM_DD_HH_MM_SS.getValue())+"");
+        LogUtils.d("222222222222222222222");
         return layout;
     }
 
     /**
      * 滚动的到指定的,view的位置
+     *
      * @param layout
      */
     private void scrollTo(View layout) {
@@ -154,24 +148,7 @@ public class Fragment4 extends Fragment {
         });
     }
 
-    private void initSegmentControl(View layout) {
-        mSegmentControl = (SegmentControl) layout.findViewById(R.id.segment_control);
-        mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
-            @Override
-            public void onSegmentControlClick(int index) {
-                Log.d("tag", "index" + index);
-            }
-        });
-//        mSegmentControl.setBackgroundDrawableColor(getResources().getColor(R.color.black));
-//        mSegmentControl.setSelectdTextColor(getResources().getColor(R.color.black));
-//        mSegmentControl.setDefaultTextColor(getResources().getColor(R.color.white));
-//        mSegmentControl.setSelectedDrawableColor(getResources().getColor(R.color.white));
-    }
-
-    private int currentPage = 1;
-
     private void requestUpdate(final String currentPageStr) {
-        Logger.d("下拉刷新控件啦......currentPage  " + currentPageStr);
         OkHttpUtils
                 .post()//
                 .url(Url)//
@@ -180,105 +157,13 @@ public class Fragment4 extends Fragment {
                 .execute(new SecListItemBeanCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
-                        mPtrFrameLayout.refreshComplete();
                     }
 
                     @Override
                     public void onResponse(SecListBean response) {
 
-                        mPtrFrameLayout.refreshComplete();
-//                        mSecListItemEntities.addAll(response.getResult().getList());
-                        mAdapter.addAll(response.getResult().getList());
-                        Logger.d("response  " + response.getMessage() + "  count  " + mAdapter.getCount());
-//                        pageCount = response.getResult().getPageCount();
-                        if (currentPage <= pageCount) {
-                            loadMoreListViewContainer.loadMoreFinish(false, true);
-                        }
                     }
                 });
-    }
-
-    private int pageSize = 10;
-
-    /**
-     * 自定义loadmore footview
-     *
-     * @param loadMoreListViewContainer
-     */
-    private void setLoadMoreFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
-//        loadMoreListViewContainer.setLoadMoreView( LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
-            @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                Logger.d("自定义footview   加载更多...........");
-                loadMoreListViewContainer.setLoadMoreView(LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
-                loadMoreContainer.loadMoreFinish(true, true);
-            }
-        });
-        loadMoreListViewContainer.setLoadMoreUIHandler(new LoadMoreUIHandler() {
-            @Override
-            public void onLoading(LoadMoreContainer container) {
-                Logger.i("LoadMoreUIHandler   onLoading...");
-            }
-
-            @Override
-            public void onLoadFinish(LoadMoreContainer container, boolean empty, boolean hasMore) {
-                Logger.i("LoadMoreUIHandler   onLoadFinish...");
-            }
-
-            @Override
-            public void onWaitToLoadMore(LoadMoreContainer container) {
-                Logger.i("LoadMoreUIHandler   onWaitToLoadMore...");
-            }
-
-            @Override
-            public void onLoadError(LoadMoreContainer container, int errorCode, String errorMessage) {
-                Logger.i("LoadMoreUIHandler   onLoadError...");
-            }
-        });
-    }
-
-    /**
-     * 设置默认的加载更多.
-     *
-     * @param loadMoreListViewContainer
-     */
-    private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
-        // load more container
-        loadMoreListViewContainer.useDefaultHeader();
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
-            @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                currentPage++;
-                Logger.i("LoadMoreHandler  加载更多..............currentPage " + currentPage);
-                if (currentPage <= pageCount) {
-                    requestUpdate(String.valueOf(currentPage));
-                } else {
-                    loadMoreListViewContainer.loadMoreFinish(true, false);
-                }
-            }
-        });
-    }
-
-
-    private void testThread() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                                simpleAdapter.addAll("","","","","","","","","","");
-//                        for (int i = 0; i <10 ; i++) {
-//                            mSecListItemEntities.add("i  "+i+"number");
-//                        }
-                        mAdapter.addAll(mSecListItemEntities);
-                        loadMoreListViewContainer.loadMoreFinish(false, true);
-                    }
-                });
-            }
-        }.start();
     }
 
     @Override

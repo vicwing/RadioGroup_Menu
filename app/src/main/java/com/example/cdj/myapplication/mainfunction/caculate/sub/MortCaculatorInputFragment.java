@@ -1,6 +1,7 @@
 package com.example.cdj.myapplication.mainfunction.caculate.sub;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputFilter;
@@ -8,6 +9,8 @@ import android.text.method.DigitsKeyListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +24,7 @@ import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.CashierInputFilter;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.InputFilterMinMax;
 import com.example.cdj.myapplication.utils.FixRepeatClick;
-import com.orhanobut.logger.Logger;
+
 
 /**
  * 商业贷款输入金额
@@ -40,6 +43,7 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
     private boolean isFromList;
     private CaculateMainFragment mCaculateMainFragment;
     private int mCurrentIndex; //当前fragment 下标
+    private InputMethodManager imm;
 
     @Nullable
     @Override
@@ -59,10 +63,11 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
     private TextView tv_title;
     private TextView tv_unit;
     private EditText edt_content;
-    private Button btn_commit;
+
 
     private void initView() {
         rootView.setClickable(true);
+
         iv_back = (ImageView) rootView.findViewById(R.id.iv_back);
         iv_back.setOnClickListener(this);
         tv_title = (TextView) rootView.findViewById(R.id.tv_title);
@@ -91,33 +96,14 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
             @Override
             public void onClick(String num) {
                 CaculateMainFragment caculateMainFragment = (CaculateMainFragment) getFragmentManager().findFragmentByTag(CaculateMainFragment.class.getName());
-//                oldOnclik(num, fragment4);
                 switchViewRefresh(caculateMainFragment, num);
                 caculateMainFragment.setFromDetail(false);
                 popBackToMain(caculateMainFragment);
-
-//                if (isFromList) {//来自列表.回退要2次
-//                    popBackToMain(caculateMainFragment);
-//                } else {
-//                    getFragmentManager().popBackStack();
-//                    caculateMainFragment.getCurrentFragment().reFreshView();
-//                }
             }
         });
 
-        openInputMethod();
     }
 
-    /**
-     * 打开输入法
-     */
-    private void openInputMethod() {
-        edt_content.setFocusable(true);
-        edt_content.requestFocus();
-        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-        // 接受软键盘输入的编辑文本或其它视图
-        imm.showSoftInput(edt_content, InputMethodManager.SHOW_FORCED);
-    }
 
     /**
      * 根据key,指定刷新的view
@@ -230,7 +216,7 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
         mCommomEditText.setTextUnit("%");
         mCommomEditText.setEditHint(R.string.caculate_input_fund_interest_rate);
         edt_content.setKeyListener(DigitsKeyListener.getInstance(rateFiltetStr));
-        edt_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5),new InputFilterMinMax(0, 99)});
+        edt_content.setFilters(new InputFilter[]{new InputFilter.LengthFilter(5), new InputFilterMinMax(0, 99)});
     }
 
     /**
@@ -271,23 +257,87 @@ public class MortCaculatorInputFragment extends BackHandledBaseFragment implemen
 
     private void popBackToMain(CaculateMainFragment caculateMainFragment) {
         caculateMainFragment.getCurrentFragment().reFreshView();
-//        fragment4.setFromDetail(false);
-//        getFragmentManager().popBackStack();
-//        getFragmentManager().popBackStack();
         getFragmentManager().popBackStack(CaculateMainFragment.class.getName(), 0);
-        Logger.d("stack count == " + getFragmentManager().getBackStackEntryCount() + " indexAt ");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        closeInputMethod();
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.iv_back) {
-//            getFragmentManager().popBackStack();
             if (FixRepeatClick.isFastDoubleClick()) {
                 return;
             }else{
-                getFragmentManager().popBackStack();
+//                closeInputMethod();
+//                getFragmentManager().popBackStack();
+                getActivity().onBackPressed();
             }
-
         }
     }
+
+
+    /**
+     * 关闭输入法
+     */
+    private void closeInputMethod() {
+        if (imm != null) {
+//            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+//                    InputMethodManager.HIDE_NOT_ALWAYS);
+            imm.hideSoftInputFromWindow(edt_content.getWindowToken(), 0);
+        }
+    }
+
+    /**
+     * 打开输入法
+     */
+    private void openInputMethod() {
+        edt_content.setFocusable(true);
+        edt_content.requestFocus();
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        // 接受软键盘输入的编辑文本或其它视图
+        imm.showSoftInput(edt_content, InputMethodManager.SHOW_FORCED);
+    }
+
+
+    @Override
+    public Animation onCreateAnimation(int transit, boolean enter, int nextAnim) {
+        //        return super.onCreateAnimation(transit, enter, nextAnim);
+//        Animation animation = super.onCreateAnimation(transit, enter, nextAnim);
+
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+        // HW layer support only exists on API 11+
+        if (Build.VERSION.SDK_INT >= 11) {
+            if (animation == null && nextAnim != 0) {
+                animation = AnimationUtils.loadAnimation(getActivity(), nextAnim);
+            }
+            if (animation != null) {
+                getView().setLayerType(View.LAYER_TYPE_HARDWARE, null);
+                animation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+//                        LogUtils.d("onAnimationStart................");
+                    }
+
+                    public void onAnimationEnd(Animation animation) {
+                        getView().setLayerType(View.LAYER_TYPE_NONE, null);
+                        openInputMethod();
+//                        LogUtils.d("onAnimationEnd................");
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+//                        LogUtils.d("onAnimationRepeat................");
+                    }
+
+                });
+            }
+        }
+        return animation;
+    }
+
 }

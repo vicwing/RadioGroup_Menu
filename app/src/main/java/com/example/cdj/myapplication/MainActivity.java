@@ -2,12 +2,13 @@ package com.example.cdj.myapplication;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.RadioGroup;
 
+import com.example.cdj.myapplication.base.BaseApplication;
 import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends AppCompatActivity {
     @Bind(R.id.main_content)
     MyViewPager mPager;
 
@@ -55,9 +56,17 @@ public class MainActivity extends FragmentActivity {
         DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(this);
         Logger.d("SerialNumber  "+ SerialNumber);
         Logger.d("deviceUuidFactory  "+ deviceUuidFactory.getDeviceUuid());
-
-
+//        deviceUuidFactory=null;
+        deviceUuidFactory.getDeviceUuid();
+        startServeTime();
     }
+
+    private void startServeTime() {
+        BaseApplication application = (BaseApplication) getApplication();
+        long serverTime = System.currentTimeMillis();
+        application.startTimerTask(serverTime);
+    }
+
     public void initView() {
 //        chat = new FragmentChat();
         chat = new FragmentA();

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
 
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context="com.example.cdj.myapplication.MainActivity"
-    >
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.cdj.myapplication.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,11 +14,9 @@
         android:background="#333333"
         android:fitsSystemWindows="true"
         android:gravity="center"
-        android:padding="10dp"
-        >
+        android:padding="10dp">
 
-        <com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl
-            xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
+        <com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
             android:id="@+id/segment_control"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,7 +27,7 @@
             segmentcontrol:direction="horizon"
             segmentcontrol:horizonGap="8dip"
             segmentcontrol:texts="商业|公积金|组合"
-            segmentcontrol:verticalGap="8dip"/>
+            segmentcontrol:verticalGap="8dip" />
     </LinearLayout>
 
     <ScrollView
@@ -41,42 +38,55 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <Button
                 android:id="@+id/btn_start_caculator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="房贷计算器"/>
+                android:text="房贷计算器" />
 
             <Button
                 android:id="@+id/btn_start_tax_caculator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="税费计算器"/>
+                android:text="税费计算器" />
+
+            <Button
+                android:id="@+id/btn_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="rootview" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="点我!" />
+
             <TextView
                 android:id="@+id/tv_go"
                 android:layout_width="wrap_content"
-                android:text="点我!"
-                android:layout_height="wrap_content"/>
+                android:layout_height="300dp"
+                android:text="哈哈" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="300dp"
-                android:text="哈哈"/>
+                android:text="哈哈" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="300dp"
-                android:text="哈哈"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:text="哈哈"/>
+                android:text="哈哈" />
+
             <TextView
                 android:id="@+id/tv_text_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="计算器"/>
+                android:text="计算器" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

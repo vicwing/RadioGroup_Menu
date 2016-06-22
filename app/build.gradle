@@ -81,6 +81,7 @@ dependencies {
     compile project(':okhttputils')
     compile 'co.lujun:androidtagview:1.0.3'
     compile 'com.google.code.gson:gson:2.3.1'
+    compile 'com.apkfuns.logutils:library:1.4.2'
 }
 
 
