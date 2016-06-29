@@ -31,8 +31,8 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(getlayoutId());
+        initPtrFrame();
     }
     protected abstract int getlayoutId() ;
 
@@ -73,6 +73,8 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
 //                loadMoreListViewContainer.loadMoreFinish(true,false);
 //                loadMoreListViewContainer.setShowLoadingForFirstPage(true);
 //                requestUpdate(String.valueOf(currentPage));
+
+
             }
 
         });
@@ -80,7 +82,7 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
         loadMoreListViewContainer = (LoadMoreListViewContainer) findViewById(R.id.load_more_list_view_container);
         setLoadMoreDefaultFootView(loadMoreListViewContainer);
         //设定view可以加载更多
-        loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+
 
         qfangframelayout = EasyViewUtil.findViewById(this, R.id.qfangframelayout);
         qfangframelayout.showLoadingView();
@@ -104,18 +106,23 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
      */
     private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
         // load more container
-        loadMoreListViewContainer.useDefaultFooter();
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
-            @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-//                currentPage++;
-//                Logger.i("LoadMoreHandler  加载更多..............currentPage "+currentPage);
-//                if (currentPage<=pageCount){
-//                    requestUpdate(String.valueOf(currentPage));
-//                } else {
-//                    loadMoreListViewContainer.loadMoreFinish(true,false);
-//                }
-            }
-        });
+        if (loadMoreListViewContainer!=null){
+
+            loadMoreListViewContainer.useDefaultFooter();
+            loadMoreListViewContainer.setAutoLoadMore(true);
+            loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+            loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
+                @Override
+                public void onLoadMore(LoadMoreContainer loadMoreContainer) {
+                    LogUtils.d("LoadMoreHandler  加载更多..............currentPage ");
+    //                currentPage++;
+    //                if (currentPage<=pageCount){
+    //                    requestUpdate(String.valueOf(currentPage));
+    //                } else {
+    //                    loadMoreListViewContainer.loadMoreFinish(true,false);
+    //                }
+                }
+            });
+        }
     }
 }

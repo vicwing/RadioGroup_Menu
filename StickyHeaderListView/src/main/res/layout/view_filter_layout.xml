@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -8,7 +7,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/font_black_5"/>
+        android:background="@color/font_black_5" />
 
     <LinearLayout
         android:id="@+id/ll_head_layout"
@@ -36,20 +35,20 @@
                 android:layout_centerHorizontal="true"
                 android:text="分类"
                 android:textColor="@color/font_black_2"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/iv_category_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:src="@mipmap/home_down_arrow"/>
+                android:src="@mipmap/home_down_arrow" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
-            android:layout_height="20dp"
-            android:background="@color/font_black_5"/>
+            android:layout_height="match_parent"
+            android:background="@color/font_black_5" />
 
         <LinearLayout
             android:id="@+id/ll_sort"
@@ -69,20 +68,20 @@
                 android:layout_centerHorizontal="true"
                 android:text="排序"
                 android:textColor="@color/font_black_2"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/iv_sort_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:src="@mipmap/home_down_arrow"/>
+                android:src="@mipmap/home_down_arrow" />
         </LinearLayout>
 
         <View
             android:layout_width="1px"
-            android:layout_height="20dp"
-            android:background="@color/font_black_5"/>
+            android:layout_height="match_parent"
+            android:background="@color/font_black_5" />
 
         <LinearLayout
             android:id="@+id/ll_filter"
@@ -102,21 +101,54 @@
                 android:layout_centerHorizontal="true"
                 android:text="筛选"
                 android:textColor="@color/font_black_2"
-                android:textSize="13sp"/>
+                android:textSize="13sp" />
 
             <ImageView
                 android:id="@+id/iv_filter_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:src="@mipmap/home_down_arrow"/>
+                android:src="@mipmap/home_down_arrow" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="match_parent"
+            android:background="@color/font_black_5" />
+
+        <LinearLayout
+            android:id="@+id/ll_more"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ripple_item_clicked"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_more"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/iv_image"
+                android:layout_centerHorizontal="true"
+                android:text="更多"
+                android:textColor="@color/font_black_2"
+                android:textSize="13sp" />
+
+            <ImageView
+                android:id="@+id/iv_more_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@mipmap/home_down_arrow" />
         </LinearLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
-        android:background="@color/font_black_5"/>
+        android:background="@color/font_black_5" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -126,7 +158,7 @@
             android:id="@+id/view_mask_bg"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/half_transparent"/>
+            android:background="@color/half_transparent" />
 
         <LinearLayout
             android:id="@+id/ll_content_list_view"
@@ -143,7 +175,7 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:scrollbars="none"
-                android:visibility="gone"/>
+                android:visibility="gone" />
 
             <ListView
                 android:id="@+id/lv_right"
@@ -153,7 +185,7 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:scrollbars="none"
-                android:visibility="gone"/>
+                android:visibility="gone" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>

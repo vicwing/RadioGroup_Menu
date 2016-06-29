@@ -11,6 +11,16 @@ public class FilterData implements Serializable {
     private List<FilterTwoEntity> category;
     private List<FilterEntity> sorts;
     private List<FilterEntity> filters;
+    private List<FilterEntity> mores;
+    public List<FilterEntity> getMores() {
+        return mores;
+    }
+
+    public void setMores(List<FilterEntity> mores) {
+        this.mores = mores;
+    }
+
+
 
     public List<FilterTwoEntity> getCategory() {
         return category;

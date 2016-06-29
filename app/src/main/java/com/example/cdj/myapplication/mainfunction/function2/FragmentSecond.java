@@ -7,9 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.adapter.SecListItemAdapter;
+import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
+import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
+import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
+import com.orhanobut.logger.Logger;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -21,7 +29,9 @@ public class FragmentSecond extends Fragment {
     @Bind(R.id.iv_logotest)
     ImageView ivLogotest;
     private TextView textview;
-
+    private LoadMoreListViewContainer loadMoreListViewContainer;
+    private ListView mListView;
+    private QuickAdapter<SecListItemEntity> mAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         // TODO Auto-generated method stub
@@ -47,9 +57,39 @@ public class FragmentSecond extends Fragment {
 //        KLog.d("外存储  "+ getActivity().getExternalCacheDir());
 //        loadAndSaveBitmap(picUrl);
 //        KLog.d("外存储  "+ getActivity().getExternalCacheDir());
+
+        loadMoreListViewContainer = (LoadMoreListViewContainer) view.findViewById(R.id.load_more_list_view_container);
+        setLoadMoreDefaultFootView(loadMoreListViewContainer);
+
+        mListView = (ListView) view.findViewById(R.id.load_more_small_image_list_view);
+        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
+        mListView.setAdapter(mAdapter);
     }
 
 
+    /**
+     * 设置默认的加载更多.
+     * @param loadMoreListViewContainer
+     */
+    private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
+        // load more container
+        loadMoreListViewContainer.useDefaultHeader();
+        //设定view可以加载更多
+        loadMoreListViewContainer.setAutoLoadMore(true);
+        loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
+            @Override
+            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
+//                currentPage++;
+                Logger.d("LoadMoreHandler  加载更多..............currentPage ");
+//                if (currentPage<=pageCount){
+//                    requestUpdate(String.valueOf(currentPage));
+//                } else {
+//                    loadMoreListViewContainer.loadMoreFinish(true,false);
+//                }
+            }
+        });
+    }
     /**
      * 下载图片.保存到本地.
      * @param pictureUrl

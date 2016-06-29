@@ -27,7 +27,7 @@
                 android:stretchMode="spacingWidthUniform"
                 android:numColumns="3"
                 android:scrollbars="none"
-                tools:listitem="@layout/list_item" />
+                tools:listitem="@layout/item_newhouse_horizontal_banner" />
 <!--
             <com.sunfusheng.StickyHeaderListView.view.FixedGridView
                 android:id="@+id/horizontal_grid"

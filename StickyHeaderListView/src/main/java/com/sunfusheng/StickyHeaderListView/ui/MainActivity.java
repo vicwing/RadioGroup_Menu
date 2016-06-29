@@ -3,12 +3,10 @@ package com.sunfusheng.StickyHeaderListView.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,12 +33,13 @@ import com.sunfusheng.StickyHeaderListView.view.HeaderFilterViewView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderHorzontalListBannerView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
+import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothScrollListener;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 /**
  * 作者：孙福生
@@ -49,20 +48,12 @@ import butterknife.ButterKnife;
  */
 public class MainActivity extends BasePtrPullToResfrshActivity implements SmoothListView.ISmoothListViewListener {
 
-    @Bind(R.id.listView)
     SmoothListView smoothListView;
-
-    @Bind(R.id.fv_top_filter)
     FilterView fvTopFilter;
-    @Bind(R.id.rl_bar)
     RelativeLayout rlBar;
-    @Bind(R.id.tv_title)
     TextView tvTitle;
-    @Bind(R.id.view_title_bg)
     View viewTitleBg;
-    @Bind(R.id.view_action_more_bg)
     View viewActionMoreBg;
-    @Bind(R.id.fl_action_more)
     FrameLayout flActionMore;
 
     private Context mContext;
@@ -98,19 +89,30 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
     private int filterViewPosition = 4; // 筛选视图的位置
     private int filterViewTopSpace; // 筛选视图距离顶部的距离
 
+    private int titleViewHeightPx;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
         }
     };
+    private SmoothScrollListener smoothScrollListener;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_stickylistview_main);
-        ButterKnife.bind(this);
+
+        tvTitle = (TextView) findViewById(R.id.tv_title);
+        viewTitleBg = findViewById(R.id.view_title_bg);
+        flActionMore = (FrameLayout) findViewById(R.id.fl_action_more);
+        fvTopFilter = (FilterView) findViewById(R.id.fv_top_filter);
+        rlBar = (RelativeLayout) findViewById(R.id.rl_bar);
+        smoothListView = (SmoothListView) findViewById(R.id.listView);
+        viewActionMoreBg = findViewById(R.id.view_action_more_bg);
+
         LogUtils.getLogConfig()
                 .configAllowLog(true)
                 .configTagPrefix("StickyHeadListview")
@@ -118,7 +120,7 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
                 .configLevel(LogLevel.TYPE_VERBOSE);
         initData();
         initView();
-        initPtrFrame();
+//        initPtrFrame();
         initListener();
     }
 
@@ -142,6 +144,7 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
         filterData.setCategory(ModelUtil.getCategoryData());
         filterData.setSorts(ModelUtil.getSortData());
         filterData.setFilters(ModelUtil.getFilterData());
+        filterData.setMores(ModelUtil.getSortData());
 
         // 广告数据
         adList = ModelUtil.getAdData();
@@ -219,6 +222,12 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
             public void onFilterClick(int position) {
                 filterPosition = position;
                 isSmooth = true;
+
+                if (smoothScrollListener!=null){
+                    smoothScrollListener.setSmooth(isSmooth);
+                    smoothScrollListener.setFilterPosition(position);
+                }
+
                 LogUtils.d("假的筛选menu  " + "filterViewPosition  " + filterViewPosition + "  titleViewHeight  " + titleViewHeight);
                 smoothListView.smoothScrollToPositionFromTop(filterViewPosition, DensityUtil.dip2px(mContext, 0));
             }
@@ -230,6 +239,10 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
             public void onFilterClick(int position) {
                 if (isStickyTop) {
                     filterPosition = position;
+
+                    if (smoothScrollListener!=null){
+                        smoothScrollListener.setFilterPosition(position);
+                    }
                     fvTopFilter.showFilterLayout(position);
                     if (titleViewHeight - 3 > filterViewTopSpace || filterViewTopSpace > titleViewHeight + 3) {
                         smoothListView.smoothScrollToPositionFromTop(filterViewPosition, DensityUtil.dip2px(mContext, titleViewHeight));
@@ -261,66 +274,93 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
             }
         });
 
-        smoothListView.setRefreshEnable(false);
-        smoothListView.setLoadMoreEnable(false);
-        smoothListView.setSmoothListViewListener(this);
-        smoothListView.setOnScrollListener(new SmoothListView.OnSmoothScrollListener() {
+        // 更多Item点击
+        fvTopFilter.setOnItemFilterClickListener(new FilterView.OnItemFilterClickListener() {
             @Override
-            public void onSmoothScrolling(View view) {
-            }
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-                isScrollIdle = (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE);
-            }
-
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                if (isScrollIdle && adViewTopSpace < 0) return;
-
-                // 获取广告头部View、自身的高度、距离顶部的高度
-                if (itemHeaderAdView == null) {
-                    itemHeaderAdView = smoothListView.getChildAt(1 - firstVisibleItem);
-                }
-                if (itemHeaderAdView != null) {
-                    adViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderAdView.getTop());
-                    adViewHeight = DensityUtil.px2dip(mContext, itemHeaderAdView.getHeight());
-                }
-
-                // 获取筛选View、距离顶部的高度
-                if (itemHeaderFilterView == null) {
-                    itemHeaderFilterView = smoothListView.getChildAt(filterViewPosition - firstVisibleItem);
-                }
-                if (itemHeaderFilterView != null) {
-                    filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
-                }
-
-//                LogUtils.d("filterViewTopSpace "+filterViewTopSpace +"  titleViewHeight   "+ titleViewHeight);
-                // 处理筛选是否吸附在顶部
-                if (filterViewTopSpace > titleViewHeight) {
-                    isStickyTop = false; // 没有吸附在顶部
-                    fvTopFilter.setVisibility(View.INVISIBLE);
-                } else {
-                    isStickyTop = true; // 吸附在顶部
-                    fvTopFilter.setVisibility(View.VISIBLE);
-                }
-
-                if (firstVisibleItem > filterViewPosition) {
-                    isStickyTop = true;
-                    fvTopFilter.setVisibility(View.VISIBLE);
-                }
-
-                if (isSmooth && isStickyTop) {
-                    isSmooth = false;
-                    fvTopFilter.showFilterLayout(filterPosition);
-                }
-
-                fvTopFilter.setStickyTop(isStickyTop);
-
-                // 处理标题栏颜色渐变
-//                handleTitleBarColorEvaluate();
+            public void onItemFilterClick(FilterEntity entity) {
+                fillAdapter(ModelUtil.getFilterTravelingData(entity));
             }
         });
+
+        smoothListView.setRefreshEnable(false);
+        smoothListView.setLoadMoreEnable(true);
+        smoothListView.setSmoothListViewListener(this);
+
+        smoothScrollListener = new SmoothScrollListener(this, smoothListView,fvTopFilter);
+        smoothScrollListener.setOnDataChangeListener(new SmoothScrollListener.OnDataChangeListener() {
+            @Override
+            public void isSmooth(boolean isSmooth) {
+
+            }
+
+            @Override
+            public void isSitcky(boolean isSicky) {
+                isStickyTop = isSicky;
+            }
+
+            @Override
+            public void filterViewTopSpace(int topspace) {
+                filterViewTopSpace = topspace;
+            }
+        });
+        smoothListView.setOnScrollListener(smoothScrollListener);
+//        smoothListView.setOnScrollListener(new SmoothListView.OnSmoothScrollListener() {
+//            @Override
+//            public void onSmoothScrolling(View view) {
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//                isScrollIdle = (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE);
+//            }
+//
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+//                if (isScrollIdle && adViewTopSpace < 0) return;
+//
+//                // 获取广告头部View、自身的高度、距离顶部的高度
+//                if (itemHeaderAdView == null) {
+//                    itemHeaderAdView = smoothListView.getChildAt(1 - firstVisibleItem);
+//                }
+//                if (itemHeaderAdView != null) {
+//                    adViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderAdView.getTop());
+//                    adViewHeight = DensityUtil.px2dip(mContext, itemHeaderAdView.getHeight());
+//                }
+//
+//                // 获取筛选View、距离顶部的高度
+//                if (itemHeaderFilterView == null) {
+//                    itemHeaderFilterView = smoothListView.getChildAt(filterViewPosition - firstVisibleItem);
+//                }
+//                if (itemHeaderFilterView != null) {
+//                    filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
+//                }
+//
+////                LogUtils.d("filterViewTopSpace "+filterViewTopSpace +"  titleViewHeight   "+ titleViewHeight);
+//                // 处理筛选是否吸附在顶部
+//                if (filterViewTopSpace > titleViewHeight) {
+//                    isStickyTop = false; // 没有吸附在顶部
+//                    fvTopFilter.setVisibility(View.INVISIBLE);
+//                } else {
+//                    isStickyTop = true; // 吸附在顶部
+//                    fvTopFilter.setVisibility(View.VISIBLE);
+//                }
+//
+//                if (firstVisibleItem > filterViewPosition) {
+//                    isStickyTop = true;
+//                    fvTopFilter.setVisibility(View.VISIBLE);
+//                }
+//
+//                if (isSmooth && isStickyTop) {
+//                    isSmooth = false;
+//                    fvTopFilter.showFilterLayout(filterPosition);
+//                }
+//
+//                fvTopFilter.setStickyTop(isStickyTop);
+//
+//                // 处理标题栏颜色渐变
+////                handleTitleBarColorEvaluate();
+//            }
+//        });
     }
 
     // 填充数据
@@ -401,20 +441,18 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
         }, 2000);
     }
 
-    private int titleViewHeightPx;
+
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        titleViewHeight = DensityUtil.px2dip(this, rlBar.getHeight());
-//         titleViewHeightPx = DensityUtil.px2dip(this, rlBar.getHeight());
 
-        Rect rect = new Rect();
-        getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
-        int statusTop = rect.top;
         titleViewHeightPx = rlBar.getHeight();
-        // 状态栏高度
-//         titleViewHeight = rect.top;
+        titleViewHeight = DensityUtil.px2dip(this, rlBar.getHeight());
+        if (smoothScrollListener!=null){
+            smoothScrollListener.setTitleViewHeightPx(titleViewHeightPx);
+            smoothScrollListener.setTitleViewHeight(titleViewHeight);
+        }
         qfangframelayout.cancelAll();
     }
 

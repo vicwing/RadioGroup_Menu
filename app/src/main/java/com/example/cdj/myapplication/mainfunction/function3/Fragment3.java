@@ -127,7 +127,7 @@ public class Fragment3 extends Fragment {
 
         });
 //        // list view
-        mListView = (ListView) layout.findViewById(R.id.load_more_small_image_list_view);
+
 
         // header place holder
 //        View headerMarginView = new View(getContext());
@@ -137,15 +137,14 @@ public class Fragment3 extends Fragment {
        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
         setLoadMoreDefaultFootView(loadMoreListViewContainer);
 //        setLoadMoreFootView(loadMoreListViewContainer);
-        //设定view可以加载更多
 
+        mListView = (ListView) layout.findViewById(R.id.load_more_small_image_list_view);
 //        mAdapter = new SecListItemAdapter(getActivity(), mSecListItemEntities);
         mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
         mListView.setAdapter(mAdapter);
 
         mPtrFrameLayout.setPullToRefresh(true);
-        loadMoreListViewContainer.setAutoLoadMore(true);
-        loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+
         requestUpdate(String.valueOf(currentPage));
         return layout;
     }
@@ -237,6 +236,9 @@ public class Fragment3 extends Fragment {
     private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
         // load more container
         loadMoreListViewContainer.useDefaultHeader();
+        //设定view可以加载更多
+        loadMoreListViewContainer.setAutoLoadMore(true);
+        loadMoreListViewContainer.setShowLoadingForFirstPage(true);
         loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
             @Override
             public void onLoadMore(LoadMoreContainer loadMoreContainer) {

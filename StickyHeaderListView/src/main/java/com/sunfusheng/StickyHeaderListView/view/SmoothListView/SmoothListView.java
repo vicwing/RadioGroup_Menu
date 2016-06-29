@@ -20,7 +20,7 @@ public class SmoothListView extends ListView implements OnScrollListener {
 
     private float mLastY = -1; // save event y
     private Scroller mScroller; // used for scroll back
-    private OnScrollListener mScrollListener; // user's scroll listener
+    private OnScrollListener mScrollListener; // user's scroll onDataChangeListener
 
     // the interface to trigger refresh and load more.
     private ISmoothListViewListener mListViewListener;
@@ -77,7 +77,7 @@ public class SmoothListView extends ListView implements OnScrollListener {
     private void initWithContext(Context context) {
         mScroller = new Scroller(context, new DecelerateInterpolator());
         // XListView need the scroll event, and it will dispatch the event to
-        // user's listener (as a proxy).
+        // user's onDataChangeListener (as a proxy).
         super.setOnScrollListener(this);
 
         // init header view
@@ -301,10 +301,12 @@ public class SmoothListView extends ListView implements OnScrollListener {
                         startLoadMore();
                     }
                     resetFooterHeight();
+//                    return true;
                 }
                 break;
         }
         return super.onTouchEvent(ev);
+//        return true;
     }
 
     @Override
@@ -335,7 +337,7 @@ public class SmoothListView extends ListView implements OnScrollListener {
 
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-        // send to user's listener
+        // send to user's onDataChangeListener
         mTotalItemCount = totalItemCount;
         if (mScrollListener != null) {
             mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,

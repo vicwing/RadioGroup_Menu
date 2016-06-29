@@ -22,41 +22,44 @@ import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 /**
  * Created by sunfusheng on 16/4/20.
  */
 public class FilterView extends LinearLayout implements View.OnClickListener {
 
-    @Bind(R.id.tv_category)
+    private LinearLayout llMore;
+    private TextView tvMore;
+    private ImageView ivMoreArrow;
+
     TextView tvCategory;
-    @Bind(R.id.iv_category_arrow)
+
     ImageView ivCategoryArrow;
-    @Bind(R.id.tv_sort)
+
     TextView tvSort;
-    @Bind(R.id.iv_sort_arrow)
+
     ImageView ivSortArrow;
-    @Bind(R.id.tv_filter)
+
     TextView tvFilter;
-    @Bind(R.id.iv_filter_arrow)
+
     ImageView ivFilterArrow;
-    @Bind(R.id.ll_category)
+
     LinearLayout llCategory;
-    @Bind(R.id.ll_sort)
+
     LinearLayout llSort;
-    @Bind(R.id.ll_filter)
+
     LinearLayout llFilter;
-    @Bind(R.id.lv_left)
+
     ListView lvLeft;
-    @Bind(R.id.lv_right)
+
     ListView lvRight;
-    @Bind(R.id.ll_head_layout)
+
     LinearLayout llHeadLayout;
-    @Bind(R.id.ll_content_list_view)
+
     LinearLayout llContentListView;
-    @Bind(R.id.view_mask_bg)
+
     View viewMaskBg;
 
     private Context mContext;
@@ -75,6 +78,10 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
     private FilterRightAdapter rightAdapter;
     private FilterOneAdapter sortAdapter;
     private FilterOneAdapter filterAdapter;
+    private FilterOneAdapter moreAdapter;
+    private int selectedTextColor;//选中字体颜色
+    private int textDefaulColor;
+
 
     public FilterView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -89,18 +96,52 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
     private void init(Context context) {
         this.mContext = context;
         View view = LayoutInflater.from(context).inflate(R.layout.view_filter_layout, this);
-        ButterKnife.bind(this, view);
+
 
         initData();
         initView();
         initListener();
+
+
     }
 
     private void initData() {
-
+        selectedTextColor = mContext.getResources().getColor(R.color.orange);
+        textDefaulColor = mContext.getResources().getColor(R.color.font_black_2);
     }
 
     private void initView() {
+        tvCategory = (TextView) findViewById(R.id.tv_category);
+
+        ivCategoryArrow = (ImageView) findViewById(R.id.iv_category_arrow);
+
+        tvSort = (TextView) findViewById(R.id.tv_sort);
+
+        ivSortArrow = (ImageView) findViewById(R.id.iv_sort_arrow);
+
+        tvFilter = (TextView) findViewById(R.id.tv_filter);
+
+        ivFilterArrow = (ImageView) findViewById(R.id.iv_filter_arrow);
+
+        tvMore = (TextView) findViewById(R.id.tv_more);
+
+        ivMoreArrow = (ImageView) findViewById(R.id.iv_more_arrow);
+
+        llCategory = (LinearLayout) findViewById(R.id.ll_category);
+
+        llSort = (LinearLayout) findViewById(R.id.ll_sort);
+
+        llFilter = (LinearLayout) findViewById(R.id.ll_filter);
+
+        llMore = (LinearLayout) findViewById(R.id.ll_more);
+
+        lvLeft = (ListView) findViewById(R.id.lv_left);
+        lvRight = (ListView) findViewById(R.id.lv_right);
+        llHeadLayout = (LinearLayout) findViewById(R.id.ll_head_layout);
+        llContentListView = (LinearLayout) findViewById(R.id.ll_content_list_view);
+
+        viewMaskBg = findViewById(R.id.view_mask_bg);
+
         viewMaskBg.setVisibility(GONE);
         llContentListView.setVisibility(GONE);
     }
@@ -109,6 +150,8 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         llCategory.setOnClickListener(this);
         llSort.setOnClickListener(this);
         llFilter.setOnClickListener(this);
+        llMore.setOnClickListener(this);
+
         viewMaskBg.setOnClickListener(this);
         llContentListView.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -139,6 +182,13 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
                     onFilterClickListener.onFilterClick(filterPosition);
                 }
                 break;
+
+            case R.id.ll_more:
+                filterPosition = 3;
+                if (onFilterClickListener != null) {
+                    onFilterClickListener.onFilterClick(filterPosition);
+                }
+                break;
             case R.id.view_mask_bg:
                 hide();
                 break;
@@ -148,14 +198,18 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
     // 复位筛选的显示状态
     public void resetFilterStatus() {
-        tvCategory.setTextColor(mContext.getResources().getColor(R.color.font_black_2));
+
+        tvCategory.setTextColor(textDefaulColor);
         ivCategoryArrow.setImageResource(R.mipmap.home_down_arrow);
 
-        tvSort.setTextColor(mContext.getResources().getColor(R.color.font_black_2));
+        tvSort.setTextColor(textDefaulColor);
         ivSortArrow.setImageResource(R.mipmap.home_down_arrow);
 
-        tvFilter.setTextColor(mContext.getResources().getColor(R.color.font_black_2));
+        tvFilter.setTextColor(textDefaulColor);
         ivFilterArrow.setImageResource(R.mipmap.home_down_arrow);
+
+        tvMore.setTextColor(textDefaulColor);
+        ivMoreArrow.setImageResource(R.mipmap.home_down_arrow);
     }
 
     // 复位所有的状态
@@ -177,15 +231,41 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
             case 2:
                 setFilterAdapter();
                 break;
+            case 3:
+                setMoreAdapter();
+                break;
         }
 
-        if (isShowing) return ;
+        if (isShowing) return;
         show();
+    }
+
+    /**
+     * 设置更多数据
+     */
+    private void setMoreAdapter() {
+        tvMore.setTextColor(selectedTextColor);
+        ivMoreArrow.setImageResource(R.mipmap.home_up_arrow);
+        lvLeft.setVisibility(GONE);
+        lvRight.setVisibility(VISIBLE);
+        moreAdapter = new FilterOneAdapter(mContext, filterData.getSorts());
+        lvRight.setAdapter(moreAdapter);
+        lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedSortEntity = filterData.getSorts().get(position);
+                moreAdapter.setSelectedEntity(selectedSortEntity);
+                hide();
+                if (onItemSortClickListener != null) {
+                    onItemSortClickListener.onItemSortClick(selectedSortEntity);
+                }
+            }
+        });
     }
 
     // 设置分类数据
     private void setCategoryAdapter() {
-        tvCategory.setTextColor(mActivity.getResources().getColor(R.color.orange));
+        tvCategory.setTextColor(selectedTextColor);
         ivCategoryArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(VISIBLE);
         lvRight.setVisibility(VISIBLE);
@@ -244,7 +324,7 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
     // 设置排序数据
     private void setSortAdapter() {
-        tvSort.setTextColor(mActivity.getResources().getColor(R.color.orange));
+        tvSort.setTextColor(selectedTextColor);
         ivSortArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(GONE);
         lvRight.setVisibility(VISIBLE);
@@ -265,7 +345,7 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
     // 设置筛选数据
     private void setFilterAdapter() {
-        tvFilter.setTextColor(mActivity.getResources().getColor(R.color.orange));
+        tvFilter.setTextColor(selectedTextColor);
         ivFilterArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(GONE);
         lvRight.setVisibility(VISIBLE);
@@ -325,38 +405,50 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
     // 筛选视图点击
     private OnFilterClickListener onFilterClickListener;
+
     public void setOnFilterClickListener(OnFilterClickListener onFilterClickListener) {
         this.onFilterClickListener = onFilterClickListener;
     }
+
     public interface OnFilterClickListener {
         void onFilterClick(int position);
     }
 
     // 分类Item点击
     private OnItemCategoryClickListener onItemCategoryClickListener;
+
     public void setOnItemCategoryClickListener(OnItemCategoryClickListener onItemCategoryClickListener) {
         this.onItemCategoryClickListener = onItemCategoryClickListener;
     }
+
     public interface OnItemCategoryClickListener {
         void onItemCategoryClick(FilterTwoEntity entity);
     }
 
     // 排序Item点击
     private OnItemSortClickListener onItemSortClickListener;
+
     public void setOnItemSortClickListener(OnItemSortClickListener onItemSortClickListener) {
         this.onItemSortClickListener = onItemSortClickListener;
     }
+
     public interface OnItemSortClickListener {
         void onItemSortClick(FilterEntity entity);
     }
 
     // 筛选Item点击
     private OnItemFilterClickListener onItemFilterClickListener;
+
     public void setOnItemFilterClickListener(OnItemFilterClickListener onItemFilterClickListener) {
         this.onItemFilterClickListener = onItemFilterClickListener;
     }
+
     public interface OnItemFilterClickListener {
         void onItemFilterClick(FilterEntity entity);
+    }
+
+    public void setSelectTextColor(int color) {
+        this.selectedTextColor = color;
     }
 
 }
