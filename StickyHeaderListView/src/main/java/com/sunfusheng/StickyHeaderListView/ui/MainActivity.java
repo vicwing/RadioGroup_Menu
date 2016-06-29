@@ -7,7 +7,6 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
@@ -19,6 +18,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.TravelingAdapter;
 import com.sunfusheng.StickyHeaderListView.model.ChannelEntity;
+import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
@@ -32,6 +32,7 @@ import com.sunfusheng.StickyHeaderListView.view.HeaderAdViewView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderChannelViewView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderDividerViewView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderFilterViewView;
+import com.sunfusheng.StickyHeaderListView.view.HeaderHorzontalListBannerView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 
@@ -40,20 +41,17 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * 作者：孙福生
- *
+ * <p>
  * 个人博客：sunfusheng.com
  */
-public class MainActivity extends AppCompatActivity implements SmoothListView.ISmoothListViewListener {
+public class MainActivity extends BasePtrPullToResfrshActivity implements SmoothListView.ISmoothListViewListener {
 
     @Bind(R.id.listView)
     SmoothListView smoothListView;
+
     @Bind(R.id.fv_top_filter)
     FilterView fvTopFilter;
     @Bind(R.id.rl_bar)
@@ -74,11 +72,13 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
     private List<String> adList = new ArrayList<>(); // 广告数据
     private List<ChannelEntity> channelList = new ArrayList<>(); // 频道数据
     private List<OperationEntity> operationList = new ArrayList<>(); // 运营数据
+    private List<CityItem> horizontalList = new ArrayList<>(); // 运营数据
     private List<TravelingEntity> travelingList = new ArrayList<>(); // ListView数据
 
     private HeaderAdViewView listViewAdHeaderView; // 广告视图
     private HeaderChannelViewView headerChannelView; // 频道视图
     private HeaderOperationViewView headerOperationViewView; // 运营视图
+    private HeaderHorzontalListBannerView headerHorzontalListBannerView; // 设置横向滑动banner
     private HeaderDividerViewView headerDividerViewView; // 分割线占位图
     private HeaderFilterViewView headerFilterViewView; // 分类筛选视图
     private FilterData filterData; // 筛选数据
@@ -104,12 +104,12 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
             super.handleMessage(msg);
         }
     };
-    private int activityTitleHeigh;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_stickylistview_main);
         ButterKnife.bind(this);
         LogUtils.getLogConfig()
                 .configAllowLog(true)
@@ -120,6 +120,16 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
         initView();
         initPtrFrame();
         initListener();
+    }
+
+    @Override
+    protected int getlayoutId() {
+        return R.layout.activity_stickylistview_main;
+    }
+
+    @Override
+    protected View getListView() {
+        return smoothListView;
     }
 
     private void initData() {
@@ -141,6 +151,10 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
 
         // 运营数据
         operationList = ModelUtil.getOperationData();
+
+
+        // 横向banner
+        horizontalList = ModelUtil.getHorizontalData();
 
         // ListView数据
         travelingList = ModelUtil.getTravelingData();
@@ -164,6 +178,12 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
         headerOperationViewView = new HeaderOperationViewView(this);
         headerOperationViewView.fillView(operationList, smoothListView);
 
+
+        //设置横向滑动banner
+        headerHorzontalListBannerView = new HeaderHorzontalListBannerView(this);
+        headerHorzontalListBannerView.fillView(horizontalList, smoothListView);
+
+
         // 设置分割线
         headerDividerViewView = new HeaderDividerViewView(this);
         headerDividerViewView.fillView("", smoothListView);
@@ -181,49 +201,6 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
 //
 
 
-
-    }
-
-    private PtrClassicFrameLayout mPtrFrameLayout;
-
-    private void initPtrFrame() {
-        mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.load_more_list_view_ptr_frame);
-//        mPtrFrameLayout.setHeaderView(getLayoutInflater().inflate(R.layout.smoothlistview_header,null))
-// ;
-//        MaterialHeader materialHeader = new MaterialHeader(this);
-//        MaterialProgressDrawable materialHeader = new MaterialProgressDrawable(this);
-//        mPtrFrameLayout.setHeaderView(materialHeader);
-//        mPtrFrameLayout.addPtrUIHandler(materialHeader);
-//        materialHeader.setPtrFrameLayout(mPtrFrameLayout);
-        mPtrFrameLayout.setLoadingMinTime(1000);
-        mPtrFrameLayout.setLastUpdateTimeKey("vievivivivivi");
-        // the following are default settings
-        mPtrFrameLayout.setResistance(1.7f);
-        mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
-        mPtrFrameLayout.setDurationToClose(200);
-        mPtrFrameLayout.setDurationToCloseHeader(1000);
-        // default is false
-        mPtrFrameLayout.setPullToRefresh(false);
-        // default is true
-        mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
-        mPtrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                LogUtils.d("checkCanDoRefresh  ");
-                // here check list view, not content.
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, smoothListView, header);
-            }
-
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-                LogUtils.i("onRefreshBegin  ");
-//                currentPage =1;
-//                loadMoreListViewContainer.loadMoreFinish(true,false);
-//                loadMoreListViewContainer.setShowLoadingForFirstPage(true);
-//                requestUpdate(String.valueOf(currentPage));
-            }
-
-        });
     }
 
 
@@ -242,7 +219,7 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
             public void onFilterClick(int position) {
                 filterPosition = position;
                 isSmooth = true;
-                LogUtils.d("假的筛选menu  "+"filterViewPosition  "+filterViewPosition+"  titleViewHeight  "+titleViewHeight);
+                LogUtils.d("假的筛选menu  " + "filterViewPosition  " + filterViewPosition + "  titleViewHeight  " + titleViewHeight);
                 smoothListView.smoothScrollToPositionFromTop(filterViewPosition, DensityUtil.dip2px(mContext, 0));
             }
         });
@@ -289,7 +266,8 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
         smoothListView.setSmoothListViewListener(this);
         smoothListView.setOnScrollListener(new SmoothListView.OnSmoothScrollListener() {
             @Override
-            public void onSmoothScrolling(View view) {}
+            public void onSmoothScrolling(View view) {
+            }
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -302,7 +280,7 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
 
                 // 获取广告头部View、自身的高度、距离顶部的高度
                 if (itemHeaderAdView == null) {
-                    itemHeaderAdView = smoothListView.getChildAt(1-firstVisibleItem);
+                    itemHeaderAdView = smoothListView.getChildAt(1 - firstVisibleItem);
                 }
                 if (itemHeaderAdView != null) {
                     adViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderAdView.getTop());
@@ -314,7 +292,7 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
                     itemHeaderFilterView = smoothListView.getChildAt(filterViewPosition - firstVisibleItem);
                 }
                 if (itemHeaderFilterView != null) {
-                    filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop()+titleViewHeightPx);
+                    filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
                 }
 
 //                LogUtils.d("filterViewTopSpace "+filterViewTopSpace +"  titleViewHeight   "+ titleViewHeight);
@@ -364,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
             fraction = 1f - adViewTopSpace * 1f / 60;
             if (fraction < 0f) fraction = 0f;
             rlBar.setAlpha(fraction);
-            return ;
+            return;
         }
 
         float space = Math.abs(adViewTopSpace) * 1f;
@@ -422,7 +400,9 @@ public class MainActivity extends AppCompatActivity implements SmoothListView.IS
             }
         }, 2000);
     }
-private int titleViewHeightPx;
+
+    private int titleViewHeightPx;
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -432,9 +412,10 @@ private int titleViewHeightPx;
         Rect rect = new Rect();
         getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
         int statusTop = rect.top;
-        titleViewHeightPx =  rlBar.getHeight();
+        titleViewHeightPx = rlBar.getHeight();
         // 状态栏高度
 //         titleViewHeight = rect.top;
-        LogUtils.d("activityTitleHeigh   "+activityTitleHeigh);
+        qfangframelayout.cancelAll();
     }
+
 }

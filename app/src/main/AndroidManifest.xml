@@ -24,6 +24,14 @@
         <activity android:name=".RootViewActivity"/>
         <activity android:name=".mainfunction.caculate.MortgageCaculatorAcitivity"/>
         <activity android:name=".mainfunction.taxcaculator.TaxCaculatorActivity"/>
+        <activity android:name=".StickyTestActivity"/>
+        <activity android:name=".mainfunction.newhouse.NewHouseListActivity">
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN"/>-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
+            </activity>
     </application>
 
 </manifest>

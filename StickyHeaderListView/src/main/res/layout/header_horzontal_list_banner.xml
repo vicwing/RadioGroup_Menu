@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" >
+
+    <HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:scrollbars="none"
+         >
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+             >
+
+            <GridView
+                android:id="@+id/horizontal_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="15dp"
+                android:gravity="center"
+                android:stretchMode="spacingWidthUniform"
+                android:numColumns="3"
+                android:scrollbars="none"
+                tools:listitem="@layout/list_item" />
+<!--
+            <com.sunfusheng.StickyHeaderListView.view.FixedGridView
+                android:id="@+id/horizontal_grid"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:stretchMode="spacingWidthUniform"
+                android:horizontalSpacing="1px"
+                android:numColumns="3"
+                android:paddingBottom="1px"
+                android:paddingTop="1px"
+                android:scrollbars="none"
+                tools:listitem="@layout/list_item"
+                android:verticalSpacing="1px"/>-->
+        </LinearLayout>
+    </HorizontalScrollView>
+
+</LinearLayout>

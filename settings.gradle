@@ -1,1 +1,1 @@
-include ':app', ':ptr-lib', ':okhttputils', ':javaapplication'
+include ':app', ':ptr-lib', ':okhttputils', ':javaapplication', ':StickyHeaderListView', ':library'

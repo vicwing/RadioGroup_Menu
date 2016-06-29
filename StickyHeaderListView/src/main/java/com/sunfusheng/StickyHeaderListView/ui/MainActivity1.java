@@ -106,7 +106,7 @@ public class MainActivity1 extends AppCompatActivity implements SmoothListView.I
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_stickylistview_main);
         ButterKnife.bind(this);
         LogUtils.getLogConfig()
                 .configAllowLog(true)

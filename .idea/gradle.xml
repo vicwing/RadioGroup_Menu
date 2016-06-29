@@ -9,8 +9,10 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/StickyHeaderListView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/javaapplication" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/okhttputils" />
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>
@@ -18,8 +20,10 @@
         <option name="myModules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/StickyHeaderListView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/javaapplication" />
+            <option value="$PROJECT_DIR$/library" />
             <option value="$PROJECT_DIR$/okhttputils" />
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>

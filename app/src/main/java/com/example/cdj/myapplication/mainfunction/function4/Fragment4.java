@@ -15,6 +15,7 @@ import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.RootViewActivity;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
+import com.example.cdj.myapplication.StickyTestActivity;
 import com.example.cdj.myapplication.mainfunction.caculate.MortgageCaculatorAcitivity;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.TaxCaculatorActivity;
 import com.example.cdj.myapplication.utils.DateUtil;
@@ -27,7 +28,7 @@ import okhttp3.Call;
 /**
  * Created by cdj onCallBackData 2016/5/6.
  */
-public class Fragment4 extends Fragment {
+public class Fragment4 extends Fragment implements View.OnClickListener {
 
 
     //    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
@@ -121,6 +122,7 @@ public class Fragment4 extends Fragment {
         tv_time = (TextView) layout.findViewById(R.id.tv_time);
         tv_time.setText(DateUtil.timeStamp2Date(System.currentTimeMillis(),DateUtil.DateStyle.YYYY_MM_DD_HH_MM_SS.getValue())+"");
         LogUtils.d("222222222222222222222");
+        layout.findViewById(R.id.tv_StickyActivity).setOnClickListener(this);
         return layout;
     }
 
@@ -170,5 +172,14 @@ public class Fragment4 extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id==R.id.tv_StickyActivity){
+            Intent intent = new Intent(getActivity(),StickyTestActivity.class);
+            startActivity(intent);
+        }
     }
 }

@@ -13,4 +13,15 @@
         <attr name="ddmenuUnselectedIcon" format="reference"/>
         <attr name="ddmenuTag" format="string"/>
     </declare-styleable>
+
+    <!-- 这样可以引用系统样式 -->
+    <declare-styleable name="KProgressLayouts">
+        <attr name="kProgressLayoutsStyle" format="reference" />
+    </declare-styleable>
+    <!-- 多种状态的linerlayout -->
+    <declare-styleable name="KProgressLayout">
+        <attr name="loadingView" />
+        <attr name="emptyView" />
+        <attr name="errorView" />
+    </declare-styleable>
 </resources>

@@ -58,7 +58,8 @@
         </FrameLayout>
     </RelativeLayout>
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.sunfusheng.StickyHeaderListView.view.QfangFrameLayout
+        android:id="@+id/qfangframelayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -67,15 +68,22 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView
-                android:id="@+id/listView"
+            <com.sunfusheng.StickyHeaderListView.loadmore.LoadMoreListViewContainer
+                android:id="@+id/load_more_list_view_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@null"
-                android:dividerHeight="0dp"
-                android:fadingEdge="none"
-                android:overScrollMode="never"
-                android:scrollbars="none" />
+                android:background="@color/cube_mints_white">
+
+                <com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:divider="@null"
+                    android:dividerHeight="0dp"
+                    android:fadingEdge="none"
+                    android:overScrollMode="never"
+                    android:scrollbars="none" />
+            </com.sunfusheng.StickyHeaderListView.loadmore.LoadMoreListViewContainer>
         </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 
         <LinearLayout
@@ -90,6 +98,6 @@
                 android:visibility="invisible" />
         </LinearLayout>
 
-    </FrameLayout>
+    </com.sunfusheng.StickyHeaderListView.view.QfangFrameLayout>
 
 </LinearLayout>

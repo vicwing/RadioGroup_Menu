@@ -1,6 +1,7 @@
 package com.sunfusheng.StickyHeaderListView.util;
 
 import com.sunfusheng.StickyHeaderListView.model.ChannelEntity;
+import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
@@ -43,6 +44,45 @@ public class ModelUtil {
         channelList.add(new ChannelEntity("西班牙", "巴塞罗那", "http://img5.imgtn.bdimg.com/it/u=3191365283,111438732&fm=21&gp=0.jpg"));
         channelList.add(new ChannelEntity("意大利", "比萨斜塔", "http://img5.imgtn.bdimg.com/it/u=482494496,1350922497&fm=206&gp=0.jpg"));
         return channelList;
+    }
+
+    // horizontal 横向banner
+    public static List<CityItem> getHorizontalData() {
+        String imgUrl ="http://img5.imgtn.bdimg.com/it/u=1467751238,3257336851&fm=11&gp=0.jpg";
+        List<CityItem> cityList = new ArrayList<>();
+        cityList = new ArrayList<CityItem>();
+        CityItem item = new CityItem();
+        item.setCityName("深圳");
+        item.setCityCode("0755");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        item = new CityItem();
+        item.setCityName("上海");
+        item.setCityCode("021");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        item = new CityItem();
+        item.setCityName("广州");
+        item.setCityCode("020");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        item = new CityItem();
+        item.setCityName("北京");
+        item.setCityCode("010");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        item = new CityItem();
+        item.setCityName("武汉");
+        item.setCityCode("027");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        item = new CityItem();
+        item.setCityName("孝感");
+        item.setCityCode("0712");
+        item.setImageUrl(imgUrl);
+        cityList.add(item);
+        cityList.addAll(cityList);
+        return cityList;
     }
 
     // 运营数据
