@@ -22,7 +22,6 @@ import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
-import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.util.ModelUtil;
 import com.sunfusheng.StickyHeaderListView.view.FilterView;
@@ -222,14 +221,12 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
             public void onFilterClick(int position) {
                 filterPosition = position;
                 isSmooth = true;
-
                 if (smoothScrollListener!=null){
                     smoothScrollListener.setSmooth(isSmooth);
                     smoothScrollListener.setFilterPosition(position);
                 }
-
                 LogUtils.d("假的筛选menu  " + "filterViewPosition  " + filterViewPosition + "  titleViewHeight  " + titleViewHeight);
-                smoothListView.smoothScrollToPositionFromTop(filterViewPosition, DensityUtil.dip2px(mContext, 0));
+                smoothListView.smoothScrollToPositionFromTop(filterViewPosition, DensityUtil.dip2px(mContext, 0),50);
             }
         });
 
@@ -237,9 +234,9 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
         fvTopFilter.setOnFilterClickListener(new FilterView.OnFilterClickListener() {
             @Override
             public void onFilterClick(int position) {
+                LogUtils.d("真筛选.........position  "+position);
                 if (isStickyTop) {
                     filterPosition = position;
-
                     if (smoothScrollListener!=null){
                         smoothScrollListener.setFilterPosition(position);
                     }
@@ -289,11 +286,6 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
         smoothScrollListener = new SmoothScrollListener(this, smoothListView,fvTopFilter);
         smoothScrollListener.setOnDataChangeListener(new SmoothScrollListener.OnDataChangeListener() {
             @Override
-            public void isSmooth(boolean isSmooth) {
-
-            }
-
-            @Override
             public void isSitcky(boolean isSicky) {
                 isStickyTop = isSicky;
             }
@@ -304,63 +296,6 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
             }
         });
         smoothListView.setOnScrollListener(smoothScrollListener);
-//        smoothListView.setOnScrollListener(new SmoothListView.OnSmoothScrollListener() {
-//            @Override
-//            public void onSmoothScrolling(View view) {
-//            }
-//
-//            @Override
-//            public void onScrollStateChanged(AbsListView view, int scrollState) {
-//                isScrollIdle = (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE);
-//            }
-//
-//            @Override
-//            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-//                if (isScrollIdle && adViewTopSpace < 0) return;
-//
-//                // 获取广告头部View、自身的高度、距离顶部的高度
-//                if (itemHeaderAdView == null) {
-//                    itemHeaderAdView = smoothListView.getChildAt(1 - firstVisibleItem);
-//                }
-//                if (itemHeaderAdView != null) {
-//                    adViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderAdView.getTop());
-//                    adViewHeight = DensityUtil.px2dip(mContext, itemHeaderAdView.getHeight());
-//                }
-//
-//                // 获取筛选View、距离顶部的高度
-//                if (itemHeaderFilterView == null) {
-//                    itemHeaderFilterView = smoothListView.getChildAt(filterViewPosition - firstVisibleItem);
-//                }
-//                if (itemHeaderFilterView != null) {
-//                    filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
-//                }
-//
-////                LogUtils.d("filterViewTopSpace "+filterViewTopSpace +"  titleViewHeight   "+ titleViewHeight);
-//                // 处理筛选是否吸附在顶部
-//                if (filterViewTopSpace > titleViewHeight) {
-//                    isStickyTop = false; // 没有吸附在顶部
-//                    fvTopFilter.setVisibility(View.INVISIBLE);
-//                } else {
-//                    isStickyTop = true; // 吸附在顶部
-//                    fvTopFilter.setVisibility(View.VISIBLE);
-//                }
-//
-//                if (firstVisibleItem > filterViewPosition) {
-//                    isStickyTop = true;
-//                    fvTopFilter.setVisibility(View.VISIBLE);
-//                }
-//
-//                if (isSmooth && isStickyTop) {
-//                    isSmooth = false;
-//                    fvTopFilter.showFilterLayout(filterPosition);
-//                }
-//
-//                fvTopFilter.setStickyTop(isStickyTop);
-//
-//                // 处理标题栏颜色渐变
-////                handleTitleBarColorEvaluate();
-//            }
-//        });
     }
 
     // 填充数据
@@ -375,33 +310,6 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
         }
     }
 
-    // 处理标题栏颜色渐变
-    private void handleTitleBarColorEvaluate() {
-        float fraction;
-        if (adViewTopSpace > 0) {
-            fraction = 1f - adViewTopSpace * 1f / 60;
-            if (fraction < 0f) fraction = 0f;
-            rlBar.setAlpha(fraction);
-            return;
-        }
-
-        float space = Math.abs(adViewTopSpace) * 1f;
-        fraction = space / (adViewHeight - titleViewHeight);
-        if (fraction < 0f) fraction = 0f;
-        if (fraction > 1f) fraction = 1f;
-        rlBar.setAlpha(1f);
-
-        if (fraction >= 1f || isStickyTop) {
-            isStickyTop = true;
-            viewTitleBg.setAlpha(0f);
-            viewActionMoreBg.setAlpha(0f);
-            rlBar.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
-        } else {
-            viewTitleBg.setAlpha(1f - fraction);
-            viewActionMoreBg.setAlpha(1f - fraction);
-            rlBar.setBackgroundColor(ColorUtil.getNewColorByStartEndColor(mContext, fraction, R.color.transparent, R.color.orange));
-        }
-    }
 
     @Override
     protected void onDestroy() {

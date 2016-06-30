@@ -96,13 +96,9 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
     private void init(Context context) {
         this.mContext = context;
         View view = LayoutInflater.from(context).inflate(R.layout.view_filter_layout, this);
-
-
         initData();
         initView();
         initListener();
-
-
     }
 
     private void initData() {

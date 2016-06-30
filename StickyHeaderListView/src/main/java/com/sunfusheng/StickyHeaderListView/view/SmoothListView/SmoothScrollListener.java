@@ -2,9 +2,11 @@ package com.sunfusheng.StickyHeaderListView.view.SmoothListView;
 
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.RelativeLayout;
 
-import com.apkfuns.logutils.LogUtils;
+import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.ui.MainActivity;
+import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.view.FilterView;
 
@@ -12,7 +14,6 @@ import com.sunfusheng.StickyHeaderListView.view.FilterView;
  * Created by vic on 2016/6/29.
  */
 public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListener {
-
 
 
     private boolean isSmooth = false; // 没有吸附的前提下，是否在滑动
@@ -28,22 +29,27 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
     private View itemHeaderFilterView; // 从ListView获取的筛选子View
 
 
-
     private boolean isStickyTop = false; // 是否吸附在顶部
     private boolean isScrollIdle = true; // ListView是否在滑动
     private MainActivity mContext;
     private SmoothListView smoothListView;
     FilterView fvTopFilter;
+    RelativeLayout rlBar;
+    View viewActionMoreBg;
+    View viewTitleBg;
 
     public void setTitleViewHeightPx(int titleViewHeightPx) {
         this.titleViewHeightPx = titleViewHeightPx;
     }
 
-    public SmoothScrollListener(MainActivity mainActivity, SmoothListView smoothListView,FilterView fvTopFilter) {
+    public SmoothScrollListener(MainActivity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
         filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
+        rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
+        viewActionMoreBg = mContext.findViewById(R.id.view_action_more_bg);
+        viewTitleBg = mContext.findViewById(R.id.view_title_bg);
     }
 
     @Override
@@ -75,13 +81,13 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         }
         if (itemHeaderFilterView != null) {
             filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
-            if (onDataChangeListener!=null){
+            if (onDataChangeListener != null) {
                 onDataChangeListener.filterViewTopSpace(filterViewTopSpace);
             }
 
         }
 
-         LogUtils.d("filterViewTopSpace "+filterViewTopSpace +"  titleViewHeight   "+ titleViewHeight);
+//        LogUtils.d("filterViewTopSpace " + filterViewTopSpace + "  titleViewHeight   " + titleViewHeight);
         // 处理筛选是否吸附在顶部
         if (filterViewTopSpace > titleViewHeight) {
             isStickyTop = false; // 没有吸附在顶部
@@ -101,19 +107,47 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
 
         if (isSmooth && isStickyTop) {
             isSmooth = false;
-            if (onDataChangeListener!=null)
-                onDataChangeListener.isSmooth(false);
+//            if (onDataChangeListener != null)
+//                onDataChangeListener.isSmooth(false);
             fvTopFilter.showFilterLayout(filterPosition);
         }
 
         fvTopFilter.setStickyTop(isStickyTop);
 
         // 处理标题栏颜色渐变
-//                handleTitleBarColorEvaluate();
+        handleTitleBarColorEvaluate();
+    }
+
+    // 处理标题栏颜色渐变
+    private void handleTitleBarColorEvaluate() {
+        float fraction;
+        if (adViewTopSpace > 0) {
+            fraction = 1f - adViewTopSpace * 1f / 60;
+            if (fraction < 0f) fraction = 0f;
+            rlBar.setAlpha(fraction);
+            return;
+        }
+
+        float space = Math.abs(adViewTopSpace) * 1f;
+        fraction = space / (adViewHeight - titleViewHeight);
+        if (fraction < 0f) fraction = 0f;
+        if (fraction > 1f) fraction = 1f;
+        rlBar.setAlpha(1f);
+
+        if (fraction >= 1f || isStickyTop) {
+            isStickyTop = true;
+            viewTitleBg.setAlpha(0f);
+            viewActionMoreBg.setAlpha(0f);
+            rlBar.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
+        } else {
+            viewTitleBg.setAlpha(1f - fraction);
+            viewActionMoreBg.setAlpha(1f - fraction);
+            rlBar.setBackgroundColor(ColorUtil.getNewColorByStartEndColor(mContext, fraction, R.color.transparent, R.color.orange));
+        }
     }
 
     private void onSickyChange() {
-        if (onDataChangeListener!=null)
+        if (onDataChangeListener != null)
             onDataChangeListener.isSitcky(isStickyTop);
     }
 
@@ -130,14 +164,19 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
     public void setSmooth(boolean smooth) {
         isSmooth = smooth;
     }
+
     OnDataChangeListener onDataChangeListener;
-    public void setOnDataChangeListener(OnDataChangeListener listener){
+
+    public void setOnDataChangeListener(OnDataChangeListener listener) {
         this.onDataChangeListener = listener;
     }
-    public interface OnDataChangeListener  {
-        void isSmooth(boolean isSmooth );
+
+    public interface OnDataChangeListener {
+
         void isSitcky(boolean isSicky);
+
         void filterViewTopSpace(int filterViewTopSpace);
+
     }
 
     public int getFilterPosition() {
