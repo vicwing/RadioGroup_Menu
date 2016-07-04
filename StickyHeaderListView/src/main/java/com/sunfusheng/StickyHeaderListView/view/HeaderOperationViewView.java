@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.ListView;
 
 import com.sunfusheng.StickyHeaderListView.R;
-import com.sunfusheng.StickyHeaderListView.adapter.HeaderOperationAdapter;
+import com.sunfusheng.StickyHeaderListView.adapter.FilterMoreHeaderOperationAdapter;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class HeaderOperationViewView extends HeaderViewInterface<List<OperationE
     }
 
     private void dealWithTheView(List<OperationEntity> list) {
-        HeaderOperationAdapter adapter = new HeaderOperationAdapter(mContext, list);
+        FilterMoreHeaderOperationAdapter adapter = new FilterMoreHeaderOperationAdapter(mContext, list);
         gvOperation.setAdapter(adapter);
     }
 

@@ -15,7 +15,7 @@ import com.sunfusheng.StickyHeaderListView.view.FilterView;
 /**
  * Created by vic on 2016/6/29.
  */
-public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListener {
+public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmoothScrollListener {
 
 
     private boolean isSmooth = false; // 没有吸附的前提下，是否在滑动
@@ -43,7 +43,7 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
 
     private OnDataChangeListener onDataChangeListener;
 
-    public SmoothScrollListener(MainActivity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
+    public DropDownMenuSmoothScrollListener(MainActivity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
@@ -58,7 +58,7 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         this.titleViewHeightPx = titleViewHeightPx;
     }
 
-    public SmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter) {
+    public DropDownMenuSmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
@@ -68,7 +68,7 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         viewTitleBg = mContext.findViewById(R.id.view_title_bg);
     }
 
-    public SmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, DropDownMenu dropDownMenu) {
+    public DropDownMenuSmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, DropDownMenu dropDownMenu) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.dropDownMenu = dropDownMenu;
@@ -117,27 +117,27 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         if (filterViewTopSpace > titleViewHeight) {
             isStickyTop = false; // 没有吸附在顶部
             onSickyChange();
-            fvTopFilter.setVisibility(View.INVISIBLE);
+            dropDownMenu.setVisibility(View.INVISIBLE);
         } else {
             isStickyTop = true; // 吸附在顶部
             onSickyChange();
-            fvTopFilter.setVisibility(View.VISIBLE);
+            dropDownMenu.setVisibility(View.VISIBLE);
         }
 
         if (firstVisibleItem > filterViewPosition) {
             isStickyTop = true;
             onSickyChange();
-            fvTopFilter.setVisibility(View.VISIBLE);
+            dropDownMenu.setVisibility(View.VISIBLE);
         }
 
         if (isSmooth && isStickyTop) {
             isSmooth = false;
 //            if (onDataChangeListener != null)
 //                onDataChangeListener.isSmooth(false);
-            fvTopFilter.showFilterLayout(filterPosition);
+//            fvTopFilter.showFilterLayout(filterPosition);
         }
 
-        fvTopFilter.setStickyTop(isStickyTop);
+//        fvTopFilter.setStickyTop(isStickyTop);
 
         // 处理标题栏颜色渐变
         handleTitleBarColorEvaluate();

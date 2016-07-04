@@ -18,11 +18,11 @@ import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.FilterLeftAdapter;
 import com.sunfusheng.StickyHeaderListView.adapter.FilterOneAdapter;
 import com.sunfusheng.StickyHeaderListView.adapter.FilterRightAdapter;
+import com.sunfusheng.StickyHeaderListView.adapter.FilterMoreHeaderOperationAdapter;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
-
-
+import com.sunfusheng.StickyHeaderListView.view.StickyListView.StickyListHeadersListView;
 
 
 /**
@@ -54,7 +54,9 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
     ListView lvLeft;
 
-    ListView lvRight;
+    ListView lvMiddle;
+
+    StickyListHeadersListView stickyList;
 
     LinearLayout llHeadLayout;
 
@@ -78,7 +80,8 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
     private FilterRightAdapter rightAdapter;
     private FilterOneAdapter sortAdapter;
     private FilterOneAdapter filterAdapter;
-    private FilterOneAdapter moreAdapter;
+
+    private FilterMoreHeaderOperationAdapter.FilterMoreStickyListGridAdapter moreAdapter;
     private int selectedTextColor;//选中字体颜色
     private int textDefaulColor;
 
@@ -132,7 +135,8 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         llMore = (LinearLayout) findViewById(R.id.ll_more);
 
         lvLeft = (ListView) findViewById(R.id.lv_left);
-        lvRight = (ListView) findViewById(R.id.lv_right);
+        lvMiddle = (ListView) findViewById(R.id.lv_middle);
+        stickyList = (StickyListHeadersListView) findViewById(R.id.lv_right);
         llHeadLayout = (LinearLayout) findViewById(R.id.ll_head_layout);
         llContentListView = (LinearLayout) findViewById(R.id.ll_content_list_view);
 
@@ -236,35 +240,14 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         show();
     }
 
-    /**
-     * 设置更多数据
-     */
-    private void setMoreAdapter() {
-        tvMore.setTextColor(selectedTextColor);
-        ivMoreArrow.setImageResource(R.mipmap.home_up_arrow);
-        lvLeft.setVisibility(GONE);
-        lvRight.setVisibility(VISIBLE);
-        moreAdapter = new FilterOneAdapter(mContext, filterData.getSorts());
-        lvRight.setAdapter(moreAdapter);
-        lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedSortEntity = filterData.getSorts().get(position);
-                moreAdapter.setSelectedEntity(selectedSortEntity);
-                hide();
-                if (onItemSortClickListener != null) {
-                    onItemSortClickListener.onItemSortClick(selectedSortEntity);
-                }
-            }
-        });
-    }
+
 
     // 设置分类数据
     private void setCategoryAdapter() {
         tvCategory.setTextColor(selectedTextColor);
         ivCategoryArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(VISIBLE);
-        lvRight.setVisibility(VISIBLE);
+        lvMiddle.setVisibility(VISIBLE);
 
         if (selectedCategoryEntity == null) {
             selectedCategoryEntity = filterData.getCategory().get(0);
@@ -283,8 +266,8 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
 
                 // 右边列表视图
                 rightAdapter = new FilterRightAdapter(mContext, selectedCategoryEntity.getList());
-                lvRight.setAdapter(rightAdapter);
-                lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                lvMiddle.setAdapter(rightAdapter);
+                lvMiddle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         selectedCategoryEntity.setSelectedFilterEntity(selectedCategoryEntity.getList().get(position));
@@ -304,8 +287,8 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         } else {
             rightAdapter = new FilterRightAdapter(mContext, filterData.getCategory().get(0).getList());
         }
-        lvRight.setAdapter(rightAdapter);
-        lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvMiddle.setAdapter(rightAdapter);
+        lvMiddle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedCategoryEntity.setSelectedFilterEntity(selectedCategoryEntity.getList().get(position));
@@ -323,10 +306,10 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         tvSort.setTextColor(selectedTextColor);
         ivSortArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(GONE);
-        lvRight.setVisibility(VISIBLE);
+        lvMiddle.setVisibility(VISIBLE);
         sortAdapter = new FilterOneAdapter(mContext, filterData.getSorts());
-        lvRight.setAdapter(sortAdapter);
-        lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvMiddle.setAdapter(sortAdapter);
+        lvMiddle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedSortEntity = filterData.getSorts().get(position);
@@ -344,10 +327,10 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         tvFilter.setTextColor(selectedTextColor);
         ivFilterArrow.setImageResource(R.mipmap.home_up_arrow);
         lvLeft.setVisibility(GONE);
-        lvRight.setVisibility(VISIBLE);
+        lvMiddle.setVisibility(VISIBLE);
         filterAdapter = new FilterOneAdapter(mContext, filterData.getFilters());
-        lvRight.setAdapter(filterAdapter);
-        lvRight.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        lvMiddle.setAdapter(filterAdapter);
+        lvMiddle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectedFilterEntity = filterData.getFilters().get(position);
@@ -360,6 +343,33 @@ public class FilterView extends LinearLayout implements View.OnClickListener {
         });
     }
 
+    /**
+     * 设置更多数据
+     */
+    private void setMoreAdapter() {
+        tvMore.setTextColor(selectedTextColor);
+        ivMoreArrow.setImageResource(R.mipmap.home_up_arrow);
+        lvLeft.setVisibility(GONE);
+        lvMiddle.setVisibility(GONE);
+
+        stickyList.setVisibility(VISIBLE);
+        moreAdapter = new FilterMoreHeaderOperationAdapter.FilterMoreStickyListGridAdapter(mContext);
+        stickyList.setAdapter(moreAdapter);
+        stickyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedSortEntity = filterData.getSorts().get(position);
+//                moreAdapter.setSelectedEntity(selectedSortEntity);
+                hide();
+                if (onItemSortClickListener != null) {
+                    onItemSortClickListener.onItemSortClick(selectedSortEntity);
+                }
+            }
+        });
+
+        stickyList.setDrawingListUnderStickyHeader(true);
+        stickyList.setAreHeadersSticky(true);
+    }
     // 动画显示
     private void show() {
         isShowing = true;

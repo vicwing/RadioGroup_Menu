@@ -48,11 +48,8 @@ public class HeaderHorzontalListBannerView extends HeaderViewInterface<List<City
         DisplayMetrics dm = new DisplayMetrics();
         context.  getWindowManager().getDefaultDisplay().getMetrics(dm);
         float density = dm.density;
-
         int gridviewWidth = (int) (size * (length + 4) * density);
-
         int itemWidth = (int) (length * density);
-
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(gridviewWidth, LinearLayout.LayoutParams.FILL_PARENT);
 //        params.leftMargin=DensityUtil.dip2px(context,15);
         horGridView.setLayoutParams(params); // 重点
@@ -60,7 +57,6 @@ public class HeaderHorzontalListBannerView extends HeaderViewInterface<List<City
         horGridView.setHorizontalSpacing(DensityUtil.dip2px(context,15)); // 间距
         horGridView.setStretchMode(GridView.NO_STRETCH);
         horGridView.setNumColumns(size); // 重点
-
         horGridView.setAdapter(adapter);
     }
 }

@@ -325,13 +325,13 @@ public class MainActivity1 extends AppCompatActivity implements SmoothListView.I
             }
         });
 
-//        ViewTreeObserver vto2 = fvTopFilter.getViewTreeObserver();
+//        ViewTreeObserver vto2 = mDropDownMenu.getViewTreeObserver();
 //        vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
 //            @Override
 //            public void onGlobalLayout() {
 ////                imageView.getViewTreeObserver().removeGlobalOnLayoutListener(this);
 ////                textView.append("\n\n"+imageView.getHeight()+","+imageView.getWidth());
-//                titleViewHeight = titleViewHeight+fvTopFilter.getHeight();
+//                titleViewHeight = titleViewHeight+mDropDownMenu.getHeight();
 //                LogUtils.d("ViewTreeObserver   "+titleViewHeight);
 //            }
 //        });

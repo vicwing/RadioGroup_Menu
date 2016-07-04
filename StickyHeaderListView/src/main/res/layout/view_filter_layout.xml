@@ -178,14 +178,26 @@
                 android:visibility="gone" />
 
             <ListView
-                android:id="@+id/lv_right"
-                android:layout_width="match_parent"
+                android:id="@+id/lv_middle"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:background="@color/white"
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:scrollbars="none"
                 android:visibility="gone" />
+
+            <com.sunfusheng.StickyHeaderListView.view.StickyListView.StickyListHeadersListView
+                android:id="@+id/lv_right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:divider="@null"
+                android:dividerHeight="0dp"
+                android:visibility="gone"
+                android:scrollbars="none" />
         </LinearLayout>
     </FrameLayout>
 </LinearLayout>
