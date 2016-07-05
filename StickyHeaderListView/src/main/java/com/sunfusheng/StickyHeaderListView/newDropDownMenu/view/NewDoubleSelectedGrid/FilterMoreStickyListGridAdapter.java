@@ -5,78 +5,56 @@ package com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.NewDoubleSelect
  */
 
 import android.content.Context;
-import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.apkfuns.logutils.LogUtils;
+import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
-import com.sunfusheng.StickyHeaderListView.adapter.FilterMoreGridAdapter;
 import com.sunfusheng.StickyHeaderListView.ui.GridViewCompat;
 import com.sunfusheng.StickyHeaderListView.ui.GridViewUtils;
 import com.sunfusheng.StickyHeaderListView.view.StickyListView.StickyListHeadersAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
+ * MultSelctBetterDoubleGridView 的多选标题可固定adapter
  * 新房筛选更多,界面的adapter
  * 标题可以固定
  */
-public  class FilterMoreStickyListGridAdapter extends BaseAdapter implements
-        StickyListHeadersAdapter, SectionIndexer {
+public class FilterMoreStickyListGridAdapter extends BaseAdapter implements StickyListHeadersAdapter {
 
     private final Context mContext;
-    private String[] mCountries;
-    private int[] mSectionIndices;
-    private Character[] mSectionLetters;
+    List<Integer> adapterTag = new ArrayList<>();
+
     private LayoutInflater mInflater;
+    private final List<String> parentList;//
 
     public FilterMoreStickyListGridAdapter(Context context) {
         mContext = context;
         mInflater = LayoutInflater.from(context);
-        mCountries = context.getResources().getStringArray(R.array.countries);
-        mSectionIndices = getSectionIndices();
-        mSectionLetters = getSectionLetters();
+        parentList = new ArrayList<>();
+        for (int i = 0; i < 4; ++i) {
+            parentList.add(i + "3top");
+        }
     }
 
-    private int[] getSectionIndices() {
-        ArrayList<Integer> sectionIndices = new ArrayList<Integer>();
-        char lastFirstChar = mCountries[0].charAt(0);
-        sectionIndices.add(0);
-        for (int i = 1; i < mCountries.length; i++) {
-            if (mCountries[i].charAt(0) != lastFirstChar) {
-                lastFirstChar = mCountries[i].charAt(0);
-                sectionIndices.add(i);
-            }
-        }
-        int[] sections = new int[sectionIndices.size()];
-        for (int i = 0; i < sectionIndices.size(); i++) {
-            sections[i] = sectionIndices.get(i);
-        }
-        return sections;
-    }
-
-    private Character[] getSectionLetters() {
-        Character[] letters = new Character[mSectionIndices.length];
-        for (int i = 0; i < mSectionIndices.length; i++) {
-            letters[i] = mCountries[mSectionIndices[i]].charAt(0);
-        }
-        return letters;
-    }
 
     @Override
     public int getCount() {
-        return mCountries.length;
+        return parentList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return mCountries[position];
+        return parentList.get(position);
     }
 
     @Override
@@ -86,41 +64,47 @@ public  class FilterMoreStickyListGridAdapter extends BaseAdapter implements
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder holder;
-
+        final ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = mInflater.inflate(R.layout.gridview_filter_more, parent, false);
             holder.gridView = (GridViewCompat) convertView.findViewById(R.id.my_gridview);
-            //            holder.text = (TextView) convertView.findViewById(R.id.text);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        holder.gridView .setAdapter(new FilterMoreGridAdapter(mContext));
-        holder. gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
 
-            @Override
-            public void onItemClick(AdapterView<?> view, View arg1, int pos, long id) {
-                // We need to invalidate all views on 4.x versions
-                GridViewCompat gridView = (GridViewCompat) view;
-                gridView.invalidateViews();
-                //                gridView.invalidate();
-            }
+//        if (!adapterTag.contains(position)){
+            holder.gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+            holder.gridView.setAdapter(new FilterMoreGridAdapterBug(mContext));
+            Logger.d("创建了 "+position+" 个对象    ");
+//            adapterTag.add(position);
+//        }
 
-        });
+//        holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> view, View arg1, int gridPosition, long id) {
+//                // We need to invalidate all views on 4.x versions
+//                GridViewCompat gridView = (GridViewCompat) view;
+//                gridView.invalidateViews();
+//                // gridView.invalidate();
+////                int position = (int)gridView.getTag();
+//                LogUtils.d("list  position " + "   grid view   pos  " + gridPosition);
+//            }
+//        });
+        holder.gridView.setOnItemClickListener(new OnItemChildClickListener(0,position));
 
         // 计算GridView宽度,
         GridViewUtils.updateGridViewLayoutParams(holder.gridView, 4);
-        Log.d("123","mCountries[position]  "+position+"   "+mCountries[position]);
+//        LogUtils.d( "mCountries[position]  " + position + "   " + mCountries[position]);
         return convertView;
     }
 
     @Override
     public View getHeaderView(int position, View convertView, ViewGroup parent) {
         HeaderViewHolder holder;
-
         if (convertView == null) {
             holder = new HeaderViewHolder();
             convertView = mInflater.inflate(R.layout.item_list_filter_more_grid_title, parent, false);
@@ -131,10 +115,15 @@ public  class FilterMoreStickyListGridAdapter extends BaseAdapter implements
         }
 
         // set header text as first char in name
-        CharSequence headerChar = mCountries[position].subSequence(0, 1);
+//        CharSequence headerChar = mCountries[position].subSequence(0, 1);
+        String headerChar = parentList.get(position);
         holder.text.setText(headerChar);
-        Log.d("123","headerChar  "+headerChar+"   position"+"   parent "+parent);
+//        LogUtils.d("listSize  " + parentList.size() + "  headerChar  " + headerChar + "   position");
         return convertView;
+    }
+
+    public SparseBooleanArray getCheckedItemPositions() {
+        return null;
     }
 
     /**
@@ -143,62 +132,42 @@ public  class FilterMoreStickyListGridAdapter extends BaseAdapter implements
      */
     @Override
     public long getHeaderId(int position) {
-        // return the first character of the country as ID because this is what
-        // headers are based upon
-        return mCountries[position].subSequence(0, 1).charAt(0);
+//        parentList.get(position).charAt(4);
+        char c = parentList.get(position).charAt(0);
+        return c;
     }
 
-    @Override
-    public int getPositionForSection(int section) {
-        if (mSectionIndices.length == 0) {
-            return 0;
-        }
-
-        if (section >= mSectionIndices.length) {
-            section = mSectionIndices.length - 1;
-        } else if (section < 0) {
-            section = 0;
-        }
-        return mSectionIndices[section];
-    }
-
-    @Override
-    public int getSectionForPosition(int position) {
-        for (int i = 0; i < mSectionIndices.length; i++) {
-            if (position < mSectionIndices[i]) {
-                return i - 1;
-            }
-        }
-        return mSectionIndices.length - 1;
-    }
-
-    @Override
-    public Object[] getSections() {
-        return mSectionLetters;
-    }
-
-    public void clear() {
-        mCountries = new String[0];
-        mSectionIndices = new int[0];
-        mSectionLetters = new Character[0];
-        notifyDataSetChanged();
-    }
-
-    public void restore() {
-        mCountries = mContext.getResources().getStringArray(R.array.countries);
-        mSectionIndices = getSectionIndices();
-        mSectionLetters = getSectionLetters();
-        notifyDataSetChanged();
-    }
-
-    class HeaderViewHolder {
+    public class HeaderViewHolder {
         TextView text;
-
     }
 
-    class ViewHolder {
+    static class ViewHolder {
         TextView text;
         GridViewCompat gridView;
     }
 
+
+    public class OnItemChildClickListener implements AdapterView.OnItemClickListener {
+        // 点击类型索引，对应前面的CLICK_INDEX_xxx
+        private int clickIndex;
+        // 点击列表位置
+        private int rowItem;
+        private SparseBooleanArray sparseBooleanArray;
+
+        public OnItemChildClickListener(int clickIndex, int position) {
+            this.clickIndex = clickIndex;
+            this.rowItem = position;
+        }
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            // We need to invalidate all views on 4.x versions
+                GridViewCompat gridView = (GridViewCompat) parent;
+                gridView.invalidateViews();
+////                int position = (int)gridView.getTag();
+            sparseBooleanArray = gridView.getCheckedItemPositions();
+            LogUtils.d("list  rowItem " + rowItem+"   grid view   sparseBooleanArray  " + sparseBooleanArray);
+            Logger.d("list  rowItem " + rowItem+"   grid view   sparseBooleanArray  " + sparseBooleanArray);
+        }
+    }
 }

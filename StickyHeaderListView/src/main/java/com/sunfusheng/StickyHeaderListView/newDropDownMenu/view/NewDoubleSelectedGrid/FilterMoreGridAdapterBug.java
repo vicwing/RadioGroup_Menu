@@ -1,4 +1,4 @@
-package com.sunfusheng.StickyHeaderListView.adapter;
+package com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.NewDoubleSelectedGrid;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -16,16 +16,16 @@ import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.ui.GridViewCompat;
 
 /**
- * 更多筛选项里面的gridview
+ * 更多筛选项里面的gridview:滑动后不保存记录
  * Created by vic on 2016/6/30.
  */
-public class FilterMoreGridAdapter  extends BaseAdapter {
+public class FilterMoreGridAdapterBug extends BaseAdapter {
 
     private Context mContext;
     private String[] mThumbIds = {"1111", "22222", "3333", "444", "3333", "444"};
 
 
-    public FilterMoreGridAdapter(Context c) {
+    public FilterMoreGridAdapterBug(Context c) {
         mContext = c;
     }
 

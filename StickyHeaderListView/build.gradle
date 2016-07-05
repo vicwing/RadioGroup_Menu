@@ -35,6 +35,7 @@ dependencies {
     compile 'com.github.cgpllx:CustomView:v0.2.1'
     compile project(':okhttputils')
     compile project(':filter-lib')
+    compile 'com.orhanobut:logger:1.15'
 }
 allprojects {
     repositories {

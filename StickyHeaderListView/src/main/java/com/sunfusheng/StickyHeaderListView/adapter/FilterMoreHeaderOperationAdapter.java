@@ -152,7 +152,7 @@ public class FilterMoreHeaderOperationAdapter extends BaseListAdapter<OperationE
             }
             holder.gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
             holder.gridView .setAdapter(new FilterMoreGridAdapter(mContext));
-            holder. gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            holder.gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
                 @Override
                 public void onItemClick(AdapterView<?> view, View arg1, int pos, long id) {

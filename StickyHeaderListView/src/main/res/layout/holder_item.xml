@@ -4,18 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:gravity="center"
+    android:layout_marginBottom="15dp"
     android:orientation="horizontal"
-    android:padding="7dp">
+   >
 
     <com.baiiu.filter.view.FilterCheckedTextView
         android:id="@+id/tv_item"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="75dp"
+        android:layout_height="28dp"
         android:background="@drawable/selector_filter_grid"
         android:gravity="center"
-        android:padding="10dp"
         android:textColor="@drawable/selector_tv_filter"
         tools:text="选择" />
-
-
 </LinearLayout>

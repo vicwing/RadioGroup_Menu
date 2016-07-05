@@ -10,8 +10,8 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.apkfuns.logutils.LogLevel;
 import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
 import com.sunfusheng.StickyHeaderListView.R;
@@ -20,6 +20,8 @@ import com.sunfusheng.StickyHeaderListView.model.ChannelEntity;
 import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
+import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterListCallback;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
@@ -32,9 +34,13 @@ import com.sunfusheng.StickyHeaderListView.view.HeaderHorzontalListBannerView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.DropDownMenuSmoothScrollListener;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
+import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import okhttp3.Call;
 
 
 /**
@@ -78,7 +84,6 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     private int filterViewPosition = 4; // 筛选视图的位置
     private int filterViewTopSpace; // 筛选视图距离顶部的距离
     private int titleViewHeightPx;
-    private String filter_more_url = "http://10.251.93.254:8010/appapi/v4_4/enums/filters/room?bizType=SALE&dataSource=SHENZHEN";
 
     private Handler mHandler = new Handler() {
         @Override
@@ -87,6 +92,8 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         }
     };
     private DropDownMenuSmoothScrollListener smoothScrollListener;
+    private DropMenuAdapter dropMenuAdapter;
+    private HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap;
 
 
     @Override
@@ -101,16 +108,13 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         rlBar = (RelativeLayout) findViewById(R.id.rl_bar);
         smoothListView = (SmoothListView) findViewById(R.id.listview);
         viewActionMoreBg = findViewById(R.id.view_action_more_bg);
-        LogUtils.getLogConfig()
-                .configAllowLog(true)
-                .configTagPrefix("123")
-                .configShowBorders(false)
-                .configLevel(LogLevel.TYPE_VERBOSE);
+
 
         initData();
         initView();
         initListener();
-        initFilterDropDownView();
+//        initFilterDropDownView();
+        requestFilterData();
     }
 
     @Override
@@ -301,12 +305,12 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
             smoothScrollListener.setTitleViewHeight(titleViewHeight);
         }
         qfangframelayout.cancelAll();
-//        mDropDownMenu.setVisibility(View.VISIBLE);
     }
 
     private void initFilterDropDownView() {
-        String[] titleList = new String[]{"第一个", "第二个", "第三个", "第四个"};
-        mDropDownMenu.setMenuAdapter(new DropMenuAdapter(this, titleList, this));
+        String[] titleList = new String[]{"第一个", "第二个", "第三个", "更多"};
+        dropMenuAdapter = new DropMenuAdapter(this, titleList, this ,hashMap);
+        mDropDownMenu.setMenuAdapter(dropMenuAdapter);
 //        dropDownMenu.setContentView(tv_conttentview);
     }
 
@@ -314,14 +318,76 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     public void onFilterDone(int position, String title, String urlValue) {
         mDropDownMenu.close();
 //        if (position != 3) {
-              mDropDownMenu.setPositionIndicatorText(position,urlValue);
+        mDropDownMenu.setPositionIndicatorText(position, urlValue);
 //        }
         LogUtils.d("筛选菜单...position.  " + position + "  title " + title + "   urlValue " + urlValue);
     }
 
     @Override
     public void onClick(View v) {
+//        LogUtils.d(MainDropDownMenuActivity.class.getName()+"多选点击 ...........................");
+    }
 
-        LogUtils.d(MainDropDownMenuActivity.class.getName()+"多选点击 ...........................");
+
+    private String filter_more_url = "http://10.251.93.254:8010/appapi/v4_4/enums/filters/room?bizType=SALE&dataSource=SHENZHEN";
+
+    private void requestFilterData() {
+        LogUtils.d("请求筛选菜单的列表");
+        OkHttpUtils
+                .post()//
+                .url(filter_more_url)//
+//                .addParams("currentPage",currentPageStr)
+                .build()//
+                .execute(new SecondHandFilterListCallback() {
+                    @Override
+                    public void onError(Call call, Exception e) {
+                    }
+
+                    @Override
+                    public void onResponse(SecondHandFilterBean response) {
+
+
+                        LogUtils.d("返回结果");
+                        LogUtils.d(response);
+                        String status = response.getStatus();
+                        if (status.equals("C0000")){
+                            SecondHandFilterBean.ResultBean result = response.getResult();
+                            List<SecondHandFilterBean.FilterDescBean> area = result.getArea();
+                            List<SecondHandFilterBean.FilterDescBean> decorationBeanList = result.getDecoration();
+                            List<SecondHandFilterBean.FilterDescBean> lableBeanList = result.getLable();
+                            List<SecondHandFilterBean.FilterDescBean> ageBeanList = result.getAge();
+
+
+                            hashMap = new HashMap<>();
+                            hashMap.put("面积",area);
+                            hashMap.put("装修",decorationBeanList);
+                            hashMap.put("标签",lableBeanList);
+                            hashMap.put("房龄",ageBeanList);
+
+//                            dropMenuAdapter.setBetterDoubleGridData(hashMap);
+                            initFilterDropDownView();
+                        }else {//返回错误message
+                            Toast.makeText(MainDropDownMenuActivity.this,"message  "+response.getMessage()+"\n statsus  "+response.getStatus(),Toast.LENGTH_SHORT);
+                        }
+                    }
+                });
+//            .execute(new Callback() {
+//                @Override
+//                public Object parseNetworkResponse(Response response) throws Exception {
+//                    String string = response.body().string();
+//                    SecondHandFilterBean bean = new Gson().fromJson(string, SecondHandFilterBean.class);
+//                    return bean;
+//                }
+//
+//                @Override
+//                public void onError(Call call, Exception e) {
+//
+//                }
+//
+//                @Override
+//                public void onResponse(Object response) {
+//
+//                }
+//            });
     }
 }

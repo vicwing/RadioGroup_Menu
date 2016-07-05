@@ -17,6 +17,7 @@ import com.baiiu.filter.util.CommonUtil;
 import com.baiiu.filter.util.UIUtil;
 import com.baiiu.filter.view.FilterCheckedTextView;
 import com.sunfusheng.StickyHeaderListView.R;
+import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.NewDoubleSelectedGrid.MultSelctBetterDoubleGridView;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.BetterDoubleGridView;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.DoubleGridAdapter2;
@@ -24,6 +25,7 @@ import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.doubleGrid.DoubleGridView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -31,15 +33,25 @@ import java.util.List;
  * date: on 16/1/17 21:14
  * description:
  */
-public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListener {
+public class DropMenuAdapter implements MenuAdapter
+//        ItemViewHolder.ClickListener
+{
     private final Context mContext;
     private OnFilterDoneListener onFilterDoneListener;
     private String[] titles;
+    private HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap;
 
     public DropMenuAdapter(Context context, String[] titles, OnFilterDoneListener onFilterDoneListener) {
         this.mContext = context;
         this.titles = titles;
         this.onFilterDoneListener = onFilterDoneListener;
+    }
+
+    public DropMenuAdapter(Context context, String[] titleList, OnFilterDoneListener onFilterDoneListener, HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap) {
+        this.mContext = context;
+        this.titles = titleList;
+        this.onFilterDoneListener = onFilterDoneListener;
+        this.hashMap = hashMap;
     }
 
     @Override
@@ -78,7 +90,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
             case 3:
                 // view = createDoubleGrid();
                 view = createBetterDoubleGrid(3);
-//                view = createMultiSelectGrid();
+//                view = createMultiSelectGrid(3);
                 break;
         }
 
@@ -87,6 +99,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
 
     /**
      * 区域
+     *
      * @return
      */
     private View createSingleListView(final int positionTitle) {
@@ -109,7 +122,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
                         FilterUrl.instance().singleListPosition = item;
                         FilterUrl.instance().position = 0;
                         FilterUrl.instance().positionTitle = item;
-                        onFilterDoneListener.onFilterDone(positionTitle, FilterUrl.instance().singleListPosition , FilterUrl.instance().positionTitle);
+                        onFilterDoneListener.onFilterDone(positionTitle, FilterUrl.instance().singleListPosition, FilterUrl.instance().positionTitle);
 //                        onFilterDone();
                     }
                 });
@@ -161,7 +174,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
                             FilterUrl.instance().positionTitle = item.desc;
 
 //                            onFilterDone();
-                            onFilterDoneListener.onFilterDone(1,String.valueOf( position),  item.desc);
+                            onFilterDoneListener.onFilterDone(1, String.valueOf(position), item.desc);
                         }
 
                         return child;
@@ -177,7 +190,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
                         FilterUrl.instance().positionTitle = string;
 //                        onFilterDone();
 
-                        onFilterDoneListener.onFilterDone(1,String.valueOf( FilterUrl.instance().position),  FilterUrl.instance().doubleListRight);
+                        onFilterDoneListener.onFilterDone(1, String.valueOf(FilterUrl.instance().position), FilterUrl.instance().doubleListRight);
                     }
                 });
 
@@ -242,7 +255,7 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
                         FilterUrl.instance().positionTitle = item;
 
 //                        onFilterDone();
-                        onFilterDoneListener.onFilterDone(positionTitle,item,  item);
+                        onFilterDoneListener.onFilterDone(positionTitle, item, item);
                     }
                 });
 
@@ -259,28 +272,18 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
 
     /**
      * 创建新的,可多选的GridView
+     *
      * @return
      */
     private View createMultiSelectGrid(final int positionTitle) {
-
-//        List<String> phases = new ArrayList<>();
-//        for (int i = 0; i < 10; ++i) {
-//            phases.add("3top" + i);
-//            LogUtils.d("3top" + i);
-//        }
-//        List<String> areas = new ArrayList<>();
-//        for (int i = 0; i < 10; ++i) {
-//            areas.add("3bottom" + i);
-//        }
-
-
         return new MultSelctBetterDoubleGridView(mContext)
 //                .setmTopGridData(phases)
 //                .setmBottomGridList(areas)
                 .setOnFilterDoneListener(onFilterDoneListener)
                 .build();
     }
-    private View createBetterDoubleGrid(final  int positionTitle) {
+
+    private View createBetterDoubleGrid(final int positionTitle) {
 
         List<String> phases = new ArrayList<>();
         for (int i = 0; i < 10; ++i) {
@@ -291,17 +294,18 @@ public class DropMenuAdapter implements MenuAdapter ,ItemViewHolder.ClickListene
         for (int i = 0; i < 10; ++i) {
             areas.add("3bottom" + i);
         }
-
-
-         betterDoubleGridView = new BetterDoubleGridView(mContext, this)
-                .setmTopGridData(phases)
-                .setmBottomGridList(areas)
+        betterDoubleGridView = new BetterDoubleGridView(mContext)
+//                .setmTopGridData(phases)
+//                .setmBottomGridList(areas)
+                .setGidMap(hashMap)
                 .setOnFilterDoneListener(onFilterDoneListener)
                 .build();
         return betterDoubleGridView;
     }
 
-private   BetterDoubleGridView betterDoubleGridView;
+
+    private BetterDoubleGridView betterDoubleGridView;
+    @Deprecated
     private View createDoubleGrid() {
         DoubleGridView doubleGridView = new DoubleGridView(mContext);
         doubleGridView.setOnFilterDoneListener(onFilterDoneListener);
@@ -329,12 +333,5 @@ private   BetterDoubleGridView betterDoubleGridView;
         }
     }
 
-    @Override
-    public void onItemClicked(int position) {
-        DoubleGridAdapter2 adapter = (DoubleGridAdapter2) betterDoubleGridView.getRecyclerView().getAdapter();
-        adapter.switchSelectedState(position);
-        LogUtils.d("DropMenuAdapter   position"+position);
-        List<Integer> selectedItems = adapter.getSelectedItems();
-        LogUtils.d("DropMenuAdapter   selectItems"+selectedItems);
-    }
+
 }

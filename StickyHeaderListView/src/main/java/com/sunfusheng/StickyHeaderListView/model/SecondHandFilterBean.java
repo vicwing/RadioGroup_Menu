@@ -6,350 +6,119 @@ import java.util.List;
 /**
  * Created by vic on 2016/7/1.
  */
-public class SecondHandFilterBean implements Serializable{
-    private String message;
-    private ResultBean result;
-    private String status;
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public ResultBean getResult() {
-        return result;
-    }
-
-    public void setResult(ResultBean result) {
-        this.result = result;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+public class SecondHandFilterBean extends QFJSONResult<SecondHandFilterBean.ResultBean>  implements Serializable{
 
     public static class ResultBean {
-        /**
-         * desc : 东
-         * value : i10
-         */
 
-        private List<DirectionsBean> directions;
-        /**
-         * desc : 50㎡以下
-         * value : a10
-         */
+        private List<FilterDescBean> directions;
 
-        private List<AreaBean> area;
-        /**
-         * desc : 50万元以下
-         * value : p10
-         */
+        private List<FilterDescBean> area;
 
-        private List<PriceBean> price;
-        /**
-         * desc : 总价从低到高
-         * value : o4
-         */
+        private List<FilterDescBean> price;
 
-        private List<OrderByBean> orderBy;
-        /**
-         * desc : 毛坯
-         * value : r1
-         */
+        private List<FilterDescBean> orderBy;
 
-        private List<DecorationBean> decoration;
-        /**
-         * desc : 5年内
-         * value : g1
-         */
+        private List<FilterDescBean> decoration;//装修
 
-        private List<AgeBean> age;
-        /**
-         * desc : 一室
-         * value : b1
-         */
+        private List<FilterDescBean> age;
 
-        private List<LayoutBean> layout;
-        /**
-         * desc : 急售
-         * value : t10
-         */
+        private List<FilterDescBean> layout;
 
-        private List<LableBean> lable;
-        /**
-         * desc : 床
-         * value : BED
-         */
+        private List<FilterDescBean> lable;
 
-        private List<FacilitiesBean> facilities;
+        private List<FilterDescBean> facilities;
 
-        public List<DirectionsBean> getDirections() {
+        public List<FilterDescBean> getDirections() {
             return directions;
         }
 
-        public void setDirections(List<DirectionsBean> directions) {
+        public void setDirections(List<FilterDescBean> directions) {
             this.directions = directions;
         }
 
-        public List<AreaBean> getArea() {
+        public List<FilterDescBean> getArea() {
             return area;
         }
 
-        public void setArea(List<AreaBean> area) {
+        public void setArea(List<FilterDescBean> area) {
             this.area = area;
         }
 
-        public List<PriceBean> getPrice() {
+        public List<FilterDescBean> getPrice() {
             return price;
         }
 
-        public void setPrice(List<PriceBean> price) {
+        public void setPrice(List<FilterDescBean> price) {
             this.price = price;
         }
 
-        public List<OrderByBean> getOrderBy() {
+        public List<FilterDescBean> getOrderBy() {
             return orderBy;
         }
 
-        public void setOrderBy(List<OrderByBean> orderBy) {
+        public void setOrderBy(List<FilterDescBean> orderBy) {
             this.orderBy = orderBy;
         }
 
-        public List<DecorationBean> getDecoration() {
+        public List<FilterDescBean> getDecoration() {
             return decoration;
         }
 
-        public void setDecoration(List<DecorationBean> decoration) {
+        public void setDecoration(List<FilterDescBean> decoration) {
             this.decoration = decoration;
         }
 
-        public List<AgeBean> getAge() {
+        public List<FilterDescBean> getAge() {
             return age;
         }
 
-        public void setAge(List<AgeBean> age) {
+        public void setAge(List<FilterDescBean> age) {
             this.age = age;
         }
 
-        public List<LayoutBean> getLayout() {
+        public List<FilterDescBean> getLayout() {
             return layout;
         }
 
-        public void setLayout(List<LayoutBean> layout) {
+        public void setLayout(List<FilterDescBean> layout) {
             this.layout = layout;
         }
 
-        public List<LableBean> getLable() {
+        public List<FilterDescBean> getLable() {
             return lable;
         }
 
-        public void setLable(List<LableBean> lable) {
+        public void setLable(List<FilterDescBean> lable) {
             this.lable = lable;
         }
 
-        public List<FacilitiesBean> getFacilities() {
+        public List<FilterDescBean> getFacilities() {
             return facilities;
         }
 
-        public void setFacilities(List<FacilitiesBean> facilities) {
+        public void setFacilities(List<FilterDescBean> facilities) {
             this.facilities = facilities;
         }
 
-        public static class DirectionsBean {
-            private String desc;
-            private String value;
+    }
+    public static class FilterDescBean {
+        private String desc;
+        private String value;
 
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
+        public String getDesc() {
+            return desc;
         }
 
-        public static class AreaBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
+        public void setDesc(String desc) {
+            this.desc = desc;
         }
 
-        public static class PriceBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
+        public String getValue() {
+            return value;
         }
 
-        public static class OrderByBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class DecorationBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class AgeBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class LayoutBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class LableBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
-        }
-
-        public static class FacilitiesBean {
-            private String desc;
-            private String value;
-
-            public String getDesc() {
-                return desc;
-            }
-
-            public void setDesc(String desc) {
-                this.desc = desc;
-            }
-
-            public String getValue() {
-                return value;
-            }
-
-            public void setValue(String value) {
-                this.value = value;
-            }
+        public void setValue(String value) {
+            this.value = value;
         }
     }
 }
