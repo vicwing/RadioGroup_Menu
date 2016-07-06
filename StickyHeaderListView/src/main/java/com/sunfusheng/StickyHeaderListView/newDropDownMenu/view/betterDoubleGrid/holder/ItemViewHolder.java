@@ -2,16 +2,14 @@ package com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGri
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.baiiu.filter.util.UIUtil;
 import com.baiiu.filter.view.FilterCheckedTextView;
 import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
-
-import butterknife.ButterKnife;
 
 /**
  * auther: baiiu
@@ -25,20 +23,23 @@ public class ItemViewHolder extends RecyclerView.ViewHolder implements View.OnCl
     private ItemViewHolder.ClickListener clickListener;
 
     public ItemViewHolder(Context mContext, ViewGroup parent,View.OnClickListener mListener) {
-        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
-        textView = ButterKnife.findById(itemView, R.id.tv_item);
+        super(LayoutInflater.from(mContext).inflate(R.layout.holder_item, parent, false));
+//        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
+        textView = (FilterCheckedTextView) itemView.findViewById( R.id.tv_item);
         this.mListener = mListener;
     }
     public ItemViewHolder(Context mContext, ViewGroup parent,View.OnClickListener mListener, ItemViewHolder.ClickListener clickListener) {
-        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
-        textView = ButterKnife.findById(itemView, R.id.tv_item);
+//        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
+        super(LayoutInflater.from(mContext).inflate(R.layout.holder_item, parent, false));
+        textView = (FilterCheckedTextView) itemView.findViewById( R.id.tv_item);
         this.mListener = mListener;
         this.clickListener = clickListener;
     }
 
     public ItemViewHolder(Context mContext, ViewGroup parent, ClickListener clickListener) {
-        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
-        textView = ButterKnife.findById(itemView, R.id.tv_item);
+//        super(UIUtil.infalte(mContext, R.layout.holder_item, parent));
+        super(LayoutInflater.from(mContext).inflate(R.layout.holder_item, parent, false));
+        textView = (FilterCheckedTextView) itemView.findViewById( R.id.tv_item);
         this.clickListener = clickListener;
     }
 

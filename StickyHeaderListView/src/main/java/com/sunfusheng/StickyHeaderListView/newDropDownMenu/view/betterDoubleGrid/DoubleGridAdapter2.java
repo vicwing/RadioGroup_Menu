@@ -7,9 +7,10 @@ import android.util.SparseBooleanArray;
 import android.view.ViewGroup;
 
 import com.apkfuns.logutils.LogUtils;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.TitleViewHolder;
+import com.sunfusheng.StickyHeaderListView.ui.MainDropDownMenuActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,23 +25,20 @@ public class DoubleGridAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     private static final int TYPE_TITLE = 0;
     private static final int TYPE_ITEM = 1;
 
-    public static final String houseArea = "面积";
-    public static final String houseLabel = "标签";
-    public static final String houseAge = "房龄";
-    public static final String houseDecorate = "装修";
+
     private SparseBooleanArray selectedItems;
     private ItemViewHolder.ClickListener clickListener;
     private Context mContext;
-    private HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap;
-    private List<SecondHandFilterBean.FilterDescBean> label;
-    private List<SecondHandFilterBean.FilterDescBean> age;
-    private List<SecondHandFilterBean.FilterDescBean> decoration;
-    private List<SecondHandFilterBean.FilterDescBean> area;
+    private HashMap<String, List<FilterBean>> hashMap;
+    private List<FilterBean> label;
+    private List<FilterBean> age;
+    private List<FilterBean> decoration;
+    private List<FilterBean> area;
     private int firstSection;
     private int secondSection;
     private int thirdSection;
 
-    public DoubleGridAdapter2(Context context, HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap, ItemViewHolder.ClickListener mCallback) {
+    public DoubleGridAdapter2(Context context, HashMap<String, List<FilterBean>> hashMap, ItemViewHolder.ClickListener mCallback) {
         this.mContext = context;
         this.hashMap = hashMap;
         this.clickListener = mCallback;
@@ -50,14 +48,14 @@ public class DoubleGridAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void init() {
         this.selectedItems = new SparseBooleanArray();
 
-        area = hashMap.get("面积");
-        label = hashMap.get("标签");
-        age = hashMap.get("房龄");
-        decoration = hashMap.get("装修");
-
-        firstSection = area.size() + 1;
-        secondSection = area.size() + label.size() + 2;
-        thirdSection = area.size() + label.size() + age.size() + 3;
+//        area = hashMap.get("面积");
+//        label = hashMap.get("标签");
+//        age = hashMap.get("房龄");
+//        decoration = hashMap.get("装修");
+//
+//        firstSection = area.size() + 1;
+//        secondSection = area.size() + label.size() + 2;
+//        thirdSection = area.size() + label.size() + age.size() + 3;
     }
 
     @Override
@@ -95,13 +93,13 @@ public class DoubleGridAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_TITLE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 if (position == 0) {
-                    titleViewHolder.bind(houseArea);
+                    titleViewHolder.bind(MainDropDownMenuActivity.houseArea);
                 } else if ( position == firstSection ){
-                    titleViewHolder.bind(houseLabel);
+                    titleViewHolder.bind(MainDropDownMenuActivity.houseLabel);
                 }else if ( position == secondSection ){
-                    titleViewHolder.bind(houseAge);
+                    titleViewHolder.bind(MainDropDownMenuActivity.houseAge);
                 }else if ( position == thirdSection ){
-                    titleViewHolder.bind(houseDecorate);
+                    titleViewHolder.bind(MainDropDownMenuActivity.houseDecorate);
                 }
                 break;
             case TYPE_ITEM:
@@ -154,6 +152,7 @@ public class DoubleGridAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
             selectedItems.put(position, true);
         }
         notifyItemChanged(position);
+//        notifyDataSetChanged();
     }
 
     public void clearSelectedState() {

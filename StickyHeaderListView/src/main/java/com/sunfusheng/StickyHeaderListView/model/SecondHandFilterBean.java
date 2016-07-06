@@ -4,121 +4,102 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * 二手房,更多筛选框
  * Created by vic on 2016/7/1.
  */
 public class SecondHandFilterBean extends QFJSONResult<SecondHandFilterBean.ResultBean>  implements Serializable{
 
     public static class ResultBean {
 
-        private List<FilterDescBean> directions;
+        private List<FilterBean> directions;
 
-        private List<FilterDescBean> area;
+        private List<FilterBean> area;
 
-        private List<FilterDescBean> price;
+        private List<FilterBean> price;
 
-        private List<FilterDescBean> orderBy;
+        private List<FilterBean> orderBy;
 
-        private List<FilterDescBean> decoration;//装修
+        private List<FilterBean> decoration;//装修
 
-        private List<FilterDescBean> age;
+        private List<FilterBean> age;
 
-        private List<FilterDescBean> layout;
+        private List<FilterBean> layout;
 
-        private List<FilterDescBean> lable;
+        private List<FilterBean> lable;
 
-        private List<FilterDescBean> facilities;
+        private List<FilterBean> facilities;
 
-        public List<FilterDescBean> getDirections() {
+        public List<FilterBean> getDirections() {
             return directions;
         }
 
-        public void setDirections(List<FilterDescBean> directions) {
+        public void setDirections(List<FilterBean> directions) {
             this.directions = directions;
         }
 
-        public List<FilterDescBean> getArea() {
+        public List<FilterBean> getArea() {
             return area;
         }
 
-        public void setArea(List<FilterDescBean> area) {
+        public void setArea(List<FilterBean> area) {
             this.area = area;
         }
 
-        public List<FilterDescBean> getPrice() {
+        public List<FilterBean> getPrice() {
             return price;
         }
 
-        public void setPrice(List<FilterDescBean> price) {
+        public void setPrice(List<FilterBean> price) {
             this.price = price;
         }
 
-        public List<FilterDescBean> getOrderBy() {
+        public List<FilterBean> getOrderBy() {
             return orderBy;
         }
 
-        public void setOrderBy(List<FilterDescBean> orderBy) {
+        public void setOrderBy(List<FilterBean> orderBy) {
             this.orderBy = orderBy;
         }
 
-        public List<FilterDescBean> getDecoration() {
+        public List<FilterBean> getDecoration() {
             return decoration;
         }
 
-        public void setDecoration(List<FilterDescBean> decoration) {
+        public void setDecoration(List<FilterBean> decoration) {
             this.decoration = decoration;
         }
 
-        public List<FilterDescBean> getAge() {
+        public List<FilterBean> getAge() {
             return age;
         }
 
-        public void setAge(List<FilterDescBean> age) {
+        public void setAge(List<FilterBean> age) {
             this.age = age;
         }
 
-        public List<FilterDescBean> getLayout() {
+        public List<FilterBean> getLayout() {
             return layout;
         }
 
-        public void setLayout(List<FilterDescBean> layout) {
+        public void setLayout(List<FilterBean> layout) {
             this.layout = layout;
         }
 
-        public List<FilterDescBean> getLable() {
+        public List<FilterBean> getLable() {
             return lable;
         }
 
-        public void setLable(List<FilterDescBean> lable) {
+        public void setLable(List<FilterBean> lable) {
             this.lable = lable;
         }
 
-        public List<FilterDescBean> getFacilities() {
+        public List<FilterBean> getFacilities() {
             return facilities;
         }
 
-        public void setFacilities(List<FilterDescBean> facilities) {
+        public void setFacilities(List<FilterBean> facilities) {
             this.facilities = facilities;
         }
 
-    }
-    public static class FilterDescBean {
-        private String desc;
-        private String value;
-
-        public String getDesc() {
-            return desc;
-        }
-
-        public void setDesc(String desc) {
-            this.desc = desc;
-        }
-
-        public String getValue() {
-            return value;
-        }
-
-        public void setValue(String value) {
-            this.value = value;
-        }
     }
 }

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
 import com.sunfusheng.StickyHeaderListView.R;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.FilterUrl;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 
@@ -26,16 +26,16 @@ import java.util.List;
  * time: 16/6/5 05 23:03
  * description:
  */
-public class BetterDoubleGridView extends LinearLayout implements View.OnClickListener  , ItemViewHolder.ClickListener
-{
+public class BetterDoubleGridView extends LinearLayout implements View.OnClickListener, ItemViewHolder.ClickListener {
     RecyclerView recyclerView;
 
     private List<String> mTopGridData;
     private List<String> mBottomGridList;
     private OnFilterDoneListener mOnFilterDoneListener;
 
-//    private ItemViewHolder.ClickListener mCallback;
-    private HashMap<String, List<SecondHandFilterBean.FilterDescBean>> hashMap;
+    //    private ItemViewHolder.ClickListener mCallback;
+    private HashMap<String, List<FilterBean>> hashMap;
+    private DoubleGridAdapter2 doubleGridAdapter2;
 
     public BetterDoubleGridView(Context mContext) {
         super(mContext, null);
@@ -64,7 +64,7 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     private void init(Context context) {
         setBackgroundColor(Color.WHITE);
         inflate(context, R.layout.merge_filter_double_grid, this);
-         findViewById(R.id.btn_clear).setOnClickListener(this);
+        findViewById(R.id.btn_clear).setOnClickListener(this);
         findViewById(R.id.bt_confirm).setOnClickListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -80,18 +80,20 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         this.mBottomGridList = mBottomGridList;
         return this;
     }
-    public BetterDoubleGridView setGidMap(HashMap<String, List<SecondHandFilterBean.FilterDescBean>> gridList) {
+
+    public BetterDoubleGridView setGidMap(HashMap<String, List<FilterBean>> gridList) {
         this.hashMap = gridList;
         return this;
     }
 
-    private List<SecondHandFilterBean.FilterDescBean> label;
-    private List<SecondHandFilterBean.FilterDescBean> age;
-    private List<SecondHandFilterBean.FilterDescBean> decoration;
-    private List<SecondHandFilterBean.FilterDescBean> area;
+    private List<FilterBean> label;
+    private List<FilterBean> age;
+    private List<FilterBean> decoration;
+    private List<FilterBean> area;
     private int firstSection;
     private int secondSection;
     private int thirdSection;
+
     public BetterDoubleGridView build() {
 
         area = hashMap.get("面积");
@@ -122,7 +124,8 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         recyclerView.setLayoutManager(gridLayoutManager);
 //        recyclerView.setAdapter(new DoubleGridAdapter(getContext(), mTopGridData, mBottomGridList, this));
 //        recyclerView.setAdapter(new DoubleGridAdapter2(getContext(), mTopGridData, mBottomGridList, this, mCallback));
-        recyclerView.setAdapter(new DoubleGridAdapter2(getContext(), hashMap, this));
+        doubleGridAdapter2 = new DoubleGridAdapter2(getContext(), hashMap, this);
+        recyclerView.setAdapter(doubleGridAdapter2);
         return this;
     }
 
@@ -155,53 +158,14 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
 //            textView.setSelected(true);
 //        }
         LogUtils.d("onClick   position " + v);
-//        if (mCallback != null) {
-//                int adapterPosition = recyclerView.findContainingViewHolder(v).getAdapterPosition();
-//                mCallback.onItemClicked(adapterPosition);
-//                LogUtils.d("mCallback   position " + adapterPosition);
-//         }
         int id = v.getId();
-        DoubleGridAdapter2 doubleGridAdapter2 = (DoubleGridAdapter2) recyclerView.getAdapter();
+//        DoubleGridAdapter2 doubleGridAdapter2 = (DoubleGridAdapter2) recyclerView.getAdapter();
         if (id == R.id.bt_confirm) {
-
-            List<Integer> selectedItems = doubleGridAdapter2.getSelectedItems();
-            LogUtils.d("getSelectedItems   " + selectedItems);
-            for (int i = 0; i <selectedItems.size() ; i++) {
-                Integer position = selectedItems.get(i);
-                if (position < firstSection) { //
-                    int location = position - 1;
-                    SecondHandFilterBean.FilterDescBean filterDescBean = area.get(location);
-                    String desc = filterDescBean.getDesc();
-                    String value = filterDescBean.getValue();
-                    LogUtils.d("desc  " + desc + "   value   " + value);
-
-                } else if (position > firstSection && position <secondSection) {
-                    int location = position - area.size() - 2;
-
-                    SecondHandFilterBean.FilterDescBean filterDescBean = label.get(location);
-                    String desc = filterDescBean.getDesc();
-                    String value = filterDescBean.getValue();
-                    LogUtils.d("desc  " + desc + "   value   " + value);
-                } else if (position > secondSection && position < thirdSection) {
-                    int location = position - area.size()-label.size() - 3;
-                    SecondHandFilterBean.FilterDescBean filterDescBean = age.get(location);
-                    String desc = filterDescBean.getDesc();
-                    String value = filterDescBean.getValue();
-                    LogUtils.d("desc  " + desc + "   value   " + value);
-                }else if(position>thirdSection){
-                    int location = position - area.size()-label.size()-age.size() - 4;
-                    SecondHandFilterBean.FilterDescBean filterDescBean = decoration.get(location);
-                    String desc = filterDescBean.getDesc();
-                    String value = filterDescBean.getValue();
-                    LogUtils.d("desc  " + desc + "   value   " + value);
-                }
-            }
-
+//            List<Integer> selectedItems = doubleGridAdapter2.getSelectedItems();
             if (mOnFilterDoneListener != null) {
-                mOnFilterDoneListener.onFilterDone(3, FilterUrl.instance().doubleGridTop, FilterUrl.instance().doubleGridBottom);
+                mOnFilterDoneListener.onFilterDone(3, null);
             }
-//            LogUtils.d("完成条件选择...............");
-        }else if (id==R.id.btn_clear){
+        } else if (id == R.id.btn_clear) {
             doubleGridAdapter2.clearSelectedState();
         }
     }
@@ -223,7 +187,6 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
         if (mOnFilterDoneListener != null) {
             mOnFilterDoneListener.onFilterDone(3, FilterUrl.instance().doubleGridTop, FilterUrl.instance().doubleGridBottom);
         }
-        recyclerView.setNestedScrollingEnabled(false);
     }
 
     public RecyclerView getRecyclerView() {
@@ -234,12 +197,11 @@ public class BetterDoubleGridView extends LinearLayout implements View.OnClickLi
     @Override
     public void onItemClicked(int position) {
         DoubleGridAdapter2 adapter = (DoubleGridAdapter2) recyclerView.getAdapter();
-//        recyclerView.setVerticalScrollBarEnabled(false);
-//        recyclerView.setHorizontalScrollBarEnabled(false);
         adapter.switchSelectedState(position);
         List<Integer> selectedItems = adapter.getSelectedItems();
+
         LogUtils.d("DropMenuAdapter   position" + position);
         LogUtils.d("DropMenuAdapter   selectItems" + selectedItems);
-        LogUtils.d("setVerticalScrollBarEnabled  "+recyclerView.isVerticalScrollBarEnabled()+"  H   "+recyclerView.isHorizontalScrollBarEnabled());
+        LogUtils.d("setVerticalScrollBarEnabled  " + recyclerView.isVerticalScrollBarEnabled() + "  H   " + recyclerView.isHorizontalScrollBarEnabled());
     }
 }

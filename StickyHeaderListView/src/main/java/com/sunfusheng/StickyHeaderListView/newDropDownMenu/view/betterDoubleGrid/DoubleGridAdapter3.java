@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.apkfuns.logutils.LogUtils;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.TitleViewHolder;
 
@@ -30,7 +30,7 @@ public class DoubleGridAdapter3 extends RecyclerView.Adapter<RecyclerView.ViewHo
     private ItemViewHolder.ClickListener clickListener;
 
     private Context mContext;
-    private HashMap<String, List<SecondHandFilterBean.FilterDescBean>> gridList;
+    private HashMap<String, List<FilterBean>> gridList;
     private List<String> topGridData;
     private List<String> bottomGridData;
     private View.OnClickListener mListener;
@@ -44,7 +44,7 @@ public class DoubleGridAdapter3 extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    public DoubleGridAdapter3(Context context, HashMap<String, List<SecondHandFilterBean.FilterDescBean>> gridList, ItemViewHolder.ClickListener mCallback) {
+    public DoubleGridAdapter3(Context context, HashMap<String, List<FilterBean>> gridList, ItemViewHolder.ClickListener mCallback) {
         this.mContext = context;
         this.gridList = gridList;
         this.clickListener = mCallback;

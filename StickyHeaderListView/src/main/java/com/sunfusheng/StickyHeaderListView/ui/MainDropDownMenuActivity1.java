@@ -14,16 +14,15 @@ import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
-import com.google.gson.Gson;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.TravelingAdapter;
 import com.sunfusheng.StickyHeaderListView.model.ChannelEntity;
 import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
-import com.sunfusheng.StickyHeaderListView.model.NewHouseFilterBean;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
 import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterListCallback;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
@@ -37,7 +36,6 @@ import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.DropDownMenuSmoothScrollListener;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.Callback;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,21 +43,16 @@ import java.util.List;
 import java.util.Map;
 
 import okhttp3.Call;
-import okhttp3.Response;
 
 
 /**
  *
  */
-public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity implements OnFilterDoneListener<FilterBean>, SmoothListView.ISmoothListViewListener, View.OnClickListener {
+public class MainDropDownMenuActivity1 extends BasePtrPullToResfrshActivity implements OnFilterDoneListener<FilterBean>, SmoothListView.ISmoothListViewListener, View.OnClickListener {
     public static final String houseArea = "面积";
     public static final String houseLabel = "标签";
     public static final String houseAge = "房龄";
     public static final String houseDecorate = "装修";
-
-    public static final String houseProperty = "类型";
-    public static final String houseFeature= "标签";
-    public static final String houseSalestatus = "销售状态";
 
 
     SmoothListView smoothListView;
@@ -328,11 +321,11 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         }
         qfangframelayout.cancelAll();
     }
-    String[] titleList = new String[]{"区域", "价格", "标签", "更多"};
+
     private void initFilterDropDownView() {
+        String[] titleList = new String[]{"第一个", "第二个", "第三个", "更多"};
         dropMenuAdapter = new DropMenuAdapter(this, titleList, this, hashMap);
-//        dropMenuAdapter = new DropMenuAdapter(this, titleList, this, hashMap);
-//        mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+        mDropDownMenu.setMenuAdapter(dropMenuAdapter);
 //        dropDownMenu.setContentView(tv_conttentview);
     }
 
@@ -340,37 +333,27 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     public void onFilterDone(int position, String title, String urlValue) {
         mDropDownMenu.close();
 //        if (position != 3) {
-        mDropDownMenu.setPositionIndicatorText(position, title);
+        mDropDownMenu.setPositionIndicatorText(position, urlValue);
 //        }
         LogUtils.d("筛选菜单...position.  " + position + "  title " + title + "   urlValue " + urlValue);
     }
 
-
     @Override
-    public void onFilterDone(int positionTitle, Map<String,List<FilterBean>> selectedMap) {
-        LogUtils.d("positionTitle  "+positionTitle);
-        for (Map.Entry<String, List<FilterBean>> entry : selectedMap.entrySet()) {
-//            LogUtils.d("Key = " + entry.getKey() + ", Value = " + entry.getValue().size());
-            for (int i = 0; i <  entry.getValue().size(); i++) {
-                FilterBean filterBean = entry.getValue().get(i);
-                LogUtils.d("Key = " + entry.getKey() + "   desc  " +filterBean.getDesc()+"   value"+filterBean.getValue());
-            }
-        }
-        mDropDownMenu.close();
-    }
+    public void onFilterDone(int positionTitle, Map<String, List<FilterBean>> selectedItems) {
 
+    }
 
 //    @Override
 //    public void onFilterDone(int positionTitle, List<Integer> selectedItems) {
 //
-////        area = hashMap.get(houseAge);
-////        label = hashMap.get(houseLabel);
-////        age = hashMap.get(houseAge);
-////        decoration = hashMap.get(houseDecorate);
-////
-////        firstSection = area.size() + 1;
-////        secondSection = area.size() + label.size() + 2;
-////        thirdSection = area.size() + label.size() + age.size() + 3;
+//        area = hashMap.get(houseAge);
+//        label = hashMap.get(houseLabel);
+//        age = hashMap.get(houseAge);
+//        decoration = hashMap.get(houseDecorate);
+//
+//        firstSection = area.size() + 1;
+//        secondSection = area.size() + label.size() + 2;
+//        thirdSection = area.size() + label.size() + age.size() + 3;
 //
 //        getFilterParam(selectedItems);
 //    }
@@ -394,7 +377,6 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
             } else if (position > firstSection && position < secondSection) {
                 int location = position - area.size() - 2;
 
-                List<FilterBean> label = this.label;
                 FilterBean filterDescBean = label.get(location);
                 String desc = filterDescBean.getDesc();
                 String value = filterDescBean.getValue();
@@ -424,55 +406,43 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 
     private String filter_more_url = "http://10.251.93.254:8010/appapi/v4_4/enums/filters/room?bizType=SALE&dataSource=SHENZHEN";
 
-    private String newhouse_filter_more_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/filters/new?dataSource=SHENZHEN";
-
-    private String newhouse_filter_metro_url = "http://10.251.93.254:8010/appapi/v4_4/enums/subwaynums?dataSource=SHENZHEN";//地铁
-    private String newhouse_filter_city_area_url = "10.251.93.254:8010/appapi/v4_4/area?dataSource=shenzhen";//地铁
-
-
     private void requestFilterData() {
         LogUtils.d("请求筛选菜单的列表");
         OkHttpUtils
                 .post()//
-                .url(newhouse_filter_more_url)//
+                .url(filter_more_url)//
 //                .addParams("currentPage",currentPageStr)
                 .build()//
-                .execute(new Callback() {
-                    @Override
-                    public Object parseNetworkResponse(Response response) throws Exception {
-                        String string = response.body().string();
-                        NewHouseFilterBean bean = new Gson().fromJson(string, NewHouseFilterBean.class);
-                        return bean;
-                    }
-
+                .execute(new SecondHandFilterListCallback() {
                     @Override
                     public void onError(Call call, Exception e) {
                     }
 
                     @Override
-                    public void onResponse(Object response1) {
+                    public void onResponse(SecondHandFilterBean response) {
+
 
                         LogUtils.d("返回结果");
-                        LogUtils.d(response1);
-                        NewHouseFilterBean response = (NewHouseFilterBean) response1;
-                        String status =response.getStatus();
+                        LogUtils.d(response);
+                        String status = response.getStatus();
                         if (status.equals("C0000")) {
-                            NewHouseFilterBean.ResultBean result = response.getResult();
-                            List<FilterBean> property = result.getProperty();
-                            List<FilterBean> features = result.getFeatures();
-                            List<FilterBean> saleStatus = result.getSaleStatus();
+                            SecondHandFilterBean.ResultBean result = response.getResult();
+                            List<FilterBean> area = result.getArea();
+                            List<FilterBean> decorationBeanList = result.getDecoration();
+                            List<FilterBean> lableBeanList = result.getLable();
+                            List<FilterBean> ageBeanList = result.getAge();
+
 
                             hashMap = new HashMap<>();
-                            hashMap.put(houseProperty, property);
-//                            hashMap.put(houseFeature, features);
-                            hashMap.put(houseSalestatus, saleStatus);
+                            hashMap.put(houseArea, area);
+                            hashMap.put(houseDecorate, decorationBeanList);
+                            hashMap.put(houseLabel, lableBeanList);
+                            hashMap.put(houseAge, ageBeanList);
 
 //                            dropMenuAdapter.setBetterDoubleGridData(hashMap);
                             initFilterDropDownView();
-                            dropMenuAdapter.setFeatureData(features);
-                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
                         } else {//返回错误message
-                            Toast.makeText(MainDropDownMenuActivity.this, "message  " + response.getMessage() + "\n statsus  " + response.getStatus(), Toast.LENGTH_SHORT);
+                            Toast.makeText(MainDropDownMenuActivity1.this, "message  " + response.getMessage() + "\n statsus  " + response.getStatus(), Toast.LENGTH_SHORT);
                         }
                     }
                 });
@@ -494,34 +464,5 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 //
 //                }
 //            });
-    }
-
-    /**
-     * 请求筛选:地铁
-     */
-    private void requestFilterMetroData() {
-        LogUtils.d("请求筛选菜单的列表");
-        OkHttpUtils
-                .post()//
-                .url(newhouse_filter_more_url)//
-//                .addParams("currentPage",currentPageStr)
-                .build()//
-            .execute(new Callback() {
-                @Override
-                public Object parseNetworkResponse(Response response) throws Exception {
-                    String string = response.body().string();
-                    SecondHandFilterBean bean = new Gson().fromJson(string, SecondHandFilterBean.class);
-                    return bean;
-                }
-
-                @Override
-                public void onError(Call call, Exception e) {
-                }
-
-                @Override
-                public void onResponse(Object response) {
-
-                }
-            });
     }
 }
