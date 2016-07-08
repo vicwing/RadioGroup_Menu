@@ -34,7 +34,7 @@ import okhttp3.HttpUrl;
  * from http://stackoverflow.com/questions/25461792/persistent-cookie-store-using-okhttp-2-on-android
  * <p/>
  * <br/>
- * A persistent cookie store which implements the Apache HttpClient CookieStore impl.
+ * A persistent cookie store which implements the Apache HttpClient CookieStore interface.
  * Cookies are stored and will persist on the user's device between application sessions since they
  * are serialized and stored in SharedPreferences. Instances of this class are
  * designed to be used with AsyncHttpClient#setCookieStore, but can also be used with a
@@ -86,21 +86,33 @@ public class PersistentCookieStore implements CookieStore
         }
     }
 
-    protected  void add(HttpUrl uri, Cookie cookie)
+    protected void add(HttpUrl uri, Cookie cookie)
     {
         String name = getCookieToken(cookie);
 
         if (cookie.persistent())
         {
             if (!cookies.containsKey(uri.host()))
+            {
                 cookies.put(uri.host(), new ConcurrentHashMap<String, Cookie>());
+            }
             cookies.get(uri.host()).put(name, cookie);
+        } else
+        {
+            if (cookies.containsKey(uri.host()))
+            {
+                cookies.get(uri.host()).remove(name);
+            }else
+            {
+                return ;
+            }
         }
+
         // Save cookie into persistent store
         SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
         prefsWriter.putString(uri.host(), TextUtils.join(",", cookies.get(uri.host()).keySet()));
         prefsWriter.putString(COOKIE_NAME_PREFIX + name, encodeCookie(new SerializableHttpCookie(cookie)));
-        prefsWriter.commit();
+        prefsWriter.apply();
     }
 
     protected String getCookieToken(Cookie cookie)
@@ -118,7 +130,7 @@ public class PersistentCookieStore implements CookieStore
     }
 
     @Override
-    public  List<Cookie> get(HttpUrl uri)
+    public List<Cookie> get(HttpUrl uri)
     {
         ArrayList<Cookie> ret = new ArrayList<Cookie>();
         if (cookies.containsKey(uri.host()))
@@ -145,18 +157,18 @@ public class PersistentCookieStore implements CookieStore
     }
 
     @Override
-    public  boolean removeAll()
+    public boolean removeAll()
     {
         SharedPreferences.Editor prefsWriter = cookiePrefs.edit();
         prefsWriter.clear();
-        prefsWriter.commit();
+        prefsWriter.apply();
         cookies.clear();
         return true;
     }
 
 
     @Override
-    public  boolean remove(HttpUrl uri, Cookie cookie)
+    public boolean remove(HttpUrl uri, Cookie cookie)
     {
         String name = getCookieToken(cookie);
 
@@ -170,7 +182,7 @@ public class PersistentCookieStore implements CookieStore
                 prefsWriter.remove(COOKIE_NAME_PREFIX + name);
             }
             prefsWriter.putString(uri.host(), TextUtils.join(",", cookies.get(uri.host()).keySet()));
-            prefsWriter.commit();
+            prefsWriter.apply();
 
             return true;
         } else
@@ -180,7 +192,7 @@ public class PersistentCookieStore implements CookieStore
     }
 
     @Override
-    public  List<Cookie> getCookies()
+    public List<Cookie> getCookies()
     {
         ArrayList<Cookie> ret = new ArrayList<Cookie>();
         for (String key : cookies.keySet())

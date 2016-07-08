@@ -13,8 +13,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
-            <option value="$PROJECT_DIR$/library" />
-            <option value="$PROJECT_DIR$/okhttputils" />
+            <option value="$PROJECT_DIR$/okhttputils2" />
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>
         </option>
@@ -25,8 +24,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
-            <option value="$PROJECT_DIR$/library" />
-            <option value="$PROJECT_DIR$/okhttputils" />
+            <option value="$PROJECT_DIR$/okhttputils2" />
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>
         </option>

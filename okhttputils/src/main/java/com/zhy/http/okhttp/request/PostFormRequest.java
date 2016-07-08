@@ -25,9 +25,9 @@ public class PostFormRequest extends OkHttpRequest
 {
     private List<PostFormBuilder.FileInput> files;
 
-    public PostFormRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, List<PostFormBuilder.FileInput> files)
+    public PostFormRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, List<PostFormBuilder.FileInput> files,int id)
     {
-        super(url, tag, params, headers);
+        super(url, tag, params, headers,id);
         this.files = files;
     }
 
@@ -38,7 +38,8 @@ public class PostFormRequest extends OkHttpRequest
         {
             FormBody.Builder builder = new FormBody.Builder();
             addParams(builder);
-            return builder.build();
+            FormBody formBody = builder.build();
+            return formBody;
         } else
         {
             MultipartBody.Builder builder = new MultipartBody.Builder()
@@ -65,12 +66,12 @@ public class PostFormRequest extends OkHttpRequest
             public void onRequestProgress(final long bytesWritten, final long contentLength)
             {
 
-                OkHttpUtils.getInstance().getDelivery().post(new Runnable()
+                OkHttpUtils.getInstance().getDelivery().execute(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        callback.inProgress(bytesWritten * 1.0f / contentLength);
+                        callback.inProgress(bytesWritten * 1.0f / contentLength,contentLength,id);
                     }
                 });
 

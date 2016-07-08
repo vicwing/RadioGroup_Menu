@@ -33,9 +33,12 @@ dependencies {
     compile 'com.apkfuns.logutils:library:1.4.2'
     compile 'com.github.cgpllx:easyandroid:v0.4.6'
     compile 'com.github.cgpllx:CustomView:v0.2.1'
-    compile project(':okhttputils')
+    //    compile project(':okhttputils')
     compile project(':filter-lib')
     compile 'com.orhanobut:logger:1.15'
+    //    compile 'com.google.code.gson:gson:2.4.0'
+    compile 'com.google.code.gson:gson:2.7'
+    compile project(':okhttputils2')
 }
 allprojects {
     repositories {

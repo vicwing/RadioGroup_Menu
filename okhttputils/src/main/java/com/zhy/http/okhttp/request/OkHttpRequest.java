@@ -1,7 +1,5 @@
 package com.zhy.http.okhttp.request;
 
-import android.util.Log;
-
 import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.utils.Exceptions;
 
@@ -20,16 +18,18 @@ public abstract class OkHttpRequest
     protected Object tag;
     protected Map<String, String> params;
     protected Map<String, String> headers;
+    protected int id;
 
     protected Request.Builder builder = new Request.Builder();
 
     protected OkHttpRequest(String url, Object tag,
-                            Map<String, String> params, Map<String, String> headers)
+                            Map<String, String> params, Map<String, String> headers,int id)
     {
         this.url = url;
         this.tag = tag;
         this.params = params;
         this.headers = headers;
+        this.id = id ;
 
         if (url == null)
         {
@@ -47,7 +47,6 @@ public abstract class OkHttpRequest
     private void initBuilder()
     {
         builder.url(url).tag(tag);
-        Log.e((String)tag,"url"+url);
         appendHeaders();
     }
 
@@ -85,6 +84,11 @@ public abstract class OkHttpRequest
             headerBuilder.add(key, headers.get(key));
         }
         builder.headers(headerBuilder.build());
+    }
+
+    public int getId()
+    {
+        return id  ;
     }
 
 }

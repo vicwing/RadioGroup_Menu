@@ -73,10 +73,7 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
 //                loadMoreListViewContainer.loadMoreFinish(true,false);
 //                loadMoreListViewContainer.setShowLoadingForFirstPage(true);
 //                requestUpdate(String.valueOf(currentPage));
-
-
             }
-
         });
 
         loadMoreListViewContainer = (LoadMoreListViewContainer) findViewById(R.id.load_more_list_view_container);
@@ -96,8 +93,6 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     /**

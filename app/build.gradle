@@ -73,7 +73,7 @@ dependencies {
     compile(name: 'roundedimageview-2.2.1', ext: 'aar')
     //    compile 'com.makeramen:roundedimageview:2.2.1'
     compile project(':ptr-lib')
-    compile project(':okhttputils')
+    compile project(':okhttputils2')
     compile 'co.lujun:androidtagview:1.0.3'
     compile 'com.google.code.gson:gson:2.3.1'
     compile 'com.apkfuns.logutils:library:1.4.2'

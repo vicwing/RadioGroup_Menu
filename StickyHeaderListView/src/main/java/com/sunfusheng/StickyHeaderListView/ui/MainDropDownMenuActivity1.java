@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
@@ -21,7 +20,6 @@ import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
 import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterListCallback;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
@@ -41,8 +39,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import okhttp3.Call;
 
 
 /**
@@ -360,6 +356,7 @@ public class MainDropDownMenuActivity1 extends BasePtrPullToResfrshActivity impl
 
     /**
      * 获取 更多菜单的 请求参数
+     *
      * @param selectedItems
      */
     private void getFilterParam(List<Integer> selectedItems) {
@@ -413,39 +410,7 @@ public class MainDropDownMenuActivity1 extends BasePtrPullToResfrshActivity impl
                 .url(filter_more_url)//
 //                .addParams("currentPage",currentPageStr)
                 .build()//
-                .execute(new SecondHandFilterListCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                    }
-
-                    @Override
-                    public void onResponse(SecondHandFilterBean response) {
-
-
-                        LogUtils.d("返回结果");
-                        LogUtils.d(response);
-                        String status = response.getStatus();
-                        if (status.equals("C0000")) {
-                            SecondHandFilterBean.ResultBean result = response.getResult();
-                            List<FilterBean> area = result.getArea();
-                            List<FilterBean> decorationBeanList = result.getDecoration();
-                            List<FilterBean> lableBeanList = result.getLable();
-                            List<FilterBean> ageBeanList = result.getAge();
-
-
-                            hashMap = new HashMap<>();
-                            hashMap.put(houseArea, area);
-                            hashMap.put(houseDecorate, decorationBeanList);
-                            hashMap.put(houseLabel, lableBeanList);
-                            hashMap.put(houseAge, ageBeanList);
-
-//                            dropMenuAdapter.setBetterDoubleGridData(hashMap);
-                            initFilterDropDownView();
-                        } else {//返回错误message
-                            Toast.makeText(MainDropDownMenuActivity1.this, "message  " + response.getMessage() + "\n statsus  " + response.getStatus(), Toast.LENGTH_SHORT);
-                        }
-                    }
-                });
+                .execute(new SecondHandFilterListCallback());
 //            .execute(new Callback() {
 //                @Override
 //                public Object parseNetworkResponse(Response response) throws Exception {

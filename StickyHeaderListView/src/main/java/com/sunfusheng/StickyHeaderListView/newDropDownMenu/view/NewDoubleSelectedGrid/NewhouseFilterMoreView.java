@@ -13,12 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
+import com.baiiu.filter.interfaces.OnFilterItemClickListener;
 import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
-import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 import com.sunfusheng.StickyHeaderListView.ui.GridViewCompat;
 import com.sunfusheng.StickyHeaderListView.ui.MainDropDownMenuActivity;
 
@@ -30,34 +29,34 @@ import java.util.Map;
 /**
  * description: 新房列表页筛选菜单,更多界面:提供单选,多选的功能.
  */
-public class BetterThreeGridNewhouseFilterView extends LinearLayout implements View.OnClickListener, ItemViewHolder.ClickListener {
+public class NewhouseFilterMoreView<DATA> extends LinearLayout implements View.OnClickListener {
 
+    private OnFilterItemClickListener<DATA> mOnItemClickListener;
     private OnFilterDoneListener mOnFilterDoneListener;
+
     private Map<String, List<FilterBean>>   selectedMap = new HashMap<>(); //存储已经选择的筛选项
     private Map<String, List<FilterBean>> hashMap;
     private LinearLayout linearLayout;
     private Context context;
-
-
-    public BetterThreeGridNewhouseFilterView(Context mContext) {
+    public NewhouseFilterMoreView(Context mContext) {
         super(mContext, null);
 //        mCallback = callback;
         init(mContext);
     }
 
-    public BetterThreeGridNewhouseFilterView(Context context, AttributeSet attrs) {
+    public NewhouseFilterMoreView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public BetterThreeGridNewhouseFilterView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NewhouseFilterMoreView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public BetterThreeGridNewhouseFilterView(Context context, AttributeSet attrs, int defStyleAttr,
-                                             int defStyleRes) {
+    public NewhouseFilterMoreView(Context context, AttributeSet attrs, int defStyleAttr,
+                                  int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         init(context);
     }
@@ -74,20 +73,20 @@ public class BetterThreeGridNewhouseFilterView extends LinearLayout implements V
 
     }
 
-    public BetterThreeGridNewhouseFilterView setGidMap(HashMap<String, List<FilterBean>> gridList) {
+    public NewhouseFilterMoreView setGidMap(HashMap<String, List<FilterBean>> gridList) {
         this.hashMap = gridList;
         return this;
     }
 
 
-    public BetterThreeGridNewhouseFilterView build() {
+    public NewhouseFilterMoreView build() {
 
-        int size = hashMap.entrySet().size();
+//        int size = hashMap.entrySet().size();
 
         // 设置Linearlayout 为垂直方向布局
         linearLayout.setOrientation(LinearLayout.VERTICAL);
         for (Map.Entry<String, List<FilterBean>> entry : hashMap.entrySet()) {
-           LogUtils.d("Key = " + entry.getKey() + ", Value = " + entry.getValue());
+//           LogUtils.d("Key = " + entry.getKey() + ", Value = " + entry.getValue());
             linearLayout.addView(createView(entry.getKey(),entry.getValue()));
         }
         return this;
@@ -98,9 +97,13 @@ public class BetterThreeGridNewhouseFilterView extends LinearLayout implements V
 
         int id = v.getId();
         if (id == R.id.bt_confirm) {
+            if (mOnItemClickListener!=null){
+                mOnItemClickListener.onItemClick((DATA) selectedMap);
+            }
             if (mOnFilterDoneListener != null) {
                 mOnFilterDoneListener.onFilterDone(3, selectedMap);
             }
+
         } else if (id == R.id.btn_clear) {//清空条件
             int childCount = linearLayout.getChildCount();
             for (int i = 0; i <childCount; i++) {
@@ -118,20 +121,9 @@ public class BetterThreeGridNewhouseFilterView extends LinearLayout implements V
     }
 
 
-    public BetterThreeGridNewhouseFilterView setOnFilterDoneListener(OnFilterDoneListener listener) {
+    public NewhouseFilterMoreView setOnFilterDoneListener(OnFilterDoneListener listener) {
         mOnFilterDoneListener = listener;
         return this;
-    }
-
-    @Override
-    public void onItemClicked(int position) {
-//        DoubleGridAdapter2 adapter = (DoubleGridAdapter2) recyclerView.getAdapter();
-//        adapter.switchSelectedState(position);
-//        List<Integer> selectedItems = adapter.getSelectedItems();
-//
-//        LogUtils.d("DropMenuAdapter   position" + position);
-//        LogUtils.d("DropMenuAdapter   selectItems" + selectedItems);
-//        LogUtils.d("setVerticalScrollBarEnabled  " + recyclerView.isVerticalScrollBarEnabled() + "  H   " + recyclerView.isHorizontalScrollBarEnabled());
     }
 
     /**
@@ -178,5 +170,8 @@ public class BetterThreeGridNewhouseFilterView extends LinearLayout implements V
 //        GridViewUtils.updateGridViewLayoutParams(gridView, 4);
         return view;
     }
-
+    public NewhouseFilterMoreView<DATA> onItemClick(OnFilterItemClickListener<DATA> onItemClickListener) {
+        this.mOnItemClickListener = onItemClickListener;
+        return this;
+    }
 }

@@ -21,7 +21,6 @@ import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.FilterEntity;
 import com.sunfusheng.StickyHeaderListView.model.FilterTwoEntity;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
 import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterListCallback;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
@@ -39,8 +38,6 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.Call;
 
 
 /**
@@ -372,15 +369,7 @@ public class MainActivity extends BasePtrPullToResfrshActivity implements Smooth
                 .url(filter_more_url)//
 //                .addParams("currentPage",currentPageStr)
                 .build()//
-                .execute(new  SecondHandFilterListCallback() {
-                    @Override
-                    public void onError(Call call, Exception e) {
-                    }
-                    @Override
-                    public void onResponse(SecondHandFilterBean response) {
-                        LogUtils.d(response);
-                    }
-                });
+                .execute(new  SecondHandFilterListCallback()  );
 //            .execute(new Callback() {
 //                @Override
 //                public Object parseNetworkResponse(Response response) throws Exception {

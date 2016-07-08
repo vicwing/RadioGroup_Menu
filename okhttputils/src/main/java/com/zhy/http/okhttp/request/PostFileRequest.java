@@ -21,9 +21,9 @@ public class PostFileRequest extends OkHttpRequest
     private File file;
     private MediaType mediaType;
 
-    public PostFileRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, File file, MediaType mediaType)
+    public PostFileRequest(String url, Object tag, Map<String, String> params, Map<String, String> headers, File file, MediaType mediaType,int id)
     {
-        super(url, tag, params, headers);
+        super(url, tag, params, headers,id);
         this.file = file;
         this.mediaType = mediaType;
 
@@ -53,12 +53,12 @@ public class PostFileRequest extends OkHttpRequest
             public void onRequestProgress(final long bytesWritten, final long contentLength)
             {
 
-                OkHttpUtils.getInstance().getDelivery().post(new Runnable()
+                OkHttpUtils.getInstance().getDelivery().execute(new Runnable()
                 {
                     @Override
                     public void run()
                     {
-                        callback.inProgress(bytesWritten * 1.0f / contentLength);
+                        callback.inProgress(bytesWritten * 1.0f / contentLength,contentLength,id);
                     }
                 });
 

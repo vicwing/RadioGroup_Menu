@@ -19,12 +19,14 @@ public class BaseApplication extends Application {
                 .configShowBorders(false)
                 .configLevel(LogLevel.TYPE_VERBOSE);
 
-        Logger
-                .init("logger")                 // default PRETTYLOGGER or use just init()
-                .methodCount(1)                 // default 2
-                .hideThreadInfo()               // default shown
-                .logLevel(com.orhanobut.logger.LogLevel.FULL)        // default LogLevel.FULL
-                .methodOffset(2)          ;      // default 0
+//        Logger
+//                .init("logger")                 // default PRETTYLOGGER or use just init()
+//                .methodCount(0)                 // default 2
+//                .hideThreadInfo()               // default shown
+//                .logLevel(com.orhanobut.logger.LogLevel.FULL)        // default LogLevel.FULL
+//                .methodOffset(0)          ;      // default 0
 //                .logAdapter(new AndroidLogAdapter()); //default AndroidLogAdapter
+
+        Logger.init("vicwing").methodCount(1).logLevel(com.orhanobut.logger.LogLevel.FULL).hideThreadInfo().methodOffset(2);
     }
 }

@@ -15,15 +15,17 @@ import android.widget.Toast;
 import com.apkfuns.logutils.LogUtils;
 import com.baiiu.filter.interfaces.OnFilterDoneListener;
 import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.TravelingAdapter;
 import com.sunfusheng.StickyHeaderListView.model.ChannelEntity;
 import com.sunfusheng.StickyHeaderListView.model.CityItem;
+import com.sunfusheng.StickyHeaderListView.model.FilterAreaBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
 import com.sunfusheng.StickyHeaderListView.model.NewHouseFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.NewhouseFilterMetroCallback;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
-import com.sunfusheng.StickyHeaderListView.model.SecondHandFilterBean;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
@@ -58,7 +60,7 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     public static final String houseDecorate = "装修";
 
     public static final String houseProperty = "类型";
-    public static final String houseFeature= "标签";
+    public static final String houseFeature = "标签";
     public static final String houseSalestatus = "销售状态";
 
 
@@ -109,14 +111,6 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     private DropMenuAdapter dropMenuAdapter;
 
     private HashMap<String, List<FilterBean>> hashMap;
-    private List<FilterBean> label;
-    private List<FilterBean> age;
-    private List<FilterBean> decoration;
-    private List<FilterBean> area;
-    private int firstSection;
-    private int secondSection;
-    private int thirdSection;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,8 +129,11 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         initData();
         initView();
         initListener();
-//        initFilterDropDownView();
+
+        initFilterDropDownView();
         requestFilterData();
+//        requestFilterAreaData();
+//        requestFilterMetroData1();
     }
 
     @Override
@@ -328,7 +325,9 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         }
         qfangframelayout.cancelAll();
     }
+
     String[] titleList = new String[]{"区域", "价格", "标签", "更多"};
+
     private void initFilterDropDownView() {
         dropMenuAdapter = new DropMenuAdapter(this, titleList, this, hashMap);
 //        dropMenuAdapter = new DropMenuAdapter(this, titleList, this, hashMap);
@@ -347,72 +346,57 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 
 
     @Override
-    public void onFilterDone(int positionTitle, Map<String,List<FilterBean>> selectedMap) {
-        LogUtils.d("positionTitle  "+positionTitle);
+    public void onFilterDone(int positionTitle, Map<String, List<FilterBean>> selectedMap) {
+        LogUtils.d("positionTitle  " + positionTitle + " selectedMap " + selectedMap.size());
         for (Map.Entry<String, List<FilterBean>> entry : selectedMap.entrySet()) {
 //            LogUtils.d("Key = " + entry.getKey() + ", Value = " + entry.getValue().size());
-            for (int i = 0; i <  entry.getValue().size(); i++) {
+            for (int i = 0; i < entry.getValue().size(); i++) {
                 FilterBean filterBean = entry.getValue().get(i);
-                LogUtils.d("Key = " + entry.getKey() + "   desc  " +filterBean.getDesc()+"   value"+filterBean.getValue());
+                LogUtils.d("Key = " + entry.getKey() + "   desc  " + filterBean.getDesc() + "   value" + filterBean.getValue());
             }
         }
         mDropDownMenu.close();
     }
 
-
-//    @Override
-//    public void onFilterDone(int positionTitle, List<Integer> selectedItems) {
-//
-////        area = hashMap.get(houseAge);
-////        label = hashMap.get(houseLabel);
-////        age = hashMap.get(houseAge);
-////        decoration = hashMap.get(houseDecorate);
-////
-////        firstSection = area.size() + 1;
-////        secondSection = area.size() + label.size() + 2;
-////        thirdSection = area.size() + label.size() + age.size() + 3;
-//
-//        getFilterParam(selectedItems);
-//    }
-
     /**
      * 获取 更多菜单的 请求参数
+     *
      * @param selectedItems
      */
     private void getFilterParam(List<Integer> selectedItems) {
         LogUtils.d("getSelectedItems   " + selectedItems);
-
-        for (int i = 0; i < selectedItems.size(); i++) {
-            Integer position = selectedItems.get(i);
-            if (position < firstSection) { //
-                int location = position - 1;
-                FilterBean filterDescBean = area.get(location);
-                String desc = filterDescBean.getDesc();
-                String value = filterDescBean.getValue();
-                LogUtils.d("desc  " + desc + "   value   " + value);
-
-            } else if (position > firstSection && position < secondSection) {
-                int location = position - area.size() - 2;
-
-                List<FilterBean> label = this.label;
-                FilterBean filterDescBean = label.get(location);
-                String desc = filterDescBean.getDesc();
-                String value = filterDescBean.getValue();
-                LogUtils.d("desc  " + desc + "   value   " + value);
-            } else if (position > secondSection && position < thirdSection) {
-                int location = position - area.size() - label.size() - 3;
-                FilterBean filterDescBean = age.get(location);
-                String desc = filterDescBean.getDesc();
-                String value = filterDescBean.getValue();
-                LogUtils.d("desc  " + desc + "   value   " + value);
-            } else if (position > thirdSection) {
-                int location = position - area.size() - label.size() - age.size() - 4;
-                FilterBean filterDescBean = decoration.get(location);
-                String desc = filterDescBean.getDesc();
-                String value = filterDescBean.getValue();
-                LogUtils.d("desc  " + desc + "   value   " + value);
-            }
-        }
+//
+//        for (int i = 0; i < selectedItems.size(); i++) {
+//            Integer position = selectedItems.get(i);
+//            if (position < firstSection) { //
+//                int location = position - 1;
+//                FilterBean filterDescBean = area.get(location);
+//                String desc = filterDescBean.getDesc();
+//                String value = filterDescBean.getValue();
+//                LogUtils.d("desc  " + desc + "   value   " + value);
+//
+//            } else if (position > firstSection && position < secondSection) {
+//                int location = position - area.size() - 2;
+//
+//                List<FilterBean> label = this.label;
+//                FilterBean filterDescBean = label.get(location);
+//                String desc = filterDescBean.getDesc();
+//                String value = filterDescBean.getValue();
+//                LogUtils.d("desc  " + desc + "   value   " + value);
+//            } else if (position > secondSection && position < thirdSection) {
+//                int location = position - area.size() - label.size() - 3;
+//                FilterBean filterDescBean = age.get(location);
+//                String desc = filterDescBean.getDesc();
+//                String value = filterDescBean.getValue();
+//                LogUtils.d("desc  " + desc + "   value   " + value);
+//            } else if (position > thirdSection) {
+//                int location = position - area.size() - label.size() - age.size() - 4;
+//                FilterBean filterDescBean = decoration.get(location);
+//                String desc = filterDescBean.getDesc();
+//                String value = filterDescBean.getValue();
+//                LogUtils.d("desc  " + desc + "   value   " + value);
+//            }
+//        }
 //        return
     }
 
@@ -425,103 +409,123 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     private String filter_more_url = "http://10.251.93.254:8010/appapi/v4_4/enums/filters/room?bizType=SALE&dataSource=SHENZHEN";
 
     private String newhouse_filter_more_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/filters/new?dataSource=SHENZHEN";
-
-    private String newhouse_filter_metro_url = "http://10.251.93.254:8010/appapi/v4_4/enums/subwaynums?dataSource=SHENZHEN";//地铁
-    private String newhouse_filter_city_area_url = "10.251.93.254:8010/appapi/v4_4/area?dataSource=shenzhen";//地铁
+    private String newhouse_filter_city_area_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/area?dataSource=shenzhen";//区域
+//    private String newhouse_filter_city_area_url = "http://10.251.93.254:8010/appapi/v4_5/area?dataSource=shenzhen";//区域
+    private String newhouse_filter_metro_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/subwaynums?dataSource=SHENZHEN";//地铁
 
 
     private void requestFilterData() {
         LogUtils.d("请求筛选菜单的列表");
         OkHttpUtils
-                .post()//
+                .get()//
                 .url(newhouse_filter_more_url)//
 //                .addParams("currentPage",currentPageStr)
                 .build()//
                 .execute(new Callback() {
                     @Override
-                    public Object parseNetworkResponse(Response response) throws Exception {
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
                         String string = response.body().string();
                         NewHouseFilterBean bean = new Gson().fromJson(string, NewHouseFilterBean.class);
                         return bean;
                     }
 
                     @Override
-                    public void onError(Call call, Exception e) {
+                    public void onError(Call call, Exception e, int id) {
                     }
 
                     @Override
-                    public void onResponse(Object response1) {
-
+                    public void onResponse(Object response1, int id) {
                         LogUtils.d("返回结果");
-                        LogUtils.d(response1);
                         NewHouseFilterBean response = (NewHouseFilterBean) response1;
-                        String status =response.getStatus();
+                        String status = response.getStatus();
                         if (status.equals("C0000")) {
                             NewHouseFilterBean.ResultBean result = response.getResult();
                             List<FilterBean> property = result.getProperty();
                             List<FilterBean> features = result.getFeatures();
                             List<FilterBean> saleStatus = result.getSaleStatus();
+                            List<FilterBean> price = result.getPrice();
 
                             hashMap = new HashMap<>();
                             hashMap.put(houseProperty, property);
 //                            hashMap.put(houseFeature, features);
                             hashMap.put(houseSalestatus, saleStatus);
 
-//                            dropMenuAdapter.setBetterDoubleGridData(hashMap);
-                            initFilterDropDownView();
+                            dropMenuAdapter.setMoreData(hashMap);
                             dropMenuAdapter.setFeatureData(features);
-                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+                            dropMenuAdapter.setPriceData(price);
+//                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
                         } else {//返回错误message
                             Toast.makeText(MainDropDownMenuActivity.this, "message  " + response.getMessage() + "\n statsus  " + response.getStatus(), Toast.LENGTH_SHORT);
                         }
+                        requestFilterAreaData();
                     }
                 });
-//            .execute(new Callback() {
-//                @Override
-//                public Object parseNetworkResponse(Response response) throws Exception {
-//                    String string = response.body().string();
-//                    SecondHandFilterBean bean = new Gson().fromJson(string, SecondHandFilterBean.class);
-//                    return bean;
-//                }
-//
-//                @Override
-//                public void onError(Call call, Exception e) {
-//
-//                }
-//
-//                @Override
-//                public void onResponse(Object response) {
-//
-//                }
-//            });
     }
+
+
+    /**
+     * 请求筛选:区域
+     */
+    private void requestFilterAreaData() {
+        OkHttpUtils
+                .get()//
+                .url(newhouse_filter_city_area_url)//
+                .build()//
+                .execute(new Callback() {
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        FilterAreaBean bean = new Gson().fromJson(string, FilterAreaBean.class);
+                        Logger.d("区域请求  bean   " + bean.getMessage());
+                        return bean;
+                    }
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                    }
+                    @Override
+                    public void onResponse(Object response, int id) {
+                        Logger.d("区域 " + response.toString());
+                        FilterAreaBean filterAreaBean = (FilterAreaBean) response;
+                        String status = filterAreaBean.getStatus();
+                        if (status.equals("C0000")) {
+                            List<FilterAreaBean.ResultBean> resul = filterAreaBean.getResult();
+                            dropMenuAdapter.setAreaData(resul);
+//                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+                        } else {
+
+                        }
+                    requestFilterMetroData();
+                    }
+                });
+    }
+
+
 
     /**
      * 请求筛选:地铁
      */
     private void requestFilterMetroData() {
-        LogUtils.d("请求筛选菜单的列表");
         OkHttpUtils
-                .post()//
-                .url(newhouse_filter_more_url)//
-//                .addParams("currentPage",currentPageStr)
-                .build()//
-            .execute(new Callback() {
-                @Override
-                public Object parseNetworkResponse(Response response) throws Exception {
-                    String string = response.body().string();
-                    SecondHandFilterBean bean = new Gson().fromJson(string, SecondHandFilterBean.class);
-                    return bean;
-                }
+                .get()//
+                .url(newhouse_filter_metro_url)//
+                .build()
+                .execute(new NewhouseFilterMetroCallback(){
 
-                @Override
-                public void onError(Call call, Exception e) {
-                }
+                    @Override
+                    public void onResponse(FilterAreaBean response, int id) {
+                        super.onResponse(response, id);
+                        Logger.d("成功...............................");
+                        FilterAreaBean filterAreaBean = response;
+                        String status = filterAreaBean.getStatus();
+                        if (status.equals("C0000")) {
+                            List<FilterAreaBean.ResultBean> result = filterAreaBean.getResult();
+                            dropMenuAdapter.setSubStationData(result);
+                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+                        } else {
 
-                @Override
-                public void onResponse(Object response) {
-
-                }
-            });
+                        }
+                    }
+                });
     }
 }
