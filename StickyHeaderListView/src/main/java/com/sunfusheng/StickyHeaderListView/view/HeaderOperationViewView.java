@@ -14,6 +14,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
+ *
  * Created by sunfusheng on 16/4/20.
  */
 public class HeaderOperationViewView extends HeaderViewInterface<List<OperationEntity>> {

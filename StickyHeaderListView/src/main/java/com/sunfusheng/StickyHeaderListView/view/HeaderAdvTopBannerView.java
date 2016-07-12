@@ -15,19 +15,20 @@ import android.widget.ListView;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.HeaderAdAdapter;
 import com.sunfusheng.StickyHeaderListView.manager.ImageManager;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseHomeAdvTopBanner;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class HeaderAdViewView extends HeaderViewInterface<List<String>> {
+/**
+ *
+ */
+public class HeaderAdvTopBannerView extends HeaderViewInterface<List<NewHouseHomeAdvTopBanner>> {
 
-    @Bind(R.id.vp_ad)
-    ViewPager vpAd;
-    @Bind(R.id.ll_index_container)
+
+    ViewPager viewPager;
     LinearLayout llIndexContainer;
 
     private static final int TYPE_CHANGE_AD = 0;
@@ -41,36 +42,38 @@ public class HeaderAdViewView extends HeaderViewInterface<List<String>> {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             if (msg.what == TYPE_CHANGE_AD) {
-                vpAd.setCurrentItem(vpAd.getCurrentItem() + 1);
+                viewPager.setCurrentItem(viewPager.getCurrentItem() + 1);
             }
         }
     };
+    private HeaderAdAdapter photoAdapter;
 
-    public HeaderAdViewView(Activity context) {
+    public HeaderAdvTopBannerView(Activity context) {
         super(context);
         ivList = new ArrayList<>();
         mImageManager = new ImageManager(context);
     }
 
-    @Override
-    protected void getView(List<String> list, ListView listView) {
-        View view = mInflate.inflate(R.layout.header_ad_layout, listView, false);
-        ButterKnife.bind(this, view);
 
+    @Override
+    protected void getView(List<NewHouseHomeAdvTopBanner> list, ListView listView) {
+        View view = mInflate.inflate(R.layout.header_ad_layout, listView, false);
+
+        viewPager = (ViewPager) view.findViewById(R.id.vp_ad);
+        llIndexContainer = (LinearLayout) view.findViewById(R.id.ll_index_container);
         dealWithTheView(list);
         listView.addHeaderView(view);
     }
 
-    private void dealWithTheView(List<String> list) {
+    private void dealWithTheView(List<NewHouseHomeAdvTopBanner> list) {
         ivList.clear();
         int size = list.size();
         for (int i = 0; i < size; i++) {
-            ivList.add(createImageView(list.get(i)));
+            ivList.add(createImageView(list.get(i).getPictureUrl()));
         }
 
-        HeaderAdAdapter photoAdapter = new HeaderAdAdapter(mContext, ivList);
-        vpAd.setAdapter(photoAdapter);
-
+        photoAdapter = new HeaderAdAdapter(mContext, ivList);
+        viewPager.setAdapter(photoAdapter);
         addIndicatorImageViews(size);
         setViewPagerChangeListener(size);
         startADRotate();
@@ -107,7 +110,7 @@ public class HeaderAdViewView extends HeaderViewInterface<List<String>> {
 
     // 为ViewPager设置监听器
     private void setViewPagerChangeListener(final int size) {
-        vpAd.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
                 if (ivList != null && ivList.size() > 0) {

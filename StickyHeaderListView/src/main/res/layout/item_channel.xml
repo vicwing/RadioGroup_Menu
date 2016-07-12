@@ -1,51 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="165dp"
+    android:layout_height="100dp"
     android:background="@drawable/ripple_item_clicked_with_mask"
-    android:clickable="true"
-    android:gravity="center_vertical"
-    android:minHeight="90dp">
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/iv_image"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:padding="5dp"
-        android:src="@color/font_black_4"/>
+        android:layout_width="165dp"
+        android:layout_height="100dp"
+        android:scaleType="centerCrop" />
 
-    <TextView
-        android:id="@+id/tv_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/iv_image"
-        android:layout_centerHorizontal="true"
-        android:text="title"
-        android:textColor="@color/font_black_2"
-        android:textSize="13sp"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:paddingLeft="30dp"
-        android:paddingTop="5dp">
-
-        <TextView
-            android:id="@+id/tv_tips"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/xml_oval_orange_icon"
-            android:paddingBottom="1dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:paddingTop="1dp"
-            android:text="三个字"
-            android:textColor="@color/white"
-            android:textSize="8sp"
-            android:visibility="visible"/>
-    </LinearLayout>
+            android:layout_centerInParent="true"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/ll_middle"
+                android:layout_centerHorizontal="true"
+                tools:text="四季花园"
+                android:textColor="@color/white"
+                android:layout_marginBottom="3dp"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_discount"
+                android:layout_width="89dp"
+                android:layout_height="24dp"
+                android:background="@drawable/xml_oval_orange_icon"
+                android:gravity="center"
+                android:text="签约99折"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/tv_applicantsNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:textSize="13sp"
+                tools:text="79人已报名" />
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

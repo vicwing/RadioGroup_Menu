@@ -12,6 +12,7 @@ import com.baiiu.filter.interfaces.OnFilterItemClickListener;
 import com.baiiu.filter.typeview.DoubleListView;
 import com.baiiu.filter.typeview.PirceListView;
 import com.baiiu.filter.typeview.SingleGridView;
+import com.baiiu.filter.typeview.SingleListView;
 import com.baiiu.filter.typeview.ThreeListView;
 import com.baiiu.filter.util.CommonUtil;
 import com.baiiu.filter.util.UIUtil;
@@ -48,6 +49,7 @@ public class DropMenuAdapter implements MenuAdapter
     private NewhouseFilterMoreView betterDoubleGridView;
     private final String metroStr = "地铁";
     private final String areaStr = "区域";
+    private final String NotLimit = "不限";
 
     public DropMenuAdapter(Context context, String[] titles, OnFilterDoneListener onFilterDoneListener) {
         this.mContext = context;
@@ -87,16 +89,16 @@ public class DropMenuAdapter implements MenuAdapter
 
         switch (position) {
             case 0:
-//                view = createSingleListView(0,priceData);
+//                view = createPriceListView(0,priceData);
                 view = createThreeListView(0, areaData, stationsData);
                 break;
             case 1:
 //                view = createThreeListView(1);
-                view = createSingleListView(1, priceData);
+                view = createPriceListView(1, priceData);
                 break;
             case 2:
 //                view = createSingleGridView(2);
-                view = createSingleListView(2, featureData);
+                view = createFeatureListView(2, featureData);
                 break;
             case 3:
                 // view = createDoubleGrid();
@@ -109,10 +111,37 @@ public class DropMenuAdapter implements MenuAdapter
     }
 
     /**
-     * 区域
+     * 新房筛选 :价格列表
      * @return
      */
-    private View createSingleListView(final int positionTitle, List<FilterBean> data) {
+    private View createFeatureListView(final int positionTitle, List<FilterBean> data) {
+        SingleListView<FilterBean> singleListView = new SingleListView<FilterBean>(mContext)
+                .adapter(new SimpleTextAdapter<FilterBean>(null, mContext) {
+
+                    @Override
+                    public String provideText(FilterBean filterBean) {
+                        return filterBean.getDesc();
+                    }
+
+                    @Override
+                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
+                        int dp = UIUtil.dp(mContext, 15);
+                        checkedTextView.setPadding(dp, dp, 0, dp);
+                    }
+                })
+                .onItemClick(new OnFilterItemClickListener<FilterBean>() {
+                    @Override
+                    public void onItemClick(FilterBean item) {
+                        onFilterDoneListener.onFilterDone(positionTitle, item.getDesc(), item.getValue());
+                    }
+                });
+        singleListView.setList(data, -1);
+        return singleListView;
+    }
+
+
+
+    private View createPriceListView(final int positionTitle, List<FilterBean> data) {
         PirceListView<FilterBean> singleListView = new PirceListView<FilterBean>(mContext)
                 .adapter(new SimpleTextAdapter<FilterBean>(null, mContext) {
 
@@ -130,15 +159,15 @@ public class DropMenuAdapter implements MenuAdapter
                 .onItemClick(new OnFilterItemClickListener<FilterBean>() {
                     @Override
                     public void onItemClick(FilterBean item) {
-//                        FilterUrl.instance().singleListPosition = item;
-//                        FilterUrl.instance().position = 0;
-//                        FilterUrl.instance().positionTitle = item;
                         onFilterDoneListener.onFilterDone(positionTitle, item.getDesc(), item.getValue());
-//                        onFilterDone();
+                    }
+                }).setOnCusItemClickListener(new PirceListView.OnCusItemClickListener() {
+                    @Override
+                    public void onCusItemClick(String minPrice, String maxPrice) {
+                        onFilterDoneListener.onFilterDone(positionTitle,minPrice,maxPrice);
                     }
                 });
         singleListView.setList(data, -1);
-
         return singleListView;
     }
 
@@ -147,7 +176,7 @@ public class DropMenuAdapter implements MenuAdapter
      *
      * @return
      */
-    private View createThreeListView(int positionTitle, List<FilterAreaBean.ResultBean> areaList, List<FilterAreaBean.ResultBean> metroList) {
+    private View createThreeListView(final int positionTitle, List<FilterAreaBean.ResultBean> areaList, List<FilterAreaBean.ResultBean> metroList) {
         Logger.d("创建 区域 筛选视图....................");
         ThreeListView<FilterAreaBean.ResultBean, SubregionsBean> threeList = new ThreeListView<FilterAreaBean.ResultBean, SubregionsBean>(mContext)
                 .leftAdapter(new SimpleTextAdapter<FilterAreaBean.ResultBean>(null, mContext) {
@@ -155,21 +184,12 @@ public class DropMenuAdapter implements MenuAdapter
                     public String provideText(FilterAreaBean.ResultBean filterType) {
                         return filterType.getName();
                     }
-
-                    @Override
-                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-//                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-                    }
                 }).midAdapter(new SimpleTextAdapter<FilterAreaBean.ResultBean>(null, mContext) {
                     @Override
                     public String provideText(FilterAreaBean.ResultBean resultBean) {
                         return resultBean.getName();
                     }
 
-                    @Override
-                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-//                        checkedTextView.setPadding(UIUtil.dp(mContext, 44), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-                    }
                 })
                 .rightAdapter(new SimpleTextAdapter<SubregionsBean>(null, mContext) {
                     @Override
@@ -177,11 +197,6 @@ public class DropMenuAdapter implements MenuAdapter
                         return s.getName();
                     }
 
-                    @Override
-                    protected void initCheckedTextView(FilterCheckedTextView checkedTextView) {
-//                        checkedTextView.setPadding(UIUtil.dp(mContext, 30), UIUtil.dp(mContext, 15), 0, UIUtil.dp(mContext, 15));
-//                        checkedTextView.setBackgroundResource(android.R.color.white);
-                    }
                 }).onLeftItemClickListener(new ThreeListView.OnLeftItemClickListener<FilterAreaBean.ResultBean, SubregionsBean>() {
                     @Override
                     public List<FilterAreaBean.ResultBean> provideMidList(FilterAreaBean.ResultBean item, int position) {
@@ -192,27 +207,33 @@ public class DropMenuAdapter implements MenuAdapter
                 }).onMidItemClickListener(new ThreeListView.OnMidItemClickListener<FilterAreaBean.ResultBean, SubregionsBean>() {
 
                     @Override
-                    public List<SubregionsBean> provideRightList(FilterAreaBean.ResultBean item, int position, int mLeftLastPosition) {
+                    public List<SubregionsBean> provideRightList(FilterAreaBean.ResultBean item, int position, int mLeftCurrentPosition) {
                         List<SubregionsBean> childList=null;
-                        if (mLeftLastPosition==0){//位置是0时显示区域.1显示地铁线路
+                        if (mLeftCurrentPosition==0){//位置是0时显示区域.1显示地铁线路
                             childList = item.getSubregions();
                         }else {
                             childList = item.getStations();
                         }
-                        Logger.d("MiddleItemClickListener  "  + "  position : " + position+"  mLeftLastPosition "+mLeftLastPosition);
+                        Logger.d("MiddleItemClickListener  "  + "  position : " + position+"  mLeftLastPosition "+mLeftCurrentPosition);
                         if (childList!=null){
                             Logger.d("MiddleItemClickListener  " + "  name : " + item.getName() + "  size  : " + childList.size() + "  position : " + position);
                             return childList;
-                        }else {
+                        }else {//查询当前城市整个区域
+                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftCurrentPosition,item.getName(),"");
                             return null;
                         }
                     }
                 })
                 .onRightItemClickListener(new ThreeListView.OnRightItemClickListener<FilterAreaBean.ResultBean, SubregionsBean>() {
                     @Override
-                    public void onRightItemClick(FilterAreaBean.ResultBean item, SubregionsBean string) {
-                        Logger.d("onRightItemClickListener  " + "  name : " + item.getName() + "  string  : " + string);
-                        onFilterDoneListener.onFilterDone(1, String.valueOf(FilterUrl.instance().position), FilterUrl.instance().doubleListRight);
+                    public void onRightItemClick(int mLeftLastPosition, FilterAreaBean.ResultBean item, SubregionsBean subregionsBean) {
+                        Logger.d("onRightItemClickListener  " + "  name : " + item.getName() + "  string  : " + subregionsBean.getName());
+
+                        if (subregionsBean.getName().equals(NotLimit)){
+                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftLastPosition,NotLimit,item.getId());
+                        }else {
+                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftLastPosition,subregionsBean.getName(), subregionsBean.getId());
+                        }
                     }
                 });
 
@@ -331,6 +352,7 @@ public class DropMenuAdapter implements MenuAdapter
 
         return comTypeDoubleListView;
     }
+
 
     private View createSingleGridView(final int positionTitle) {
         SingleGridView<String> singleGridView = new SingleGridView<String>(mContext)

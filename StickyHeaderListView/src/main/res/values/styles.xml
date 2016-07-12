@@ -11,5 +11,12 @@
     </style>
 
 
+    <style name="xpt_horizontal_line">
+        <item name="android:background">@color/divide_line_e5e5e5</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1px</item>
+    </style>
 
+
+    <color name="divide_line_e5e5e5">#e5e5e5</color>
 </resources>

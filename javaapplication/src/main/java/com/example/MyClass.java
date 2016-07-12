@@ -23,6 +23,8 @@ public class MyClass {
 //        decimalFormat.setRoundingMode(RoundingMode.HALF_UP);
 
         System.out.println("利率  "+decimalFormat.format(5.665));
+        int size = 4;
+        System.out.println("取模数"+size%2);
     }
     // 等额本息 月供;
     public static int equalityInterestResult(int commercialAmount, float monthRate, int loanTerm) {

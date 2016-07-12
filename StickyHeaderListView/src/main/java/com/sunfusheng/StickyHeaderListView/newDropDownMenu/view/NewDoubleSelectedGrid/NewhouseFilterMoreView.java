@@ -101,7 +101,7 @@ public class NewhouseFilterMoreView<DATA> extends LinearLayout implements View.O
                 mOnItemClickListener.onItemClick((DATA) selectedMap);
             }
             if (mOnFilterDoneListener != null) {
-                mOnFilterDoneListener.onFilterDone(3, selectedMap);
+                mOnFilterDoneListener.onFilterMoreDone(3, selectedMap);
             }
 
         } else if (id == R.id.btn_clear) {//清空条件

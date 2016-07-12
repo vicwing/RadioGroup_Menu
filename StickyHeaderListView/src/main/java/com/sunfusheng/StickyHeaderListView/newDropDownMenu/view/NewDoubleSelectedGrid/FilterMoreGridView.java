@@ -89,7 +89,7 @@ public class FilterMoreGridView extends LinearLayout implements View.OnClickList
         if (id == R.id.bt_confirm) {
             List<Integer> selectedItems = doubleGridAdapter2.getSelectedItems();
             if (mOnFilterDoneListener != null) {
-                mOnFilterDoneListener.onFilterDone(3, null);
+                mOnFilterDoneListener.onFilterMoreDone(3, null);
             }
         } else if (id == R.id.btn_clear) {
             doubleGridAdapter2.clearSelectedState();

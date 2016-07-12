@@ -41,7 +41,6 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
     protected void initPtrFrame() {
         mPtrFrameLayout = (PtrClassicFrameLayout) findViewById(R.id.load_more_list_view_ptr_frame);
 //        mPtrFrameLayout.setHeaderView(getLayoutInflater().inflate(R.layout.smoothlistview_header,null))
-// ;
 //        MaterialHeader materialHeader = new MaterialHeader(this);
 //        MaterialProgressDrawable materialHeader = new MaterialProgressDrawable(this);
 //        mPtrFrameLayout.setHeaderView(materialHeader);
@@ -61,9 +60,10 @@ public abstract class BasePtrPullToResfrshActivity extends AppCompatActivity {
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                LogUtils.d("checkCanDoRefresh  ");
+                LogUtils.i("checkCanDoRefresh  ");
                 // here check list view, not content.
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, getListView(), header);
+//                return false;
             }
 
             @Override

@@ -23,18 +23,24 @@ import com.sunfusheng.StickyHeaderListView.model.CityItem;
 import com.sunfusheng.StickyHeaderListView.model.FilterAreaBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterData;
+import com.sunfusheng.StickyHeaderListView.model.HotGroupBuyListBean;
 import com.sunfusheng.StickyHeaderListView.model.NewHouseFilterBean;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseHomeAdvTopBanner;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseHomeBean;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseListItemBean;
 import com.sunfusheng.StickyHeaderListView.model.NewhouseFilterMetroCallback;
 import com.sunfusheng.StickyHeaderListView.model.OperationEntity;
 import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.util.ModelUtil;
-import com.sunfusheng.StickyHeaderListView.view.HeaderAdViewView;
-import com.sunfusheng.StickyHeaderListView.view.HeaderChannelViewView;
+import com.sunfusheng.StickyHeaderListView.util.UrlUtils;
+import com.sunfusheng.StickyHeaderListView.view.HeaderAdvTopBannerView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderDividerViewView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderFilterViewView;
+import com.sunfusheng.StickyHeaderListView.view.HeaderHotGroupBuyView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderHorzontalListBannerView;
+import com.sunfusheng.StickyHeaderListView.view.HeaderHotNewHouseView;
 import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.DropDownMenuSmoothScrollListener;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
@@ -76,14 +82,16 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     private Activity mActivity;
     private int mScreenHeight; // 屏幕高度
 
-    private List<String> adList = new ArrayList<>(); // 广告数据
-    private List<ChannelEntity> channelList = new ArrayList<>(); // 频道数据
+    private List<NewHouseHomeAdvTopBanner> advList = new ArrayList<>(); // 广告数据
+    private List<ChannelEntity> groupbuyList = new ArrayList<>(); // 频道数据
     private List<OperationEntity> operationList = new ArrayList<>(); // 运营数据
     private List<CityItem> horizontalList = new ArrayList<>(); // 运营数据
     private List<TravelingEntity> travelingList = new ArrayList<>(); // ListView数据
 
-    private HeaderAdViewView listViewAdHeaderView; // 广告视图
-    private HeaderChannelViewView headerChannelView; // 频道视图
+    private HeaderAdvTopBannerView listViewAdHeaderView; // 广告视图
+    private HeaderHotGroupBuyView headerGrouBuyView; // 热门团购视图
+    private HeaderHotNewHouseView headerHotNewHouseList; // 热门新盘视图
+
     private HeaderOperationViewView headerOperationViewView; // 运营视图
     private HeaderHorzontalListBannerView headerHorzontalListBannerView; // 设置横向滑动banner
     private HeaderDividerViewView headerDividerViewView; // 分割线占位图
@@ -112,6 +120,24 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 
     private HashMap<String, List<FilterBean>> hashMap;
 
+
+    private String pageSize = "10";
+    private String currentPage = "1";
+    private String region;
+    private String price;
+    private String houseType;
+    private String orderby;
+    private String stationLine;
+    private String station;
+    private String latitude;
+    private String longitude;
+    private String nearDistance;
+    private String feature;
+    private String saleStatus;
+    private String property;
+    private String fromPrice;
+    private String toPrice;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -129,11 +155,23 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         initData();
         initView();
         initListener();
+        requestNewHouseHomePage();
+
+
 
         initFilterDropDownView();
+
         requestFilterData();
 //        requestFilterAreaData();
 //        requestFilterMetroData1();
+
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override
@@ -151,18 +189,18 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
         mActivity = this;
         mScreenHeight = DensityUtil.getWindowHeight(this);
 
-        // 筛选数据
-        filterData = new FilterData();
-        filterData.setCategory(ModelUtil.getCategoryData());
-        filterData.setSorts(ModelUtil.getSortData());
-        filterData.setFilters(ModelUtil.getFilterData());
-        filterData.setMores(ModelUtil.getSortData());
+//        // 筛选数据
+//        filterData = new FilterData();
+//        filterData.setCategory(ModelUtil.getCategoryData());
+//        filterData.setSorts(ModelUtil.getSortData());
+//        filterData.setFilters(ModelUtil.getFilterData());
+//        filterData.setMores(ModelUtil.getSortData());
 
         // 广告数据
-        adList = ModelUtil.getAdData();
+//        advList = ModelUtil.getAdData();
 
         // 频道数据
-        channelList = ModelUtil.getChannelData();
+        groupbuyList = ModelUtil.getChannelData();
 
         // 运营数据
         operationList = ModelUtil.getOperationData();
@@ -175,18 +213,24 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     }
 
     private void initView() {
+        mPtrFrameLayout.setPullToRefresh(false);
+
         mDropDownMenu.setVisibility(View.INVISIBLE);
 
         // 设置筛选数据
 //        mDropDownMenu.setFilterData(mActivity, filterData);
 
         // 设置广告数据
-        listViewAdHeaderView = new HeaderAdViewView(this);
-        listViewAdHeaderView.fillView(adList, smoothListView);
+        listViewAdHeaderView = new HeaderAdvTopBannerView(this);
+//        listViewAdHeaderView.fillView(advList, smoothListView);
 
-        // 设置频道数据
-        headerChannelView = new HeaderChannelViewView(this);
-        headerChannelView.fillView(channelList, smoothListView);
+        // 设置热门团购
+        headerGrouBuyView = new HeaderHotGroupBuyView(this);
+//        headerGrouBuyView.fillView(groupbuyList, smoothListView);
+
+
+        // 设置热门新盘
+        headerHotNewHouseList = new HeaderHotNewHouseView(this);
 
         // 设置运营数据
         headerOperationViewView = new HeaderOperationViewView(this);
@@ -316,7 +360,6 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-
         titleViewHeightPx = rlBar.getHeight();
         titleViewHeight = DensityUtil.px2dip(this, rlBar.getHeight());
         if (smoothScrollListener != null) {
@@ -337,19 +380,62 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 
     @Override
     public void onFilterDone(int position, String title, String urlValue) {
-        mDropDownMenu.close();
-//        if (position != 3) {
-        mDropDownMenu.setPositionIndicatorText(position, title);
-//        }
         LogUtils.d("筛选菜单...position.  " + position + "  title " + title + "   urlValue " + urlValue);
+        switch (position) {
+            case 1://价格
+                price = "";
+                fromPrice ="";
+                toPrice = "";
+                if (urlValue.contains("p")){
+                    price = urlValue;
+                    }else {    //当value不包含p时,代表自定义价格
+                    fromPrice =title;
+                    toPrice = urlValue;
+                }
+                break;
+            case 2://标签
+                feature = urlValue;
+                break;
+            default:
+                break;
+        }
+        mDropDownMenu.setPositionIndicatorText(position, title);
+        mDropDownMenu.close();
+        requestNewHouseList();
     }
 
+    /**
+     * 筛选更多选项
+     *
+     * @param position
+     * @param leftPosition
+     * @param name
+     * @param id
+     */
+    @Override
+    public void onFilterAreaDone(int position, int leftPosition, String name, String id) {
+        //清空上次选择的数据
+        region ="";
+        stationLine = "";
+        station = "";
+        if (leftPosition == 0) {//区域
+            region = id;
+        } else {//地铁
+            if (name.equals("不限")) {//当name==不限时搜索全城.
+                stationLine = id;
+            } else {
+                station = id;
+            }
+        }
+        mDropDownMenu.setPositionIndicatorText(position, name);
+        mDropDownMenu.close();
+        requestNewHouseList();
+    }
 
     @Override
-    public void onFilterDone(int positionTitle, Map<String, List<FilterBean>> selectedMap) {
+    public void onFilterMoreDone(int positionTitle, Map<String, List<FilterBean>> selectedMap) {
         LogUtils.d("positionTitle  " + positionTitle + " selectedMap " + selectedMap.size());
         for (Map.Entry<String, List<FilterBean>> entry : selectedMap.entrySet()) {
-//            LogUtils.d("Key = " + entry.getKey() + ", Value = " + entry.getValue().size());
             for (int i = 0; i < entry.getValue().size(); i++) {
                 FilterBean filterBean = entry.getValue().get(i);
                 LogUtils.d("Key = " + entry.getKey() + "   desc  " + filterBean.getDesc() + "   value" + filterBean.getValue());
@@ -405,12 +491,13 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
 //        LogUtils.d(MainDropDownMenuActivity.class.getName()+"多选点击 ...........................");
     }
 
+    private String newHouseListUrl = "http://172.16.72.153:9393/qfang-api/appapi/v4_3/newHouse/list";
 
     private String filter_more_url = "http://10.251.93.254:8010/appapi/v4_4/enums/filters/room?bizType=SALE&dataSource=SHENZHEN";
 
     private String newhouse_filter_more_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/filters/new?dataSource=SHENZHEN";
     private String newhouse_filter_city_area_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/area?dataSource=shenzhen";//区域
-//    private String newhouse_filter_city_area_url = "http://10.251.93.254:8010/appapi/v4_5/area?dataSource=shenzhen";//区域
+    //    private String newhouse_filter_city_area_url = "http://10.251.93.254:8010/appapi/v4_5/area?dataSource=shenzhen";//区域
     private String newhouse_filter_metro_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/subwaynums?dataSource=SHENZHEN";//地铁
 
 
@@ -483,6 +570,7 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
                     @Override
                     public void onError(Call call, Exception e, int id) {
                     }
+
                     @Override
                     public void onResponse(Object response, int id) {
                         Logger.d("区域 " + response.toString());
@@ -495,11 +583,10 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
                         } else {
 
                         }
-                    requestFilterMetroData();
+                        requestFilterMetroData();
                     }
                 });
     }
-
 
 
     /**
@@ -510,7 +597,7 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
                 .get()//
                 .url(newhouse_filter_metro_url)//
                 .build()
-                .execute(new NewhouseFilterMetroCallback(){
+                .execute(new NewhouseFilterMetroCallback() {
 
                     @Override
                     public void onResponse(FilterAreaBean response, int id) {
@@ -528,4 +615,126 @@ public class MainDropDownMenuActivity extends BasePtrPullToResfrshActivity imple
                     }
                 });
     }
+
+
+    public void requestNewHouseList() {
+        String spliceUrl = UrlUtils.spliceUrl(newHouseListUrl, getNewHouseListParam(
+                pageSize, currentPage, region, price, houseType, orderby, stationLine, station, latitude, longitude, nearDistance, feature, saleStatus, property,fromPrice,toPrice, null));
+        Logger.d("请求列表的URl  " + spliceUrl);
+        OkHttpUtils
+                .get()
+                .url(spliceUrl)//
+                .build()
+                .execute(new Callback() {
+
+                    @Override
+                    public Object parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        NewHouseListItemBean newHouseListItemBean = new Gson().fromJson(string, NewHouseListItemBean.class);
+                        Logger.d("地铁  bean  " + newHouseListItemBean.getMessage());
+                        return newHouseListItemBean;
+                    }
+                    @Override
+                    public void onResponse(Object response, int id) {
+                        Logger.d("新房列表成功...............................");
+                    }
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        e.printStackTrace();
+                        LogUtils.d("失败啦....."+e.toString());
+                    }
+                });
+    }
+
+    /**
+     * 获取新房列表 参数
+     *
+     * @param pageSize
+     * @param keyword
+     * @param currentPage
+     * @param region
+     * @param price
+     * @param houseType
+     * @param orderby
+     * @param stationLine
+     * @param station
+     * @param latitude
+     * @param longitude
+     * @param nearDistance
+     * @param feature
+     * @param saleStatus
+     * @param property
+     * @return
+     */
+    public static HashMap<String, String> getNewHouseListParam(String pageSize, String currentPage, String region,
+         String price, String houseType, String orderby, String stationLine, String station, String latitude, String longitude, String nearDistance, String feature,
+                                                               String saleStatus, String property, String fromPrice ,String toPrice,String keyword) {
+        HashMap<String, String> params = new HashMap<String, String>();
+        params.put("dataSource", "shenzhen");
+        params.put("keyword", keyword);
+        params.put("pageSize", pageSize);
+        params.put("currentPage", currentPage);
+        params.put("region", region);
+        params.put("p", price);
+        params.put("t", houseType);
+        params.put("o", orderby);
+        params.put("l", stationLine);
+        params.put("s", station);
+        params.put("latitude", latitude);
+        params.put("longitude", longitude);
+        params.put("nearDistance", nearDistance);
+        params.put("feature", feature);
+        params.put("saleStatus", saleStatus);
+        params.put("property", property);
+        params.put("fromPrice", fromPrice);
+        params.put("toPrice", toPrice);
+        return params;
+    }
+
+
+
+    private String homepage_url="http://172.16.72.153:9393/qfang-api/appapi/v4_5/newHouse/index?dataSource=SHENZHEN";
+    /**
+     * 新房首页数据
+     */
+    public void requestNewHouseHomePage() {
+        OkHttpUtils
+                .get()
+                .url(homepage_url)//
+                .build()
+                .execute(new Callback<NewHouseHomeBean>() {
+
+                    @Override
+                    public NewHouseHomeBean parseNetworkResponse(Response response, int id) throws Exception {
+                        String string = response.body().string();
+                        NewHouseHomeBean newHouseListItemBean = new Gson().fromJson(string, NewHouseHomeBean.class);
+                        Logger.d("新房首页  bean  " + newHouseListItemBean.getMessage());
+                        return newHouseListItemBean;
+                    }
+                    @Override
+                    public void onResponse(NewHouseHomeBean response, int id) {
+                        Logger.d("新房首页成功...............................");
+
+                        String status = response.getStatus();
+                        if (status.equals("C0000")){
+                            List<NewHouseHomeAdvTopBanner> indexTopBannerAdList = response.getResult().getIndexTopBannerAdList();
+                            List<HotGroupBuyListBean> hotGroupBuyList = response.getResult().getHotGroupBuyList();
+                            List<NewHouseHomeBean.ResultBean.HotNewhouselistBean> hotNewhouselist = response.getResult().getHotNewhouselist();
+//                            advList = indexTopBannerAdList;
+                            listViewAdHeaderView.fillView(indexTopBannerAdList, smoothListView);
+                            headerGrouBuyView.fillView(hotGroupBuyList, smoothListView);
+                            headerHotNewHouseList.fillView(hotNewhouselist.subList(0,2),smoothListView);
+                        }else {
+
+                        }
+
+                    }
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        e.printStackTrace();
+                        Logger.d("新房首页失败啦....."+e.toString());
+                    }
+                });
+    }
+
 }

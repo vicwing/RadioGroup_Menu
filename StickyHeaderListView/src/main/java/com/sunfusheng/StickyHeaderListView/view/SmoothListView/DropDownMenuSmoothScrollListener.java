@@ -1,13 +1,13 @@
 package com.sunfusheng.StickyHeaderListView.view.SmoothListView;
 
 import android.app.Activity;
+import android.content.Context;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.RelativeLayout;
 
 import com.baiiu.filter.DropDownMenu;
 import com.sunfusheng.StickyHeaderListView.R;
-import com.sunfusheng.StickyHeaderListView.ui.MainActivity;
 import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.view.FilterView;
@@ -43,8 +43,8 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
 
     private OnDataChangeListener onDataChangeListener;
 
-    public DropDownMenuSmoothScrollListener(MainActivity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
-        this.mContext = mainActivity;
+    public DropDownMenuSmoothScrollListener(Context mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
+        this.mContext = (Activity) mainActivity;
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
         this.onDataChangeListener = onDataChangeListener;

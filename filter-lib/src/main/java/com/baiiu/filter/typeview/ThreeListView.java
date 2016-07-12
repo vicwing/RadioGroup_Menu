@@ -114,7 +114,7 @@ public class ThreeListView<LEFTD, RIGHTD> extends LinearLayout implements Adapte
     }
 
     public interface OnRightItemClickListener<LEFTD, RIGHTD> {
-        void onRightItemClick(LEFTD item, RIGHTD childItem);
+        void onRightItemClick(int mLeftLastPosition, LEFTD item, RIGHTD childItem);
     }
 
 
@@ -171,6 +171,8 @@ public class ThreeListView<LEFTD, RIGHTD> extends LinearLayout implements Adapte
                 //列表页,切换选项后 ,清楚选中的状态
                 lv_mid.getCheckedItemPositions().clear();
                 lv_right.getCheckedItemPositions().clear();
+//                mMidAdapter.clearList();
+                mRightAdapter.setList(null);
             }
             mLeftLastPosition = position;
 
@@ -211,7 +213,7 @@ public class ThreeListView<LEFTD, RIGHTD> extends LinearLayout implements Adapte
         }  else {
             mRightLastChecked = position;
             if (mOnRightItemClickListener != null) {
-                mOnRightItemClickListener.onRightItemClick(mLeftAdapter.getItem(mLeftLastCheckedPosition), mRightAdapter.getItem(mRightLastChecked));
+                mOnRightItemClickListener.onRightItemClick(mLeftLastPosition,mMidAdapter.getItem(mMidLastCheckedPosition), mRightAdapter.getItem(mRightLastChecked));
             }
         }
     }
