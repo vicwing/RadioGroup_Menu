@@ -8,7 +8,9 @@
       <module fileurl="file://$PROJECT_DIR$/filter-lib/filter-lib.iml" filepath="$PROJECT_DIR$/filter-lib/filter-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaapplication/javaapplication.iml" filepath="$PROJECT_DIR$/javaapplication/javaapplication.iml" />
       <module fileurl="file://$PROJECT_DIR$/okhttputils2/okhttputils2.iml" filepath="$PROJECT_DIR$/okhttputils2/okhttputils2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/popup_tooltip_library/popup_tooltip_library.iml" filepath="$PROJECT_DIR$/popup_tooltip_library/popup_tooltip_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/ptr-lib/ptr-lib.iml" filepath="$PROJECT_DIR$/ptr-lib/ptr-lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tooltips/tooltips.iml" filepath="$PROJECT_DIR$/tooltips/tooltips.iml" />
     </modules>
   </component>
 </project>

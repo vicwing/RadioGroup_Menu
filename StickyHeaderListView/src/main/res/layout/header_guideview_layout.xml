@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <com.sunfusheng.StickyHeaderListView.view.FixedGridView
+        android:id="@+id/gv_operation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/font_black_5"
+        android:scrollbars="none"
+       />
+    <View
+    style="@style/xpt_horizontal_line"/>
+</LinearLayout>

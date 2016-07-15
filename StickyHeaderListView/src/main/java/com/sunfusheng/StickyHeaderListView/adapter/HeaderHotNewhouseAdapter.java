@@ -31,7 +31,7 @@ public class HeaderHotNewhouseAdapter extends BaseListAdapter<NewHouseHomeBean.R
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_channel, null);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_newhouse_hotgroupbuy, null);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {

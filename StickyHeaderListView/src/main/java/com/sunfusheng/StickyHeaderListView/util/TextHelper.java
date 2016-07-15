@@ -8,7 +8,13 @@
  */
 package com.sunfusheng.StickyHeaderListView.util;
 
+import android.content.Context;
+import android.graphics.Typeface;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.StyleSpan;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -599,13 +605,13 @@ public class TextHelper {
 //	 * @param price
 //	 * @return
 //	 */
-//	public static SpannableStringBuilder setAvgPriceSpan(Context ctx,int price,String unit) {
-//		String priceStr = String.valueOf(price);
-//		SpannableStringBuilder word = new SpannableStringBuilder(price+unit);
-//	    word.setSpan(new StyleSpan(Typeface.BOLD), 0, priceStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-//		word.setSpan(new AbsoluteSizeSpan(ScreenUtil.Dp2Px(ctx,12)), priceStr.length(), word.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-//		return word;
-//	}
+	public static SpannableStringBuilder setAvgPriceSpan(Context ctx, int price, String unit) {
+		String priceStr = String.valueOf(price);
+		SpannableStringBuilder word = new SpannableStringBuilder(price+unit);
+	    word.setSpan(new StyleSpan(Typeface.BOLD), 0, priceStr.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+		word.setSpan(new AbsoluteSizeSpan(DensityUtil.dip2px(ctx,12)), priceStr.length(), word.length(),Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+		return word;
+	}
 //
 //	public static SpannableStringBuilder setAvgPriceSpan(Context ctx,
 //			String price, String unit) {

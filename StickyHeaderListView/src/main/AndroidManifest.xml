@@ -30,7 +30,7 @@
             </intent-filter>-->
         </activity>
         <activity
-            android:name=".ui.MainDropDownMenuActivity"
+            android:name=".newhouseui.NewhouseHomeListActivity"
             android:screenOrientation="portrait">
                  <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>

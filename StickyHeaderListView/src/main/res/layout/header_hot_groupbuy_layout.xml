@@ -5,9 +5,7 @@
     android:orientation="vertical">
 
     <View
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:background="@color/bg" />
+     style="@style/view_bg" />
 
     <View style="@style/xpt_horizontal_line" />
 
@@ -39,7 +37,8 @@
                 android:text="查看更多" />
         </RelativeLayout>
 
-        <View style="@style/xpt_horizontal_line" />
+        <View
+            style="@style/xpt_horizontal_line" />
 
         <com.sunfusheng.StickyHeaderListView.view.FixedGridView
             android:id="@+id/gv_channel"
@@ -50,6 +49,9 @@
             android:horizontalSpacing="15dp"
             android:scrollbars="none"
             android:stretchMode="columnWidth" />
-        <View style="@style/xpt_horizontal_line" />
+
+        <View
+            android:id="@+id/bottom_dividerline"
+            style="@style/xpt_horizontal_line" />
     </LinearLayout>
 </LinearLayout>

@@ -1,6 +1,7 @@
 package com.sunfusheng.StickyHeaderListView.adapter;
 
 import android.content.Context;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,23 +9,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sunfusheng.StickyHeaderListView.R;
-import com.sunfusheng.StickyHeaderListView.model.CityItem;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseHomeBean;
 
 import java.util.List;
 
-import butterknife.Bind;
-import butterknife.ButterKnife;
+
+
 
 /**
- * Created by sunfusheng on 16/4/20.
+ * 新房首页: 全部楼盘.横向的广告
  */
-public class HeaderHorizontalBannerAdapter extends BaseListAdapter<CityItem> {
+public class HeaderHorizontalBannerAdapter extends BaseListAdapter<NewHouseHomeBean.ResultBean.BrickListBean> {
 
     public HeaderHorizontalBannerAdapter(Context context) {
         super(context);
     }
 
-    public HeaderHorizontalBannerAdapter(Context context, List<CityItem> list) {
+    public HeaderHorizontalBannerAdapter(Context context, List<NewHouseHomeBean.ResultBean.BrickListBean> list) {
         super(context, list);
     }
 
@@ -39,25 +40,25 @@ public class HeaderHorizontalBannerAdapter extends BaseListAdapter<CityItem> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        CityItem city = getItem(position);
+        NewHouseHomeBean.ResultBean.BrickListBean item = getItem(position);
 
-        mImageManager.loadUrlImage(city.getImageUrl(), holder.ivImage);
-//        holder.tvCity.setText(city.getCityName());
-//        holder.tvCity.setText(city.getCityCode());
+        mImageManager.loadUrlImage(item.getPicture(), holder.ivImage);
+        holder.tv_feature.setText(item.getNameTemp());
+        TextPaint tp =   holder.tv_feature.getPaint();
+        tp.setFakeBoldText(true);
         return convertView;
 
     }
 
     static class ViewHolder {
-        @Bind(R.id.iv_image)
+
         ImageView ivImage;
-        @Bind(R.id.tvCity)
-        TextView tvCity;
-        @Bind(R.id.tvCode)
-        TextView tvCode;
+        TextView tv_feature;
 
         ViewHolder(View view) {
-            ButterKnife.bind(this, view);
+            ivImage = (ImageView) view.findViewById(R.id.iv_image);
+
+            tv_feature = (TextView) view.findViewById(R.id.tv_feature);
         }
     }
 }

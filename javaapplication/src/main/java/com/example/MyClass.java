@@ -25,6 +25,12 @@ public class MyClass {
         System.out.println("利率  "+decimalFormat.format(5.665));
         int size = 4;
         System.out.println("取模数"+size%2);
+        int height =100;
+        int mChildHeight =0;
+        for (int i = 0; i < 3; i++) {
+            mChildHeight = i == 0 ? height : Math.min(mChildHeight, height);
+            System.out.println("mChildHeight "+mChildHeight);
+        }
     }
     // 等额本息 月供;
     public static int equalityInterestResult(int commercialAmount, float monthRate, int loanTerm) {

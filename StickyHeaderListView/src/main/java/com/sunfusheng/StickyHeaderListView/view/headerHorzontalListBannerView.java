@@ -10,6 +10,7 @@ import android.widget.ListView;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.adapter.HeaderHorizontalBannerAdapter;
 import com.sunfusheng.StickyHeaderListView.model.CityItem;
+import com.sunfusheng.StickyHeaderListView.model.NewHouseHomeBean;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 
 import java.util.List;
@@ -20,7 +21,7 @@ import butterknife.ButterKnife;
 /**
  * Created by sunfusheng on 16/4/20.
  */
-public class HeaderHorzontalListBannerView extends HeaderViewInterface<List<CityItem> > {
+public class HeaderHorzontalListBannerView extends HeaderViewInterface<List<NewHouseHomeBean.ResultBean.BrickListBean> > {
 
 
     @Bind(R.id.horizontal_grid)
@@ -33,14 +34,14 @@ public class HeaderHorzontalListBannerView extends HeaderViewInterface<List<City
     }
 
     @Override
-    protected void getView(List<CityItem> list, ListView listView) {
+    protected void getView(List<NewHouseHomeBean.ResultBean.BrickListBean> list, ListView listView) {
         View view = mInflate.inflate(R.layout.header_horzontal_list_banner, listView, false);
         ButterKnife.bind(this, view);
 
         dealWithTheView(list);
         listView.addHeaderView(view);
     }
-    private void dealWithTheView(List<CityItem> list) {
+    private void dealWithTheView(List<NewHouseHomeBean.ResultBean.BrickListBean> list) {
         HeaderHorizontalBannerAdapter adapter = new HeaderHorizontalBannerAdapter(mContext, list);
         int size = list.size();
         int length = 100;

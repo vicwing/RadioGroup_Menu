@@ -27,6 +27,6 @@ public class BaseApplication extends Application {
 //                .methodOffset(0)          ;      // default 0
 //                .logAdapter(new AndroidLogAdapter()); //default AndroidLogAdapter
 
-        Logger.init("vicwing").methodCount(1).logLevel(com.orhanobut.logger.LogLevel.FULL).hideThreadInfo().methodOffset(2);
+        Logger.init("vicwing").methodCount(0).logLevel(com.orhanobut.logger.LogLevel.FULL).hideThreadInfo().methodOffset(2);
     }
 }

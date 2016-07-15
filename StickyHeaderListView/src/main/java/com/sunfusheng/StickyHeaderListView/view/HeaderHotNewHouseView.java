@@ -2,7 +2,6 @@ package com.sunfusheng.StickyHeaderListView.view;
 
 import android.app.Activity;
 import android.text.TextPaint;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import java.util.List;
 public class HeaderHotNewHouseView extends HeaderViewInterface<List<NewHouseHomeBean.ResultBean.HotNewhouselistBean>> {
 
 
-    FixedGridView gvChannel;
+    FixedGridView fixedGridView;
 
     public HeaderHotNewHouseView(Activity context) {
         super(context);
@@ -29,20 +28,18 @@ public class HeaderHotNewHouseView extends HeaderViewInterface<List<NewHouseHome
 
     @Override
     protected void getView(List<NewHouseHomeBean.ResultBean.HotNewhouselistBean> list, ListView listView) {
-        View view = mInflate.inflate(R.layout.header_channel_layout, listView, false);
+        View view = mInflate.inflate(R.layout.header_hot_groupbuy_layout, listView, false);
 
-        gvChannel = (FixedGridView) view.findViewById(R.id.gv_channel);
+        fixedGridView = (FixedGridView) view.findViewById(R.id.gv_channel);
+        ((TextView) view.findViewById(R.id.tv_groupbuy)).setText("热门新盘");
+        view.findViewById(R.id.tv_go_groupbuy).setVisibility(View.GONE);
+        view.findViewById(R.id.bottom_dividerline).setVisibility(View.GONE);
 
-        view.findViewById(R.id.tv_go_groupbuy).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d("3213","进如团购界面.............");
-            }
-        });
         setBoldText(view);
-
         dealWithTheView(list);
-        listView.addHeaderView(view);
+        if (list.size()>=2){
+            listView.addHeaderView(view);
+        }
     }
 
     /**
@@ -56,20 +53,8 @@ public class HeaderHotNewHouseView extends HeaderViewInterface<List<NewHouseHome
     }
 
     private void dealWithTheView(List<NewHouseHomeBean.ResultBean.HotNewhouselistBean> list) {
-        int size = list.size();
-
-        if (size <= 4) {
-            gvChannel.setNumColumns(size);
-        } else if (size == 6) {
-            gvChannel.setNumColumns(3);
-        } else if (size == 8) {
-            gvChannel.setNumColumns(4);
-        } else {
-            gvChannel.setNumColumns(4);
-        }
-
         HeaderHotNewhouseAdapter adapter = new HeaderHotNewhouseAdapter(mContext, list);
-        gvChannel.setAdapter(adapter);
+        fixedGridView.setAdapter(adapter);
     }
 
 }

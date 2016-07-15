@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -61,21 +62,40 @@ public class HeaderAdvTopBannerView extends HeaderViewInterface<List<NewHouseHom
 
         viewPager = (ViewPager) view.findViewById(R.id.vp_ad);
         llIndexContainer = (LinearLayout) view.findViewById(R.id.ll_index_container);
-        dealWithTheView(list);
-        listView.addHeaderView(view);
+        if(list!=null&&list.size()!=0){
+            ivList.clear();
+            int size = list.size();
+            for (int i = 0; i < size; i++) {
+                String pictureUrl = list.get(i).getPictureUrl();
+                if (!TextUtils.isEmpty(pictureUrl)){
+                    String[] split = pictureUrl.split(";");
+                    ivList.add(createImageView(split[split.length-1].split("##&&##")[1] ));
+                }
+            }
+            if (ivList.size()!=0){
+                dealWithTheView(list);
+                listView.addHeaderView(view);
+            }
+        }
     }
 
     private void dealWithTheView(List<NewHouseHomeAdvTopBanner> list) {
-        ivList.clear();
-        int size = list.size();
-        for (int i = 0; i < size; i++) {
-            ivList.add(createImageView(list.get(i).getPictureUrl()));
-        }
+//        ivList.clear();
+//        int size = list.size();
+//        for (int i = 0; i < size; i++) {
+//            String pictureUrl = list.get(i).getPictureUrl();
+//            if (!TextUtils.isEmpty(pictureUrl)){
+//                String[] split = pictureUrl.split(";");
+//                    ivList.add(createImageView(split[split.length].split("##&&##")[1] ));
+//            }
+//        }
+
+
 
         photoAdapter = new HeaderAdAdapter(mContext, ivList);
         viewPager.setAdapter(photoAdapter);
-        addIndicatorImageViews(size);
-        setViewPagerChangeListener(size);
+        addIndicatorImageViews(list.size());
+        setViewPagerChangeListener(list.size());
         startADRotate();
     }
 

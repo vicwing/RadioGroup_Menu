@@ -39,11 +39,5 @@ dependencies {
     //    compile 'com.google.code.gson:gson:2.4.0'
     compile 'com.google.code.gson:gson:2.7'
     compile project(':okhttputils2')
-}
-allprojects {
-    repositories {
-        jcenter()
-        mavenCentral()
-        maven { url "https://jitpack.io" }
-    }
+    compile project(':popup_tooltip_library')
 }

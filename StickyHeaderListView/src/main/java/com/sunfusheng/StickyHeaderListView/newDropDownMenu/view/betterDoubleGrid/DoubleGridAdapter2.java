@@ -10,7 +10,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.ItemViewHolder;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.betterDoubleGrid.holder.TitleViewHolder;
-import com.sunfusheng.StickyHeaderListView.ui.MainDropDownMenuActivity;
+import com.sunfusheng.StickyHeaderListView.newhouseui.NewhouseHomeListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,13 +93,13 @@ public class DoubleGridAdapter2 extends RecyclerView.Adapter<RecyclerView.ViewHo
             case TYPE_TITLE:
                 TitleViewHolder titleViewHolder = (TitleViewHolder) holder;
                 if (position == 0) {
-                    titleViewHolder.bind(MainDropDownMenuActivity.houseArea);
+                    titleViewHolder.bind(NewhouseHomeListActivity.houseArea);
                 } else if ( position == firstSection ){
-                    titleViewHolder.bind(MainDropDownMenuActivity.houseLabel);
+                    titleViewHolder.bind(NewhouseHomeListActivity.houseLabel);
                 }else if ( position == secondSection ){
-                    titleViewHolder.bind(MainDropDownMenuActivity.houseAge);
+                    titleViewHolder.bind(NewhouseHomeListActivity.houseAge);
                 }else if ( position == thirdSection ){
-                    titleViewHolder.bind(MainDropDownMenuActivity.houseDecorate);
+                    titleViewHolder.bind(NewhouseHomeListActivity.houseDecorate);
                 }
                 break;
             case TYPE_ITEM:

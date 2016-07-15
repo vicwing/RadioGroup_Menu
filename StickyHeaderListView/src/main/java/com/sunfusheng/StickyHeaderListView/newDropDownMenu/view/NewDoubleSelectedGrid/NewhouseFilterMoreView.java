@@ -19,7 +19,7 @@ import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.ui.GridViewCompat;
-import com.sunfusheng.StickyHeaderListView.ui.MainDropDownMenuActivity;
+import com.sunfusheng.StickyHeaderListView.newhouseui.NewhouseHomeListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -141,7 +141,7 @@ public class NewhouseFilterMoreView<DATA> extends LinearLayout implements View.O
         TextView textTitle = (TextView) view.findViewById(R.id.tv_title);
         textTitle.setText(title);
         GridViewCompat gridView = (GridViewCompat) view.findViewById(R.id.gv_gridview);
-        if (title.equals(MainDropDownMenuActivity.houseProperty)||title.equals(MainDropDownMenuActivity.houseSalestatus)){
+        if (title.equals(NewhouseHomeListActivity.houseProperty)||title.equals(NewhouseHomeListActivity.houseSalestatus)){
             gridView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }else {
             gridView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);

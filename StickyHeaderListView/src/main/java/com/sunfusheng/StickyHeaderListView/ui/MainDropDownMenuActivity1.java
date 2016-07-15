@@ -30,8 +30,8 @@
 //import com.sunfusheng.StickyHeaderListView.view.HeaderDividerViewView;
 //import com.sunfusheng.StickyHeaderListView.view.HeaderFilterViewView;
 //import com.sunfusheng.StickyHeaderListView.view.HeaderHorzontalListBannerView;
-//import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
-//import com.sunfusheng.StickyHeaderListView.view.SmoothListView.DropDownMenuSmoothScrollListener;
+//import com.sunfusheng.StickyHeaderListView.view.HeaderGuideListView;
+//import com.sunfusheng.StickyHeaderListView.newhouseui.DropDownMenuSmoothScrollListener;
 //import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 //import com.zhy.http.okhttp.OkHttpUtils;
 //
@@ -71,7 +71,7 @@
 //
 //    private HeaderAdvTopBannerView listViewAdHeaderView; // 广告视图
 //    private HeaderHotGroupBuyView headerChannelView; // 频道视图
-//    private HeaderOperationViewView headerOperationViewView; // 运营视图
+//    private HeaderGuideListView headerOperationViewView; // 运营视图
 //    private HeaderHorzontalListBannerView headerHorzontalListBannerView; // 设置横向滑动banner
 //    private HeaderDividerViewView headerDividerViewView; // 分割线占位图
 //    private HeaderFilterViewView headerFilterViewView; // 分类筛选视图
@@ -181,7 +181,7 @@
 //        headerChannelView.fillView(channelList, smoothListView);
 //
 //        // 设置运营数据
-//        headerOperationViewView = new HeaderOperationViewView(this);
+//        headerOperationViewView = new HeaderGuideListView(this);
 //        headerOperationViewView.fillView(operationList, smoothListView);
 //
 //

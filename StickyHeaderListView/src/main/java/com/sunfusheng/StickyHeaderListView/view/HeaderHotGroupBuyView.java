@@ -32,7 +32,7 @@ public class HeaderHotGroupBuyView extends HeaderViewInterface<List<HotGroupBuyL
 
     @Override
     protected void getView(List<HotGroupBuyListBean> list, ListView listView) {
-        View view = mInflate.inflate(R.layout.header_channel_layout, listView, false);
+        View view = mInflate.inflate(R.layout.header_hot_groupbuy_layout, listView, false);
 
         gvChannel = (FixedGridView) view.findViewById(R.id.gv_channel);
 
@@ -64,13 +64,13 @@ public class HeaderHotGroupBuyView extends HeaderViewInterface<List<HotGroupBuyL
         int size = list.size();
 
 //        if (size <= 4) {
-//            gvChannel.setNumColumns(size);
+//            fixedGridView.setNumColumns(size);
 //        } else if (size == 6) {
-//            gvChannel.setNumColumns(3);
+//            fixedGridView.setNumColumns(3);
 //        } else if (size == 8) {
-//            gvChannel.setNumColumns(4);
+//            fixedGridView.setNumColumns(4);
 //        } else {
-//            gvChannel.setNumColumns(4);
+//            fixedGridView.setNumColumns(4);
 //        }
 
         if (size > 2) {

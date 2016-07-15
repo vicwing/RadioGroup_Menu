@@ -107,12 +107,20 @@ public class NewHouseHomeBean extends QFJSONResult<NewHouseHomeBean.ResultBean> 
          */
         public static class GuideListBean {
             private int id;
-//            private Object infoPicture;
+            private String infoPicture;
             private String publishTime;
             private String title;
 
             public int getId() {
                 return id;
+            }
+
+            public String getInfoPicture() {
+                return infoPicture;
+            }
+
+            public void setInfoPicture(String infoPicture) {
+                this.infoPicture = infoPicture;
             }
 
             public void setId(int id) {

@@ -1,4 +1,4 @@
-package com.sunfusheng.StickyHeaderListView.view.SmoothListView;
+package com.sunfusheng.StickyHeaderListView.newhouseui;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,8 +11,11 @@ import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.view.FilterView;
+import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 
 /**
+ * 新房首页:listview 滚动监听
+ * 监听筛选视图的位置.实现滚动显示筛选视图
  * Created by vic on 2016/6/29.
  */
 public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmoothScrollListener {
@@ -48,10 +51,7 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
         this.onDataChangeListener = onDataChangeListener;
-        filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
-        rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
-        viewActionMoreBg = mContext.findViewById(R.id.view_action_more_bg);
-        viewTitleBg = mContext.findViewById(R.id.view_title_bg);
+        init(smoothListView);
     }
 
     public void setTitleViewHeightPx(int titleViewHeightPx) {
@@ -62,21 +62,23 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.fvTopFilter = fvTopFilter;
-        filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
-        rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
-        viewActionMoreBg = mContext.findViewById(R.id.view_action_more_bg);
-        viewTitleBg = mContext.findViewById(R.id.view_title_bg);
+        init(smoothListView);
     }
 
     public DropDownMenuSmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, DropDownMenu dropDownMenu) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
         this.dropDownMenu = dropDownMenu;
+        init(smoothListView);
+    }
+
+    private void init(SmoothListView smoothListView) {
         filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
         rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
         viewActionMoreBg = mContext.findViewById(R.id.view_action_more_bg);
         viewTitleBg = mContext.findViewById(R.id.view_title_bg);
     }
+
     @Override
     public void onSmoothScrolling(View view) {
 
@@ -104,24 +106,27 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
         if (itemHeaderFilterView == null) {
             itemHeaderFilterView = smoothListView.getChildAt(filterViewPosition - firstVisibleItem);
         }
+
         if (itemHeaderFilterView != null) {
-            filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop() + titleViewHeightPx);
+            filterViewTopSpace = DensityUtil.px2dip(mContext, itemHeaderFilterView.getTop());
             if (onDataChangeListener != null) {
                 onDataChangeListener.filterViewTopSpace(filterViewTopSpace);
             }
-
+//            Logger.d("filterViewTopSpace " + filterViewTopSpace + "  titleViewHeight   "
+//                    + titleViewHeight+"   itemHeaderFilterView.getTop() "+ itemHeaderFilterView.getTop());
         }
 
-//        LogUtils.d("filterViewTopSpace " + filterViewTopSpace + "  titleViewHeight   " + titleViewHeight);
         // 处理筛选是否吸附在顶部
-        if (filterViewTopSpace > titleViewHeight) {
+        if (filterViewTopSpace > 0) {
             isStickyTop = false; // 没有吸附在顶部
             onSickyChange();
             dropDownMenu.setVisibility(View.INVISIBLE);
         } else {
-            isStickyTop = true; // 吸附在顶部
-            onSickyChange();
-            dropDownMenu.setVisibility(View.VISIBLE);
+            if (itemHeaderFilterView!=null){ //当itemHeaderFilterView 可见时才能吸附在顶部.不可见时filterViewTopSpace 无法计算
+                isStickyTop = true; // 吸附在顶部
+                onSickyChange();
+                dropDownMenu.setVisibility(View.VISIBLE);
+            }
         }
 
         if (firstVisibleItem > filterViewPosition) {

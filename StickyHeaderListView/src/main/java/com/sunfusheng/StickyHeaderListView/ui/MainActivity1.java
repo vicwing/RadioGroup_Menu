@@ -32,7 +32,7 @@
 //import com.sunfusheng.StickyHeaderListView.view.HeaderHotGroupBuyView;
 //import com.sunfusheng.StickyHeaderListView.view.HeaderDividerViewView;
 //import com.sunfusheng.StickyHeaderListView.view.HeaderFilterViewView;
-//import com.sunfusheng.StickyHeaderListView.view.HeaderOperationViewView;
+//import com.sunfusheng.StickyHeaderListView.view.HeaderGuideListView;
 //import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 //
 //import java.util.ArrayList;
@@ -75,7 +75,7 @@
 //
 //    private HeaderAdvTopBannerView listViewAdHeaderView; // 广告视图
 //    private HeaderHotGroupBuyView headerChannelView; // 频道视图
-//    private HeaderOperationViewView headerOperationViewView; // 运营视图
+//    private HeaderGuideListView headerOperationViewView; // 运营视图
 //    private HeaderDividerViewView headerDividerViewView; // 分割线占位图
 //    private HeaderFilterViewView headerFilterViewView; // 分类筛选视图
 //    private FilterData filterData; // 筛选数据
@@ -157,7 +157,7 @@
 //        headerChannelView.fillView(channelList, smoothListView);
 //
 //        // 设置运营数据
-//        headerOperationViewView = new HeaderOperationViewView(this);
+//        headerOperationViewView = new HeaderGuideListView(this);
 //        headerOperationViewView.fillView(operationList, smoothListView);
 //
 //        // 设置分割线

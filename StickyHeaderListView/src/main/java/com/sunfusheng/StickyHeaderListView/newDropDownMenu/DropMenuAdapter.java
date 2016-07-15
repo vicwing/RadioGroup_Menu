@@ -23,7 +23,6 @@ import com.sunfusheng.StickyHeaderListView.model.FilterAreaBean;
 import com.sunfusheng.StickyHeaderListView.model.FilterBean;
 import com.sunfusheng.StickyHeaderListView.model.SubregionsBean;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.NewDoubleSelectedGrid.NewhouseFilterMoreView;
-import com.sunfusheng.StickyHeaderListView.newDropDownMenu.view.doubleGrid.DoubleGridView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,9 +36,9 @@ import java.util.List;
 public class DropMenuAdapter implements MenuAdapter
 //        ItemViewHolder.ClickListener
 {
+    private  String[] titles = new String[]{"区域", "价格", "标签", "更多"};
     private final Context mContext;
     private OnFilterDoneListener onFilterDoneListener;
-    private String[] titles;
     private HashMap<String, List<FilterBean>> hashMap;
     private List<FilterBean> featureData;
     private List<FilterBean> priceData;
@@ -51,10 +50,18 @@ public class DropMenuAdapter implements MenuAdapter
     private final String areaStr = "区域";
     private final String NotLimit = "不限";
 
-    public DropMenuAdapter(Context context, String[] titles, OnFilterDoneListener onFilterDoneListener) {
+    public DropMenuAdapter(Context context) {
         this.mContext = context;
-        this.titles = titles;
+    }
+    public DropMenuAdapter(Context context, OnFilterDoneListener onFilterDoneListener) {
+        this.mContext = context;
         this.onFilterDoneListener = onFilterDoneListener;
+    }
+
+    public DropMenuAdapter(Context context, OnFilterDoneListener onFilterDoneListener, HashMap<String, List<FilterBean>> hashMap) {
+        this.mContext = context;
+        this.onFilterDoneListener = onFilterDoneListener;
+        this.hashMap = hashMap;
     }
 
     public DropMenuAdapter(Context context, String[] titleList, OnFilterDoneListener onFilterDoneListener, HashMap<String, List<FilterBean>> hashMap) {
@@ -86,7 +93,6 @@ public class DropMenuAdapter implements MenuAdapter
     @Override
     public View getView(int position, FrameLayout parentContainer) {
         View view = parentContainer.getChildAt(position);
-
         switch (position) {
             case 0:
 //                view = createPriceListView(0,priceData);
@@ -112,6 +118,7 @@ public class DropMenuAdapter implements MenuAdapter
 
     /**
      * 新房筛选 :价格列表
+     *
      * @return
      */
     private View createFeatureListView(final int positionTitle, List<FilterBean> data) {
@@ -140,7 +147,6 @@ public class DropMenuAdapter implements MenuAdapter
     }
 
 
-
     private View createPriceListView(final int positionTitle, List<FilterBean> data) {
         PirceListView<FilterBean> singleListView = new PirceListView<FilterBean>(mContext)
                 .adapter(new SimpleTextAdapter<FilterBean>(null, mContext) {
@@ -164,7 +170,7 @@ public class DropMenuAdapter implements MenuAdapter
                 }).setOnCusItemClickListener(new PirceListView.OnCusItemClickListener() {
                     @Override
                     public void onCusItemClick(String minPrice, String maxPrice) {
-                        onFilterDoneListener.onFilterDone(positionTitle,minPrice,maxPrice);
+                        onFilterDoneListener.onFilterDone(positionTitle, minPrice, maxPrice);
                     }
                 });
         singleListView.setList(data, -1);
@@ -208,18 +214,18 @@ public class DropMenuAdapter implements MenuAdapter
 
                     @Override
                     public List<SubregionsBean> provideRightList(FilterAreaBean.ResultBean item, int position, int mLeftCurrentPosition) {
-                        List<SubregionsBean> childList=null;
-                        if (mLeftCurrentPosition==0){//位置是0时显示区域.1显示地铁线路
+                        List<SubregionsBean> childList = null;
+                        if (mLeftCurrentPosition == 0) {//位置是0时显示区域.1显示地铁线路
                             childList = item.getSubregions();
-                        }else {
+                        } else {
                             childList = item.getStations();
                         }
-                        Logger.d("MiddleItemClickListener  "  + "  position : " + position+"  mLeftLastPosition "+mLeftCurrentPosition);
-                        if (childList!=null){
+                        Logger.d("MiddleItemClickListener  " + "  position : " + position + "  mLeftLastPosition " + mLeftCurrentPosition);
+                        if (childList != null) {
                             Logger.d("MiddleItemClickListener  " + "  name : " + item.getName() + "  size  : " + childList.size() + "  position : " + position);
                             return childList;
-                        }else {//查询当前城市整个区域
-                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftCurrentPosition,item.getName(),"");
+                        } else {//查询当前城市整个区域
+                            onFilterDoneListener.onFilterAreaDone(positionTitle, mLeftCurrentPosition, item.getName(), "");
                             return null;
                         }
                     }
@@ -229,10 +235,10 @@ public class DropMenuAdapter implements MenuAdapter
                     public void onRightItemClick(int mLeftLastPosition, FilterAreaBean.ResultBean item, SubregionsBean subregionsBean) {
                         Logger.d("onRightItemClickListener  " + "  name : " + item.getName() + "  string  : " + subregionsBean.getName());
 
-                        if (subregionsBean.getName().equals(NotLimit)){
-                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftLastPosition,NotLimit,item.getId());
-                        }else {
-                            onFilterDoneListener.onFilterAreaDone(positionTitle,mLeftLastPosition,subregionsBean.getName(), subregionsBean.getId());
+                        if (subregionsBean.getName().equals(NotLimit)) {
+                            onFilterDoneListener.onFilterAreaDone(positionTitle, mLeftLastPosition, NotLimit, item.getId());
+                        } else {
+                            onFilterDoneListener.onFilterAreaDone(positionTitle, mLeftLastPosition, subregionsBean.getName(), subregionsBean.getId());
                         }
                     }
                 });
@@ -250,7 +256,7 @@ public class DropMenuAdapter implements MenuAdapter
 
 
         threeList.setLeftList(leftList, 0);
-        threeList.setMidList(leftList.get(0).getMidList(),0);
+        threeList.setMidList(leftList.get(0).getMidList(), 0);
 //        threeList.setRightList(leftList.get(0).getMidList().get(0).getSubregions(), -1);
 //        threeList.getLeftListView().setBackgroundColor(mContext.getResources().getColor(R.color.b_c_fafafa));
 
@@ -394,6 +400,7 @@ public class DropMenuAdapter implements MenuAdapter
 
     /**
      * 创建新房筛选菜单更多界面.
+     *
      * @param positionTitle
      * @return
      */
@@ -416,32 +423,6 @@ public class DropMenuAdapter implements MenuAdapter
     }
 
 
-    @Deprecated
-    private View createDoubleGrid() {
-        DoubleGridView doubleGridView = new DoubleGridView(mContext);
-        doubleGridView.setOnFilterDoneListener(onFilterDoneListener);
-        List<String> phases = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            phases.add("3top" + i);
-        }
-        doubleGridView.setTopGridData(phases);
-
-        List<String> areas = new ArrayList<>();
-        for (int i = 0; i < 10; ++i) {
-            areas.add("3bottom" + i);
-        }
-        doubleGridView.setBottomGridList(areas);
-
-        return doubleGridView;
-    }
-
-
-    private void onFilterDone() {
-        if (onFilterDoneListener != null) {
-            onFilterDoneListener.onFilterDone(0, "", "");
-        }
-    }
-
 
     public void setFeatureData(List<FilterBean> featureData) {
         this.featureData = featureData;
@@ -452,19 +433,18 @@ public class DropMenuAdapter implements MenuAdapter
     }
 
 
-
     public void setMoreData(HashMap<String, List<FilterBean>> hashMap) {
         this.hashMap = hashMap;
     }
 
 
-
     /**
      * 区域
+     *
      * @param resultBeanList
      */
     public void setAreaData(List<FilterAreaBean.ResultBean> resultBeanList) {
-         insetData(resultBeanList,"区域");
+        insetData(resultBeanList, "区域");
         this.areaData = resultBeanList;
     }
 
@@ -475,26 +455,27 @@ public class DropMenuAdapter implements MenuAdapter
 
     /**
      * 给区域和地铁的数据添加 不限的选项.
+     *
      * @param resultBeanList
      * @param tag
      */
     private void insetData(List<FilterAreaBean.ResultBean> resultBeanList, String tag) {
-        if (resultBeanList!=null &&resultBeanList.size()!=0){
+        if (resultBeanList != null && resultBeanList.size() != 0) {
             FilterAreaBean.ResultBean filterAreaBean = new FilterAreaBean.ResultBean();
             filterAreaBean.setName("不限");
-            resultBeanList.add(0,filterAreaBean);
+            resultBeanList.add(0, filterAreaBean);
             for (int i = 0; i < resultBeanList.size(); i++) {
 //                insertSubregion(resultBeanList, i ,tag);
-                List<SubregionsBean> subregionsList=  null;
-                if (tag.equals(areaStr)){
+                List<SubregionsBean> subregionsList = null;
+                if (tag.equals(areaStr)) {
                     subregionsList = resultBeanList.get(i).getSubregions();
-                }else if (tag.equals(metroStr)){
+                } else if (tag.equals(metroStr)) {
                     subregionsList = resultBeanList.get(i).getStations();
                 }
-                if (subregionsList!=null){
-                    SubregionsBean    subregionsBean  = new SubregionsBean();
+                if (subregionsList != null) {
+                    SubregionsBean subregionsBean = new SubregionsBean();
                     subregionsBean.setName("不限");
-                    subregionsList.add(0,subregionsBean);
+                    subregionsList.add(0, subregionsBean);
                 }
             }
         }

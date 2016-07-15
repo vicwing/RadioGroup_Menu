@@ -48,7 +48,7 @@ public class FilterMoreGridAdapter  extends BaseAdapter {
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.item_list_filter_more_grid_content, parent, false);
         }
-        text = (TextView) convertView.findViewById(R.id.text);
+        text = (TextView) convertView.findViewById(R.id.tv_text);
         GridViewCompat gvc = (GridViewCompat) parent;
         if (gvc.getChoiceMode() == ListView.CHOICE_MODE_MULTIPLE) {
             SparseBooleanArray checkArray;

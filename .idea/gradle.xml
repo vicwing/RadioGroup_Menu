@@ -14,7 +14,9 @@
             <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
             <option value="$PROJECT_DIR$/okhttputils2" />
+            <option value="$PROJECT_DIR$/popup_tooltip_library" />
             <option value="$PROJECT_DIR$/ptr-lib" />
+            <option value="$PROJECT_DIR$/tooltips" />
           </set>
         </option>
         <option name="myModules">
@@ -25,7 +27,9 @@
             <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
             <option value="$PROJECT_DIR$/okhttputils2" />
+            <option value="$PROJECT_DIR$/popup_tooltip_library" />
             <option value="$PROJECT_DIR$/ptr-lib" />
+            <option value="$PROJECT_DIR$/tooltips" />
           </set>
         </option>
       </GradleProjectSettings>

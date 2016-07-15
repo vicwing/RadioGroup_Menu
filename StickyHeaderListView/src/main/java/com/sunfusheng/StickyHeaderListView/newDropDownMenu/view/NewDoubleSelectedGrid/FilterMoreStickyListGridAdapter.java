@@ -108,7 +108,7 @@ public class FilterMoreStickyListGridAdapter extends BaseAdapter implements Stic
         if (convertView == null) {
             holder = new HeaderViewHolder();
             convertView = mInflater.inflate(R.layout.item_list_filter_more_grid_title, parent, false);
-            holder.text = (TextView) convertView.findViewById(R.id.text);
+            holder.text = (TextView) convertView.findViewById(R.id.tv_text);
             convertView.setTag(holder);
         } else {
             holder = (HeaderViewHolder) convertView.getTag();

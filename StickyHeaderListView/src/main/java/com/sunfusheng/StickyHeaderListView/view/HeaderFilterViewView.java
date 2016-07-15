@@ -30,11 +30,6 @@ public class HeaderFilterViewView extends HeaderViewInterface<Object> implements
         listView.addHeaderView(view);
     }
 
-    // 获得筛选View
-    public FilterView getFilterView() {
-        return fvFilter;
-    }
-
     private void dealWithTheView(Object obj) {
         fvFilter.setOnFilterClickListener(this);
     }
