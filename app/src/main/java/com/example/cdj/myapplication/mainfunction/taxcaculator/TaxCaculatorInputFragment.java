@@ -17,6 +17,7 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommomEditText;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
+import com.example.cdj.myapplication.utils.TestDataModel;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -58,6 +59,7 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
 
         tv_title = (TextView) rootView.findViewById(R.id.tv_title);
 
+
         edt_content = (EditText) rootView.findViewById(R.id.edt_content);
         mCommomEditText = (CommomEditText) rootView.findViewById(R.id.custom_edt_loan);
         edt_content.setFilters(new InputFilter[]{new InputFilterMinMax(mMin,mMax)});
@@ -96,6 +98,8 @@ public class TaxCaculatorInputFragment extends BackHandledBaseFragment implement
         });
 
         openInputMethod();
+
+        TestDataModel.getInstance().setRetainedTextView(tv_title);
     }
 
     /**

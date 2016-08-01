@@ -10,6 +10,7 @@ import com.orhanobut.logger.Logger;
  * Created by vic on 2016/7/5.
  */
 public class BaseApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -33,10 +33,8 @@ import java.util.List;
  * date: on 16/1/17 21:14
  * description:
  */
-public class DropMenuAdapter implements MenuAdapter
-//        ItemViewHolder.ClickListener
-{
-    private  String[] titles = new String[]{"区域", "价格", "标签", "更多"};
+public class DropMenuAdapter implements MenuAdapter{
+    private String[] titles = new String[]{"区域", "价格", "标签", "更多"};
     private final Context mContext;
     private OnFilterDoneListener onFilterDoneListener;
     private HashMap<String, List<FilterBean>> hashMap;
@@ -53,6 +51,7 @@ public class DropMenuAdapter implements MenuAdapter
     public DropMenuAdapter(Context context) {
         this.mContext = context;
     }
+
     public DropMenuAdapter(Context context, OnFilterDoneListener onFilterDoneListener) {
         this.mContext = context;
         this.onFilterDoneListener = onFilterDoneListener;
@@ -183,7 +182,6 @@ public class DropMenuAdapter implements MenuAdapter
      * @return
      */
     private View createThreeListView(final int positionTitle, List<FilterAreaBean.ResultBean> areaList, List<FilterAreaBean.ResultBean> metroList) {
-        Logger.d("创建 区域 筛选视图....................");
         ThreeListView<FilterAreaBean.ResultBean, SubregionsBean> threeList = new ThreeListView<FilterAreaBean.ResultBean, SubregionsBean>(mContext)
                 .leftAdapter(new SimpleTextAdapter<FilterAreaBean.ResultBean>(null, mContext) {
                     @Override
@@ -421,7 +419,6 @@ public class DropMenuAdapter implements MenuAdapter
                 .build();
         return filterMoreView;
     }
-
 
 
     public void setFeatureData(List<FilterBean> featureData) {

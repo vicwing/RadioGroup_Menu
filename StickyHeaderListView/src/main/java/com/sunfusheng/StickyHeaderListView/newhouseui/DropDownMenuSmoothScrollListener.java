@@ -10,7 +10,6 @@ import com.baiiu.filter.DropDownMenu;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
-import com.sunfusheng.StickyHeaderListView.view.FilterView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 
 /**
@@ -38,7 +37,6 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
     private boolean isScrollIdle = true; // ListView是否在滑动
     private Activity mContext;
     private SmoothListView smoothListView;
-    FilterView fvTopFilter;
     DropDownMenu dropDownMenu;
     RelativeLayout rlBar;
     View viewActionMoreBg;
@@ -46,10 +44,9 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
 
     private OnDataChangeListener onDataChangeListener;
 
-    public DropDownMenuSmoothScrollListener(Context mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
+    public DropDownMenuSmoothScrollListener(Context mainActivity, SmoothListView smoothListView, OnDataChangeListener onDataChangeListener) {
         this.mContext = (Activity) mainActivity;
         this.smoothListView = smoothListView;
-        this.fvTopFilter = fvTopFilter;
         this.onDataChangeListener = onDataChangeListener;
         init(smoothListView);
     }
@@ -58,10 +55,9 @@ public class DropDownMenuSmoothScrollListener implements SmoothListView.OnSmooth
         this.titleViewHeightPx = titleViewHeightPx;
     }
 
-    public DropDownMenuSmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter) {
+    public DropDownMenuSmoothScrollListener(Activity mainActivity, SmoothListView smoothListView) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
-        this.fvTopFilter = fvTopFilter;
         init(smoothListView);
     }
 

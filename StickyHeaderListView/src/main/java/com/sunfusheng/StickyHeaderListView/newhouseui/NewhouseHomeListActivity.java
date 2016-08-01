@@ -2,11 +2,16 @@ package com.sunfusheng.StickyHeaderListView.newhouseui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -40,6 +45,7 @@ import com.sunfusheng.StickyHeaderListView.model.TravelingEntity;
 import com.sunfusheng.StickyHeaderListView.newDropDownMenu.DropMenuAdapter;
 import com.sunfusheng.StickyHeaderListView.ui.AboutActivity;
 import com.sunfusheng.StickyHeaderListView.ui.BasePtrPullToResfrshActivity;
+import com.sunfusheng.StickyHeaderListView.ui.OrderDailog;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
 import com.sunfusheng.StickyHeaderListView.util.ModelUtil;
 import com.sunfusheng.StickyHeaderListView.util.UrlUtils;
@@ -53,13 +59,18 @@ import com.sunfusheng.StickyHeaderListView.view.HeaderNewFilterView;
 import com.sunfusheng.StickyHeaderListView.view.SmoothListView.SmoothListView;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.Callback;
+import com.zhy.http.okhttp.cookie.CacheInterceptor;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.Call;
+import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
 
@@ -159,6 +170,8 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
     private String newhouse_filter_more_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/filters/new?dataSource=SHENZHEN";
     private String newhouse_filter_city_area_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/area?dataSource=shenzhen";//区域
     private String newhouse_filter_metro_url = "http://172.16.72.153:9393/qfang-api/appapi/v4_5/enums/subwaynums?dataSource=SHENZHEN";//地铁
+    private int filterDataTag = 0;
+    private OkHttpUtils okHttpUtilsCache;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -183,15 +196,46 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         initFilterDropDownView();
 
         requestFilterData();
-//        requestFilterAreaData();
-//        requestFilterMetroData();
+        requestFilterAreaData();
+        requestFilterMetroData();
 
-        if (true){
+        if (true) {
             requestNewHouseHomePage();
-        }else {
+        } else {
             headerFakeFilterViewView.fillView(new Object(), smoothListView);
         }
         requestNewHouseList();
+
+//        OkHttpClient okHttpClient = OkHttpUtils.getInstance().getOkHttpClient();
+//
+//        File cacheFile = new File(this.getCacheDir(), "[缓存目录]");
+//        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+//        okHttpClient.newBuilder().cache(cache);
+//        long maxSize = okHttpClient.cache().maxSize();
+//        Logger.d("cache  "+maxSize);
+
+        OkhttpCache();
+    }
+
+    private void OkhttpCache() {
+//        OkHttpClient okHttpClient = new OkHttpClient();
+
+        File cacheFile = new File(this.getCacheDir(), "Okhttp");
+        Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+//        okHttpClient.newBuilder().cache(cache);
+//        long maxSize = okHttpClient.cache().maxSize();
+//        Logger.d("cache  "+maxSize);
+
+        OkHttpClient okHttpClient = OkHttpUtils.getInstance().getOkHttpClient();
+        OkHttpClient newClient = okHttpClient.newBuilder()
+                .addNetworkInterceptor(new CacheInterceptor())
+                .cache(cache)
+                .connectTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(20, TimeUnit.SECONDS)
+                .build();
+
+//        OkHttpUtils.getInstance().getOkHttpClient()
+        okHttpUtilsCache = new OkHttpUtils(newClient);
     }
 
     @Override
@@ -256,8 +300,6 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         adapter = new NewhouseListAdapter(NewhouseHomeListActivity.this, R.layout.item_newhouse_list);
         smoothListView.setAdapter(adapter);
 //        filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
-
-//
     }
 
     private void initListener() {
@@ -289,19 +331,6 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         smoothListView.setLoadMoreEnable(true);
         smoothListView.setSmoothListViewListener(this);
 
-//        smoothScrollListener = new DropDownMenuSmoothScrollListener(this, smoothListView, mDropDownMenu);
-//        smoothScrollListener.setOnDataChangeListener(new DropDownMenuSmoothScrollListener.OnDataChangeListener() {
-//            @Override
-//            public void isSitcky(boolean isSicky) {
-//                isStickyTop = isSicky;
-//            }
-//
-//            @Override
-//            public void filterViewTopSpace(int topspace) {
-//                filterViewTopSpace = topspace;
-//            }
-//        });
-//        smoothListView.setOnScrollListener(smoothScrollListener);
     }
 
     // 填充数据
@@ -316,6 +345,15 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         }
     }
 
+    /**
+     * 设置筛选菜单的数据
+     */
+    private void setFilterData() {
+        filterDataTag++;
+        if (filterDataTag == 3) {
+            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+        }
+    }
 
     @Override
     protected void onDestroy() {
@@ -471,54 +509,17 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         ll_root = findViewById(R.id.ll_root);
         int id = v.getId();
         if (id == R.id.tv_orderby) {
-            LogUtils.d(NewhouseHomeListActivity.class.getName() + "多选点击 ...........................");
-            if (poplistView==null){
-                initOrderList();
-            }else  if (isShowOrderList) {
-                hideOrderList();
-            }else {
-                showOrderList();
-            }
-//            View popupView = getLayoutInflater().inflate(R.layout.layout_newhouse_popupwindow, null);
-//            SimpleTooltip tooltip = new SimpleTooltip.Builder(this)
-//                    .anchorView(v)
-//                    .gravity(Gravity.TOP)
-//                    .dismissOnOutsideTouch(true)
-//                    .dismissOnInsideTouch(false)
-//                    .modal(true)
-//                    .animated(false)
-//                    .contentView(R.layout.layout_newhouse_popupwindow)
-//                    .build();
-//                     tooltip.show();
-
-
-//
-//            if (mPopupWindow==null){
-//                mPopupWindow = new PopupWindow(popupView, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
-//                mPopupWindow.setTouchable(true);
-//                mPopupWindow.setOutsideTouchable(true);
-//                mPopupWindow.setBackgroundDrawable(new BitmapDrawable(getResources(), (Bitmap) null));
-////            mPopupWindow.showAsDropDown(v);
+//            LogUtils.d(NewhouseHomeListActivity.class.getName() + "多选点击 ...........................");
+//            if (poplistView==null){
+//                initOrderList();
+//            }else  if (isShowOrderList) {
+//                hideOrderList();
+//            }else {
+//                showOrderList();
 //            }
-//            if (mPopupWindow != null && !mPopupWindow.isShowing()) {
-//                int x = (int) v.getX();
-//                int y = (int) v.getY();
-//                mPopupWindow.setAnimationStyle(R.style.anim_menu_bottombar);
-//                mPopupWindow.showAtLocation(v, Gravity.CENTER_VERTICAL,x, y);
-////                mPopupWindow.showAsDropDown(v);
-//
-//            }
-//           TextView mButton = (TextView) popupView.findViewById(R.id.tv_popwindow);
-//            mButton.setOnClickListener(new View.OnClickListener() {
-//
-//                @Override
-//                public void onClick(View v) {
-//                    mPopupWindow.showAsDropDown(v);
-//
-//                    Logger.d("pop............");
-//                }
-//            });
-        }else if (id==R.id.orderBg){
+//            showHideDialog();
+            shoePopwindow(v);
+        } else if (id == R.id.orderBg) {
             hideOrderList();
         }
     }
@@ -562,13 +563,10 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
                             dropMenuAdapter.setMoreData(hashMap);
                             dropMenuAdapter.setFeatureData(features);
                             dropMenuAdapter.setPriceData(price);
-//                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
-
-//                            initOrderList();
+                            setFilterData();
                         } else {//返回错误message
                             Toast.makeText(NewhouseHomeListActivity.this, "message  " + response.getMessage() + "\n statsus  " + response.getStatus(), Toast.LENGTH_SHORT);
                         }
-                        requestFilterAreaData();
                     }
                 });
     }
@@ -604,10 +602,10 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
                             List<FilterAreaBean.ResultBean> resul = filterAreaBean.getResult();
                             dropMenuAdapter.setAreaData(resul);
 //                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+                            setFilterData();
                         } else {
 
                         }
-                        requestFilterMetroData();
                     }
                 });
     }
@@ -632,7 +630,7 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
                         if (status.equals("C0000")) {
                             List<FilterAreaBean.ResultBean> result = filterAreaBean.getResult();
                             dropMenuAdapter.setSubStationData(result);
-                            mDropDownMenu.setMenuAdapter(dropMenuAdapter);
+                            setFilterData();
                         } else {
 
                         }
@@ -731,8 +729,6 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
     }
 
 
-
-
     /**
      * 新房首页数据
      */
@@ -825,7 +821,7 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FilterBean item = (FilterBean) parent.getAdapter().getItem(position);
-                Logger.d("itemt  Name"+item.getDesc()+" valuse "+item.getValue());
+                Logger.d("itemt  Name" + item.getDesc() + " valuse " + item.getValue());
                 orderby = item.getValue();
                 hideOrderList();
             }
@@ -836,17 +832,96 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
         orderBg.setOnClickListener(this);
         showOrderList();
     }
-    private  void showOrderList(){
+
+    private void showOrderList() {
         isShowOrderList = true;
         poplistView.setVisibility(View.VISIBLE);
         orderBg.setVisibility(View.VISIBLE);
         orderTriangle.setVisibility(View.VISIBLE);
     }
-    private  void hideOrderList(){
+
+    private void hideOrderList() {
         isShowOrderList = false;
         poplistView.setVisibility(View.GONE);
         orderBg.setVisibility(View.GONE);
         orderTriangle.setVisibility(View.GONE);
     }
-    boolean isShowOrderList =false;
+
+    boolean isShowOrderList = false;
+
+    /**
+     * 显示daialog
+     */
+    private void showHideDialog() {
+        OrderDailog orderDailog = null;
+        if (orderDailog == null) {
+            orderDailog = new OrderDailog(NewhouseHomeListActivity.this, orderByData);
+            orderDailog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    Logger.d("cancel............");
+                }
+            });
+            orderDailog.setOnclickListener(new OrderDailog.OnBtnClickListener() {
+                @Override
+                public void onBtnClick(String value) {
+                    orderby = value;
+                }
+            });
+            orderDailog.showDialog();
+        } else {
+            if (orderDailog.isShowing())
+                orderDailog.dismiss();
+            else
+                orderDailog.showDialog();
+        }
+    }
+
+    private void shoePopwindow(View v) {
+
+        View root = findViewById(R.id.ll_root);
+        DisplayMetrics dm = getResources().getDisplayMetrics();
+        int w_screen = dm.widthPixels;
+        int h_screen = dm.heightPixels;
+
+        View view = getLayoutInflater().inflate(R.layout.layout_newhouse_popupwindow, null);
+//        final PopupWindow popupWindow = new PopupWindow(view, DensityUtil.dip2px(this,200), DensityUtil.dip2px(this,400));
+        final PopupWindow popupWindow = new PopupWindow(view, DensityUtil.dip2px(this,200), ViewGroup.LayoutParams.WRAP_CONTENT);
+        poplistView = (ListView) view.findViewById(R.id.lv_poplistview);
+        poplistView.setAdapter(new QuickAdapter<FilterBean>(NewhouseHomeListActivity.this, R.layout.item_listview_popwindow, orderByData) {
+
+            @Override
+            protected void convert(BaseAdapterHelper helper, FilterBean item) {
+                helper.setText(R.id.tv_text, item.getDesc());
+            }
+        });
+        view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+
+//        int w = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//        int h = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED);
+//        poplistView.measure(w,h);
+//        int poplistViewHeight = poplistView.getHeight();
+//        int poplistViewWidth = poplistView.getWidth();
+
+        int popupWidth = view.getMeasuredWidth();
+        int popupHeight = view.getMeasuredHeight();
+        int[] location = new int[2];
+        // 允许点击外部消失
+        popupWindow.setBackgroundDrawable(new BitmapDrawable());
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+        // 获得位置
+        v.getLocationOnScreen(location);
+        popupWindow.setAnimationStyle(R.style.anim_menu_bottombar);
+        int x = (location[0] + v.getWidth() / 2) - popupWidth / 2;
+        int y = location[1] - popupHeight;
+
+
+        x = w_screen - popupWidth;
+        y = location[1] - popupHeight;
+        popupWindow.showAtLocation(v, Gravity.NO_GRAVITY, x, y);
+        Logger.d("poplistViewHeight  " +popupWindow.getHeight()+"  poplistViewWidth "+popupWindow.getWidth());
+        Logger.d("lcoation     x   " + x + "  y  " + y + "  pWidth " + popupWidth + " pHeight " +
+                popupHeight + "  screenW " + w_screen + "  screenH " + h_screen);
+    }
 }

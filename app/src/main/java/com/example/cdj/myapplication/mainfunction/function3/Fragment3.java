@@ -92,20 +92,17 @@ public class Fragment3 extends Fragment {
 
         initSegmentControl(layout);
 
-
-
 //        // pull to refresh
         mPtrFrameLayout = (PtrClassicFrameLayout) layout.findViewById(R.id.load_more_list_view_ptr_frame);
-
         mPtrFrameLayout.setLoadingMinTime(1000);
-        mPtrFrameLayout.setLastUpdateTimeKey("vievivivivivi");
+//        mPtrFrameLayout.setLastUpdateTimeKey(System.currentTimeMillis());
         // the following are default settings
         mPtrFrameLayout.setResistance(1.7f);
         mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
         mPtrFrameLayout.setDurationToClose(200);
         mPtrFrameLayout.setDurationToCloseHeader(1000);
         // default is false
-        mPtrFrameLayout.setPullToRefresh(false);
+        mPtrFrameLayout.setPullToRefresh(true);
         // default is true
         mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
@@ -120,20 +117,15 @@ public class Fragment3 extends Fragment {
             public void onRefreshBegin(PtrFrameLayout frame) {
                 Logger.i("onRefreshBegin  ");
                 currentPage =1;
-//                loadMoreListViewContainer.loadMoreFinish(true,false);
-                loadMoreListViewContainer.setShowLoadingForFirstPage(true);
+                if (loadMoreListViewContainer!=null){
+                    loadMoreListViewContainer.loadMoreFinish(false,true);
+                }
                 requestUpdate(String.valueOf(currentPage));
             }
 
         });
 //        // list view
-
-
         // header place holder
-//        View headerMarginView = new View(getContext());
-//        headerMarginView.setLayoutParams(new AbsListView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, LocalDisplay.dp2px(20)));
-//        mListView.addHeaderView(headerMarginView);
-
        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
         setLoadMoreDefaultFootView(loadMoreListViewContainer);
 //        setLoadMoreFootView(loadMoreListViewContainer);
@@ -143,9 +135,8 @@ public class Fragment3 extends Fragment {
         mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
         mListView.setAdapter(mAdapter);
 
-        mPtrFrameLayout.setPullToRefresh(true);
-
-        requestUpdate(String.valueOf(currentPage));
+        mPtrFrameLayout.autoRefresh(true);
+//        requestUpdate(String.valueOf(currentPage));
         return layout;
     }
 
@@ -172,14 +163,14 @@ public class Fragment3 extends Fragment {
                 .addParams("currentPage",currentPageStr)
                 .build()//
                 .execute(new  SecListItemBeanCallback() {
+
                     @Override
-                    public void onError(Call call, Exception e) {
+                    public void onError(Call call, Exception e, int id) {
                         mPtrFrameLayout.refreshComplete();
                     }
 
                     @Override
-                    public void onResponse(SecListBean response) {
-
+                    public void onResponse(SecListBean response, int id) {
                         mPtrFrameLayout.refreshComplete();
 //                        mSecListItemEntities.addAll(response.getResult().getList());
                         mAdapter.addAll(response.getResult().getList());

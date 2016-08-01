@@ -10,7 +10,6 @@ import com.baiiu.filter.DropDownMenu;
 import com.sunfusheng.StickyHeaderListView.R;
 import com.sunfusheng.StickyHeaderListView.util.ColorUtil;
 import com.sunfusheng.StickyHeaderListView.util.DensityUtil;
-import com.sunfusheng.StickyHeaderListView.view.FilterView;
 
 /**
  * Created by vic on 2016/6/29.
@@ -35,7 +34,6 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
     private boolean isScrollIdle = true; // ListView是否在滑动
     private Activity mContext;
     private SmoothListView smoothListView;
-    FilterView fvTopFilter;
     DropDownMenu dropDownMenu;
     RelativeLayout rlBar;
     View viewActionMoreBg;
@@ -43,10 +41,9 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
 
     private OnDataChangeListener onDataChangeListener;
 
-    public SmoothScrollListener(Context mainActivity, SmoothListView smoothListView, FilterView fvTopFilter, OnDataChangeListener onDataChangeListener) {
+    public SmoothScrollListener(Context mainActivity, SmoothListView smoothListView,  OnDataChangeListener onDataChangeListener) {
         this.mContext = (Activity) mainActivity;
         this.smoothListView = smoothListView;
-        this.fvTopFilter = fvTopFilter;
         this.onDataChangeListener = onDataChangeListener;
         filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
         rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
@@ -58,10 +55,9 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         this.titleViewHeightPx = titleViewHeightPx;
     }
 
-    public SmoothScrollListener(Activity mainActivity, SmoothListView smoothListView, FilterView fvTopFilter) {
+    public SmoothScrollListener(Activity mainActivity, SmoothListView smoothListView) {
         this.mContext = mainActivity;
         this.smoothListView = smoothListView;
-        this.fvTopFilter = fvTopFilter;
         filterViewPosition = smoothListView.getHeaderViewsCount() - 1;
         rlBar = (RelativeLayout) mContext.findViewById(R.id.rl_bar);
         viewActionMoreBg = mContext.findViewById(R.id.view_action_more_bg);
@@ -117,27 +113,22 @@ public class SmoothScrollListener implements SmoothListView.OnSmoothScrollListen
         if (filterViewTopSpace > titleViewHeight) {
             isStickyTop = false; // 没有吸附在顶部
             onSickyChange();
-            fvTopFilter.setVisibility(View.INVISIBLE);
         } else {
             isStickyTop = true; // 吸附在顶部
             onSickyChange();
-            fvTopFilter.setVisibility(View.VISIBLE);
         }
 
         if (firstVisibleItem > filterViewPosition) {
             isStickyTop = true;
             onSickyChange();
-            fvTopFilter.setVisibility(View.VISIBLE);
         }
 
         if (isSmooth && isStickyTop) {
             isSmooth = false;
 //            if (onDataChangeListener != null)
 //                onDataChangeListener.isSmooth(false);
-            fvTopFilter.showFilterLayout(filterPosition);
         }
 
-        fvTopFilter.setStickyTop(isStickyTop);
 
         // 处理标题栏颜色渐变
         handleTitleBarColorEvaluate();

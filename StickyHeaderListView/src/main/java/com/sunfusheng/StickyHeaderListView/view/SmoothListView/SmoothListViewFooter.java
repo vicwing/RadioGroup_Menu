@@ -13,6 +13,7 @@ public class SmoothListViewFooter extends LinearLayout {
 	public final static int STATE_NORMAL = 0;
 	public final static int STATE_READY = 1;
 	public final static int STATE_LOADING = 2;
+	public final static int STATE_EMPTY = 3;
 
 	private Context mContext;
 
@@ -40,7 +41,7 @@ public class SmoothListViewFooter extends LinearLayout {
 			mHintView.setText(R.string.smoothlistview_footer_hint_ready);
 		} else if (state == STATE_LOADING) {
 			mProgressBar.setVisibility(View.VISIBLE);
-		} else {
+		} else if (state==STATE_LOADING){
 			mHintView.setVisibility(View.VISIBLE);
 			mHintView.setText(R.string.smoothlistview_footer_hint_normal);
 		}

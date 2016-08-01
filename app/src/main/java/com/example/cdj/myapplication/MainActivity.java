@@ -5,9 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.RadioGroup;
 
+import com.example.cdj.myapplication.base.BaseActivity;
 import com.example.cdj.myapplication.base.BaseApplication;
 import com.example.cdj.myapplication.cusview.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
     @Bind(R.id.main_content)
     MyViewPager mPager;
 
@@ -59,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
 //        deviceUuidFactory=null;
         deviceUuidFactory.getDeviceUuid();
         startServeTime();
+
+
     }
 
     private void startServeTime() {

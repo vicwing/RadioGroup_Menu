@@ -104,12 +104,13 @@ public class NewHouseListActivity  extends Activity {
                 .build()//
                 .execute(new  SecListItemBeanCallback() {
                     @Override
-                    public void onError(Call call, Exception e) {
+                    public void onError(Call call, Exception e,int id) {
 //                        mPtrFrameLayout.refreshComplete();
                     }
 
+
                     @Override
-                    public void onResponse(SecListBean response) {
+                    public void onResponse(SecListBean response,int id) {
 
 //                        mPtrFrameLayout.refreshComplete();
                         if (secListItemAdapter!=null)

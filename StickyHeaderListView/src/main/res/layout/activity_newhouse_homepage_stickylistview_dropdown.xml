@@ -110,7 +110,7 @@
                 android:text="排序" />
         </RelativeLayout>-->
 
-        <include layout="@layout/order_panel"/>
+        <include layout="@layout/newhouse_order_panel"/>
     </com.sunfusheng.StickyHeaderListView.view.QfangFrameLayout>
 
 </LinearLayout>

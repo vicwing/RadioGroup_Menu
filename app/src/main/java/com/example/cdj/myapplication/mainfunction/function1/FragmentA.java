@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
@@ -18,9 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.cusview.CircleCornerTextView;
 import com.example.cdj.myapplication.cusview.CusTextView;
 import com.example.cdj.myapplication.utils.ScreenUtil;
+import com.example.cdj.myapplication.utils.TestDataModel;
 import com.orhanobut.logger.Logger;
 import com.socks.library.KLog;
 
@@ -30,7 +31,7 @@ import butterknife.ButterKnife;
 /**
  * Created by cdj onCallBackData 2016/2/1.
  */
-public class FragmentA extends Fragment {
+public class FragmentA extends BaseFragment {
     private Context mContext;
 
     @Bind(R.id.width_tv)
@@ -110,6 +111,17 @@ public class FragmentA extends Fragment {
 //        }, 57, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 //        mTextView.setText(msp);
 //        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
     }
 
     /**

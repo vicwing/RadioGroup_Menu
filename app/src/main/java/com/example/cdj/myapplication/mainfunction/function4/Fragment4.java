@@ -158,11 +158,12 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
                 .build()//
                 .execute(new SecListItemBeanCallback() {
                     @Override
-                    public void onError(Call call, Exception e) {
+                    public void onError(Call call, Exception e, int id) {
+
                     }
 
                     @Override
-                    public void onResponse(SecListBean response) {
+                    public void onResponse(SecListBean response, int id) {
 
                     }
                 });
