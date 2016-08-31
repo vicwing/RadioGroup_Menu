@@ -62,6 +62,9 @@ import com.zhy.http.okhttp.callback.Callback;
 import com.zhy.http.okhttp.cookie.CacheInterceptor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -220,12 +223,26 @@ public class NewhouseHomeListActivity extends BasePtrPullToResfrshActivity imple
     private void OkhttpCache() {
 //        OkHttpClient okHttpClient = new OkHttpClient();
 
-        File cacheFile = new File(this.getCacheDir(), "Okhttp");
+        File cacheFile = new File(this.getFilesDir(), "OkhttpCacheFile.txt");
+//        byte[]
+        try {
+            OutputStream outputStream = new FileOutputStream(cacheFile);
+
+//            outputStream.write();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
         Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+//        boolean mkdir = cacheFile.mkdir();
+        if ( cacheFile.mkdir())
+
 //        okHttpClient.newBuilder().cache(cache);
 //        long maxSize = okHttpClient.cache().maxSize();
 //        Logger.d("cache  "+maxSize);
-
+Logger.d("cacheFile   "+cacheFile.getAbsolutePath());
         OkHttpClient okHttpClient = OkHttpUtils.getInstance().getOkHttpClient();
         OkHttpClient newClient = okHttpClient.newBuilder()
                 .addNetworkInterceptor(new CacheInterceptor())

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Qfang</string>
+    <string name="app_name">RadioGroupVic</string>
     <string name="action_settings">Settings</string>
     <string name="caculate_newbase_interest_rate">最新基准利率</string>
     <string name="caculate_input_loanterm">请输入贷款年限</string>

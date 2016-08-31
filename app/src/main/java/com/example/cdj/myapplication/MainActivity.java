@@ -14,10 +14,8 @@ import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
 import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
-import com.example.cdj.myapplication.utils.device.DeviceStatusUtils;
 import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
 import com.orhanobut.logger.Logger;
-import com.socks.library.KLog;
 
 import java.util.ArrayList;
 
@@ -45,12 +43,11 @@ public class MainActivity extends BaseActivity {
 //        initView();
         initViewPager();
 
-        KLog.d("abcdefg");
 //        initToolbar();
 //        initListView();
-        DeviceStatusUtils.getImieStatus(this);
-        DeviceStatusUtils.getSimNumber(this);
-        DeviceStatusUtils.getAndroidId(this);
+//        DeviceStatusUtils.getImieStatus(this);
+//        DeviceStatusUtils.getSimNumber(this);
+//        DeviceStatusUtils.getAndroidId(this);
         String SerialNumber = android.os.Build.SERIAL;
 
         DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(this);
@@ -109,7 +106,6 @@ public class MainActivity extends BaseActivity {
         mRadioGroup.setOnCheckedChangeListener(new CheckedChangeListener());
 
         ArrayList<Fragment> fragmentList = new ArrayList<>();
-        FragmentA frag ;
         Bundle bundle;
 //        for (int i = 0; i <1; i++) {
 //            frag = new FragmentA();

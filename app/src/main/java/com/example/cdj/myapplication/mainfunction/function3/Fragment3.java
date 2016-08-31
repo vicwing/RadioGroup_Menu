@@ -2,7 +2,6 @@ package com.example.cdj.myapplication.mainfunction.function3;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,14 +21,21 @@ import com.example.cdj.myapplication.loadmore.LoadMoreUIHandler;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrHandler;
+import okhttp3.CacheControl;
 import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by cdj onCallBackData 2016/5/6.
@@ -37,8 +43,8 @@ import okhttp3.Call;
 public class Fragment3 extends Fragment {
 
 
-//    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
-    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
+    //    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
+    public static String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -51,14 +57,15 @@ public class Fragment3 extends Fragment {
     private PtrClassicFrameLayout mPtrFrameLayout;
     private ListView mListView;
     private QuickAdapter<SecListItemEntity> mAdapter;
-    private List<SecListItemEntity> mSecListItemEntities  = new ArrayList<SecListItemEntity>();
+    private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
     private LoadMoreListViewContainer loadMoreListViewContainer;
     private SegmentControl mSegmentControl;
-    private  int pageCount=3;
+    private int pageCount = 0;
 
     /**
      * 通过工厂方法来创建Fragment实例
      * 同时给Fragment来提供参数来使用
+     *
      * @return Master_Fragment的实例.
      */
     public static Fragment3 newInstance(String param1, String param2) {
@@ -108,17 +115,17 @@ public class Fragment3 extends Fragment {
         mPtrFrameLayout.setPtrHandler(new PtrHandler() {
             @Override
             public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-                Logger.d("checkCanDoRefresh  ");
+//                Logger.d("checkCanDoRefresh  ");
                 // here check list view, not content.
                 return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
             }
 
             @Override
             public void onRefreshBegin(PtrFrameLayout frame) {
-                Logger.i("onRefreshBegin  ");
-                currentPage =1;
-                if (loadMoreListViewContainer!=null){
-                    loadMoreListViewContainer.loadMoreFinish(false,true);
+//                Logger.i("onRefreshBegin  ");
+                currentPage = 1;
+                if (loadMoreListViewContainer != null) {
+                    loadMoreListViewContainer.loadMoreFinish(false, true);
                 }
                 requestUpdate(String.valueOf(currentPage));
             }
@@ -126,7 +133,7 @@ public class Fragment3 extends Fragment {
         });
 //        // list view
         // header place holder
-       loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
+        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
         setLoadMoreDefaultFootView(loadMoreListViewContainer);
 //        setLoadMoreFootView(loadMoreListViewContainer);
 
@@ -137,15 +144,15 @@ public class Fragment3 extends Fragment {
 
         mPtrFrameLayout.autoRefresh(true);
 //        requestUpdate(String.valueOf(currentPage));
+        Logger.d("222222222222222222222222222222222222222");
         return layout;
     }
 
     private void initSegmentControl(View layout) {
-        mSegmentControl = (SegmentControl)layout.findViewById(R.id.segment_control);
+        mSegmentControl = (SegmentControl) layout.findViewById(R.id.segment_control);
         mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {
-                Log.d("tag","index"+index);
             }
         });
 //        mSegmentControl.setBackgroundDrawableColor(getResources().getColor(R.color.black));
@@ -153,16 +160,17 @@ public class Fragment3 extends Fragment {
 //        mSegmentControl.setDefaultTextColor(getResources().getColor(R.color.white));
 //        mSegmentControl.setSelectedDrawableColor(getResources().getColor(R.color.white));
     }
-    private  int currentPage=1;
+
+    private int currentPage = 1;
 
     private void requestUpdate(final String currentPageStr) {
-        Logger.d("下拉刷新控件啦......currentPage  "+currentPageStr);
+        String httpUrl = Url + "&currentPage=" + currentPageStr;
+//        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
         OkHttpUtils
-                .post()//
-                .url(Url)//
-                .addParams("currentPage",currentPageStr)
-                .build()//
-                .execute(new  SecListItemBeanCallback() {
+                .get()//
+                .url(httpUrl)
+                .build()
+                .execute(new SecListItemBeanCallback() {
 
                     @Override
                     public void onError(Call call, Exception e, int id) {
@@ -174,17 +182,48 @@ public class Fragment3 extends Fragment {
                         mPtrFrameLayout.refreshComplete();
 //                        mSecListItemEntities.addAll(response.getResult().getList());
                         mAdapter.addAll(response.getResult().getList());
-                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
-//                        pageCount = response.getResult().getPageCount();
-                        if (currentPage<=pageCount){
-                            loadMoreListViewContainer.loadMoreFinish(false,true);
+//                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
+                        pageCount = response.getResult().getPageCount();
+                        if (currentPage <= pageCount) {
+                            loadMoreListViewContainer.loadMoreFinish(false, true);
                         }
                     }
                 });
+
+//        getCacheRequset(httpUrl);
+
     }
+
+    /**
+     * 实现了缓存的okhttp
+     * @param httpUrl
+     */
+    private void getCacheRequset(String httpUrl) {
+        Request request = new Request.Builder().url(httpUrl).cacheControl(new CacheControl.Builder()
+                .maxAge(5, TimeUnit.SECONDS)
+                .maxStale(5, TimeUnit.SECONDS).build())
+                .build();
+        OkHttpClient okHttpClient = OkHttpUtils.getInstance().getOkHttpClient();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Logger.d("onFailure  ........");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String s = response.body().string();
+                Logger.d("response " + s);
+            }
+        });
+    }
+
     private int pageSize = 10;
+
     /**
      * 自定义loadmore footview
+     *
      * @param loadMoreListViewContainer
      */
     private void setLoadMoreFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
@@ -193,8 +232,8 @@ public class Fragment3 extends Fragment {
             @Override
             public void onLoadMore(LoadMoreContainer loadMoreContainer) {
                 Logger.d("自定义footview   加载更多...........");
-                loadMoreListViewContainer.setLoadMoreView( LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
-                loadMoreContainer.loadMoreFinish(true,true);
+                loadMoreListViewContainer.setLoadMoreView(LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
+                loadMoreContainer.loadMoreFinish(true, true);
             }
         });
         loadMoreListViewContainer.setLoadMoreUIHandler(new LoadMoreUIHandler() {
@@ -222,23 +261,24 @@ public class Fragment3 extends Fragment {
 
     /**
      * 设置默认的加载更多.
+     *
      * @param loadMoreListViewContainer
      */
     private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
         // load more container
-        loadMoreListViewContainer.useDefaultHeader();
         //设定view可以加载更多
+        loadMoreListViewContainer.useDefaultHeader();
         loadMoreListViewContainer.setAutoLoadMore(true);
         loadMoreListViewContainer.setShowLoadingForFirstPage(true);
         loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
             @Override
             public void onLoadMore(LoadMoreContainer loadMoreContainer) {
                 currentPage++;
-                Logger.i("LoadMoreHandler  加载更多..............currentPage "+currentPage);
-                if (currentPage<=pageCount){
+                Logger.i("LoadMoreHandler  加载更多..............currentPage " + currentPage);
+                if (currentPage <= pageCount) {
                     requestUpdate(String.valueOf(currentPage));
                 } else {
-                    loadMoreListViewContainer.loadMoreFinish(true,false);
+                    loadMoreListViewContainer.loadMoreFinish(true, false);
                 }
             }
         });
@@ -246,11 +286,11 @@ public class Fragment3 extends Fragment {
 
 
     private void testThread() {
-        new Thread(){
+        new Thread() {
             @Override
             public void run() {
                 super.run();
-                getActivity(). runOnUiThread(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 //                                simpleAdapter.addAll("","","","","","","","","","");
@@ -258,7 +298,7 @@ public class Fragment3 extends Fragment {
 //                            mSecListItemEntities.add("i  "+i+"number");
 //                        }
                         mAdapter.addAll(mSecListItemEntities);
-                        loadMoreListViewContainer.loadMoreFinish(false,true);
+                        loadMoreListViewContainer.loadMoreFinish(false, true);
                     }
                 });
             }

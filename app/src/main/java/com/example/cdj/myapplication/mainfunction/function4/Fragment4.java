@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.apkfuns.logutils.LogUtils;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.RootViewActivity;
@@ -121,7 +120,6 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
         });
         tv_time = (TextView) layout.findViewById(R.id.tv_time);
         tv_time.setText(DateUtil.timeStamp2Date(System.currentTimeMillis(),DateUtil.DateStyle.YYYY_MM_DD_HH_MM_SS.getValue())+"");
-        LogUtils.d("222222222222222222222");
         layout.findViewById(R.id.tv_StickyActivity).setOnClickListener(this);
         return layout;
     }

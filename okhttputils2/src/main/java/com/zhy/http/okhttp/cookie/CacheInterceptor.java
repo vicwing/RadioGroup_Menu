@@ -20,6 +20,7 @@ public class CacheInterceptor implements Interceptor {
                 .removeHeader("Cache-Control")
                 //cache for 30 days
                 .header("Cache-Control", "max-age=" + 3600 * 24 * 30)
+                .header("Cache-Control", "max-age=" + 60*5 )
                 .build();
         return response1;
     }
