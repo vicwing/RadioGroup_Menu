@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.cdj.myapplication.adapter.adapterhelper;
+package com.example.cdj.myapplication.baseadapter.adapterhelper;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -456,7 +456,7 @@ public class BaseAdapterHelper {
      * @return The BaseAdapterHelper for chaining.
      */
     public BaseAdapterHelper setChecked(int viewId, boolean checked) {
-        Checkable view = (Checkable) retrieveView(viewId);
+        Checkable view = retrieveView(viewId);
         view.setChecked(checked);
         return this;
     }

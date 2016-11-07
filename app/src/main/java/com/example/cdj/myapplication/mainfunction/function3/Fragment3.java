@@ -11,8 +11,8 @@ import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.adapter.SecListItemAdapter;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
@@ -44,7 +44,7 @@ public class Fragment3 extends Fragment {
 
 
     //    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
-    public static String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
+
 
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
@@ -143,7 +143,7 @@ public class Fragment3 extends Fragment {
         mListView.setAdapter(mAdapter);
 
         mPtrFrameLayout.autoRefresh(true);
-//        requestUpdate(String.valueOf(currentPage));
+        requestUpdate(String.valueOf(currentPage));
         Logger.d("222222222222222222222222222222222222222");
         return layout;
     }
@@ -162,13 +162,14 @@ public class Fragment3 extends Fragment {
     }
 
     private int currentPage = 1;
-
+    public static String Url = "http://shenzhen.qfang.com/appapi/v4_5/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
     private void requestUpdate(final String currentPageStr) {
         String httpUrl = Url + "&currentPage=" + currentPageStr;
-//        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
+        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
         OkHttpUtils
                 .get()//
                 .url(httpUrl)
+                .addHeader("Cache-Control","no-cache")
                 .build()
                 .execute(new SecListItemBeanCallback() {
 

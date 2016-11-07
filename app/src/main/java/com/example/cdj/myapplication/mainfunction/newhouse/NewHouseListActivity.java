@@ -17,7 +17,7 @@ import com.apkfuns.logutils.LogUtils;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.adapter.SecListItemAdapter;
+import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
 import com.example.cdj.myapplication.cusview.DropDownMenu;
 import com.example.cdj.myapplication.cusview.MyListView;
 import com.example.cdj.myapplication.cusview.StickyScrollView;

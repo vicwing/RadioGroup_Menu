@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.adapter;
+package com.example.cdj.myapplication.baseadapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

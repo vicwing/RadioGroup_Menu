@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.adapter.adapterhelper;
+package com.example.cdj.myapplication.baseadapter.adapterhelper;
 
 public interface MultiItemTypeSupport<T>
 {

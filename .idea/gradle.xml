@@ -5,7 +5,7 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="C:\android-studio2.0\gradle\gradle-2.10" />
+        <option name="gradleHome" value="C:\android-studio2.0\gradle\gradle-2.14.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
@@ -18,18 +18,7 @@
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/StickyHeaderListView" />
-            <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/filter-lib" />
-            <option value="$PROJECT_DIR$/javaapplication" />
-            <option value="$PROJECT_DIR$/okhttputils2" />
-            <option value="$PROJECT_DIR$/popup_tooltip_library" />
-            <option value="$PROJECT_DIR$/ptr-lib" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

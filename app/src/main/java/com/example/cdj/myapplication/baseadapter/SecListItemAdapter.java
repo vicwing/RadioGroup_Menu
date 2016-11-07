@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.adapter;
+package com.example.cdj.myapplication.baseadapter;
 
 import android.content.Context;
 import android.widget.ImageView;
@@ -6,8 +6,8 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.adapter.adapterhelper.BaseAdapterHelper;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.config.GlobalConstant;
 
 import java.util.List;

@@ -13,8 +13,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.adapter.adapterhelper.BaseAdapterHelper;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
 import com.example.cdj.myapplication.cusview.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.Bean.LoanPercent;

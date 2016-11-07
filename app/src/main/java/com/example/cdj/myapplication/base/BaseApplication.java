@@ -11,6 +11,7 @@ import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.cookie.CacheInterceptor;
+import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.io.File;
 import java.util.Timer;
@@ -58,7 +59,7 @@ public class BaseApplication extends Application {
         OkHttpClient okHttpClient = new OkHttpClient();
         OkHttpClient newClient = okHttpClient.newBuilder()
                 .addNetworkInterceptor(new CacheInterceptor())
-//                .addInterceptor(new LoggerInterceptor("okhttp_request"))
+                .addInterceptor(new LoggerInterceptor("okhttp_request"))
                 .cache(provideCache())
                 .connectTimeout(20, TimeUnit.SECONDS)
                 .readTimeout(20, TimeUnit.SECONDS)

@@ -22,11 +22,12 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.adapter.adapterhelper.BaseAdapterHelper;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.cusview.CircleCornerTextView;
 import com.example.cdj.myapplication.cusview.CusTextView;
+import com.example.cdj.myapplication.utils.NetWorkUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.example.cdj.myapplication.utils.TestDataModel;
 import com.orhanobut.logger.Logger;
@@ -130,10 +131,14 @@ public class FragmentA extends BaseFragment {
             }
         });
 
-
-
-
         setRentFacilites();
+
+        Logger.d("  网络 isMobileConnected   "+ NetWorkUtils.isMobileConnected(mContext));
+        Logger.d("  网络 isNetworkConnected   "+ NetWorkUtils.isNetworkConnected(mContext));
+        Logger.d("  网络 getConnectedType   "+ NetWorkUtils.getConnectedType(mContext));
+        Logger.d("  网络 getAPNType   "+ NetWorkUtils.getAPNType(mContext));
+
+
     }
 
     int count = 0;

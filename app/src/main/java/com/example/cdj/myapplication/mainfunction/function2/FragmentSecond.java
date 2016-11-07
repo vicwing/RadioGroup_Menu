@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.adapter.SecListItemAdapter;
-import com.example.cdj.myapplication.adapter.adapterhelper.QuickAdapter;
+import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
+import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
