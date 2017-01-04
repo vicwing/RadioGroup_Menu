@@ -22,14 +22,13 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
+import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.cusview.CircleCornerTextView;
 import com.example.cdj.myapplication.cusview.CusTextView;
-import com.example.cdj.myapplication.utils.NetWorkUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
-import com.example.cdj.myapplication.utils.TestDataModel;
+import com.jrummyapps.android.util.HtmlBuilder;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -72,11 +71,12 @@ public class FragmentA extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_content1, null);
+        return inflater.inflate(R.layout.fragment_a, null);
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         mContext = getActivity();
         ButterKnife.bind(this, view);
@@ -115,13 +115,18 @@ public class FragmentA extends BaseFragment {
 //        mTextView.setText(msp);
 //        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
 
-        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+
+        //html builder 测试
+        HtmlBuilder html = new HtmlBuilder();
+        html.p("Lorem ipsum dolor sit amet, denique detraxit reprimique quo in. Ius dicat omnes mucius cu.");
+        html.font().color("red").face("sans-serif-condensed").text("Red Text").close();
+        tvSpanble.setText(html.build());
+        Logger.d("htmlbuilder  "+html.toString());
+//        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
 //        requestUpdate("110");
-        Logger.d("fragmentA  创建 count " + count++);
         ImageView imageView = (ImageView) getActivity().findViewById(R.id.iv_selector);
         imageView.setImageDrawable(getResources().getDrawable(R.drawable.qf_collect_selector));
         imageView.setSelected(true);
-
         View tv_facility_name = getActivity().findViewById(R.id.tv_facility_name);
         tv_facility_name.setSelected(true);
         tv_facility_name.setOnClickListener(new View.OnClickListener() {
@@ -131,13 +136,13 @@ public class FragmentA extends BaseFragment {
             }
         });
 
-        setRentFacilites();
+//        setRentFacilites();
 
-        Logger.d("  网络 isMobileConnected   "+ NetWorkUtils.isMobileConnected(mContext));
-        Logger.d("  网络 isNetworkConnected   "+ NetWorkUtils.isNetworkConnected(mContext));
-        Logger.d("  网络 getConnectedType   "+ NetWorkUtils.getConnectedType(mContext));
-        Logger.d("  网络 getAPNType   "+ NetWorkUtils.getAPNType(mContext));
-
+//        Logger.d("  网络 isMobileConnected   "+ NetWorkUtils.isMobileConnected(mContext));
+//        Logger.d("  网络 isNetworkConnected   "+ NetWorkUtils.isNetworkConnected(mContext));
+//        Logger.d("  网络 getConnectedType   "+ NetWorkUtils.getConnectedType(mContext));
+//        Logger.d("  网络 getAPNType   "+ NetWorkUtils.getAPNType(mContext));
+//        BarUtils.showNotificationBar(getActivity(),false);
 
     }
 

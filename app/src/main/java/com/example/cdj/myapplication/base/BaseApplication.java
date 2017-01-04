@@ -35,8 +35,7 @@ public class BaseApplication extends Application {
 //        initOldCrashHandler();
         CrashHandlerNew crashHandlerNew = CrashHandlerNew.getInstance();
         crashHandlerNew.init(getApplicationContext());
-
-        Logger.init("vicwing").methodCount(1).logLevel(LogLevel.FULL).hideThreadInfo().methodOffset(2);
+        Logger.init("vicwing").logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
 //        Logger.init().setMethodCount(1).hideThreadInfo().logLevel(LogLevel.NONE);
 //        Logger.clear();
         KLog.init(false);

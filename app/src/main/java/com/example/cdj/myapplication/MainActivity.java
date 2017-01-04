@@ -14,6 +14,7 @@ import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
 import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
 import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
+import com.example.cdj.myapplication.utils.BarUtils;
 import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
 import com.orhanobut.logger.Logger;
 
@@ -38,6 +39,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BarUtils.hideStatusBar(this);
         setContentView(R.layout.radiogroup_mainactivity);
         ButterKnife.bind(this);
 //        initView();

@@ -1,7 +1,5 @@
 package com.zhy.http.okhttp.cookie;
 
-import com.orhanobut.logger.Logger;
-
 import java.io.IOException;
 
 import okhttp3.Headers;
@@ -30,7 +28,7 @@ public class CacheInterceptor implements Interceptor {
         for (int i = 0; i <headers.size() ; i++) {
             String name = headers.name(i);
             String value = headers.get(name);
-            Logger.d(" response headers name "+name+"  value "+value);
+//            Logger.d(" response headers name "+name+"  value "+value);
         }
         Response response1 = response.newBuilder()
                 .removeHeader("Pragma")
@@ -45,7 +43,7 @@ public class CacheInterceptor implements Interceptor {
             String name = headers1.name(i);
             String value = headers.get(name);
 
-            Logger.d(" response11  headers name "+name+"  value "+value);
+//            Logger.d(" response11  headers name "+name+"  value "+value);
         }
         return response1;
     }
