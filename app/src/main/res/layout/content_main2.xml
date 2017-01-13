@@ -13,10 +13,12 @@
               tools:context="com.example.cdj.myapplication.MainActivity"
               tools:showIn="@layout/activity_main">
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_logotest"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="30dp"
+        android:gravity="center"
+        android:text="进入滑动界面"/>
 
     <TextView
         android:id="@+id/textview"

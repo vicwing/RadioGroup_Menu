@@ -27,11 +27,14 @@ import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.cusview.CircleCornerTextView;
 import com.example.cdj.myapplication.cusview.CusTextView;
+import com.example.cdj.myapplication.utils.PreferencesUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.jrummyapps.android.util.HtmlBuilder;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -142,8 +145,14 @@ public class FragmentA extends BaseFragment {
 //        Logger.d("  网络 isNetworkConnected   "+ NetWorkUtils.isNetworkConnected(mContext));
 //        Logger.d("  网络 getConnectedType   "+ NetWorkUtils.getConnectedType(mContext));
 //        Logger.d("  网络 getAPNType   "+ NetWorkUtils.getAPNType(mContext));
-//        BarUtils.showNotificationBar(getActivity(),false);
-
+        PreferencesUtils.putDouble(mContext,"test1",24241348.454646545d);
+//        PreferencesUtils.putDouble(mContext,"test1",Double.MAX_VALUE);
+        double text1 = PreferencesUtils.getDouble(mContext, "test1", 4.5);
+        Logger.d("PreferencesUtils  test1 "+text1);
+        Logger.d("PreferencesUtils  test1 "+new DecimalFormat("#").format(text1));
+        String string = BigDecimal.valueOf(text1).toString();
+        Logger.d("PreferencesUtils  str "+string);
+//        Logger.d("PreferencesUtils  test1 "+PreferencesUtils.getDouble(mContext, "test1", 4.5));
     }
 
     int count = 0;

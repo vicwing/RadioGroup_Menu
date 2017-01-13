@@ -37,6 +37,8 @@ import okhttp3.Call;
 
 /**
  * scrollview嵌套太多错误很难开发.
+ * 问题1 上拉加载判断不容易.
+ * 问题2 没办法显示footer 空白部分.
  * Created by vic on 2016/6/23.
  */
 @Deprecated
