@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.cusview.segmentcontrol;
+package com.example.cdj.myapplication.widget.segmentcontrol;
 
 
 

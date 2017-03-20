@@ -13,12 +13,12 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_loan"
             style="@style/caculate_CommonFormLayout"
             />
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_interest_rate"
             style="@style/caculate_CommonFormLayout"
             />
@@ -31,12 +31,12 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_fund_loan"
             style="@style/caculate_CommonFormLayout"
             />
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_fundloan_rate"
             style="@style/caculate_CommonFormLayout"
             />
@@ -44,7 +44,7 @@
     </LinearLayout>
 
 
-    <com.example.cdj.myapplication.cusview.CommonFormLayout
+    <com.example.cdj.myapplication.widget.CommonFormLayout
         android:layout_marginTop="10dp"
         android:id="@+id/frame_loan_year"
         style="@style/caculate_CommonFormLayout"/>

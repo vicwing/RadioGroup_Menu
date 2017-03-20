@@ -87,7 +87,7 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View layout = inflater.inflate(R.layout.content_main4, null);
+        final View layout = inflater.inflate(R.layout.content_fragment4, null);
         ButterKnife.bind(this, layout);
         mBtnStartCaculator.setOnClickListener(new View.OnClickListener() {
             @Override

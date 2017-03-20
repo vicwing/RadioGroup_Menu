@@ -13,7 +13,7 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl;
+import com.example.cdj.myapplication.widget.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
@@ -93,9 +93,9 @@ public class Fragment3 extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-//        return inflater.inflate(R.layout.content_main3, container, false);
+//        return inflater.inflate(R.layout.content_fragment3, container, false);
         // set up views
-        final View layout = inflater.inflate(R.layout.content_main3, null);
+        final View layout = inflater.inflate(R.layout.content_fragment3, null);
 
         initSegmentControl(layout);
 

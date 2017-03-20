@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.cusview.segmentcontrol;
+package com.example.cdj.myapplication.widget.segmentcontrol;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -57,7 +57,7 @@ public class SegmentControl extends View {
 
         int mV;
 
-        private Direction(int v){
+        Direction(int v){
             mV = v;
         }
     }
@@ -70,7 +70,7 @@ public class SegmentControl extends View {
     private int mCornerRadius;
 
     public interface OnSegmentControlClickListener{
-        public void onSegmentControlClick(int index);
+        void onSegmentControlClick(int index);
     }
 
     private OnSegmentControlClickListener mOnSegmentControlClickListener;

@@ -16,7 +16,7 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
-import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.widget.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.Bean.InterestRateListBean;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 

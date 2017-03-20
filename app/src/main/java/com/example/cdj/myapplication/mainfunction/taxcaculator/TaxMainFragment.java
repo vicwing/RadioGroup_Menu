@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
-import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.widget.CommonFormLayout;
 import com.example.cdj.myapplication.mainfunction.caculate.impl.OnHeadlineSelectedListener;
 import com.orhanobut.logger.Logger;
 

@@ -8,7 +8,7 @@
 
     <include
     layout="@layout/include_fragment_title"/>
-    <com.example.cdj.myapplication.cusview.CommomEditText
+    <com.example.cdj.myapplication.widget.CommomEditText
         android:id="@+id/custom_edt_loan"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

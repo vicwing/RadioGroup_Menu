@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.cusview;
+package com.example.cdj.myapplication.widget;
 
 /**
  * Created by vic onCallBackData 2016/4/4.

@@ -25,8 +25,8 @@ import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.cusview.CircleCornerTextView;
-import com.example.cdj.myapplication.cusview.CusTextView;
+import com.example.cdj.myapplication.widget.CircleCornerTextView;
+import com.example.cdj.myapplication.widget.CusTextView;
 import com.example.cdj.myapplication.utils.PreferencesUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.jrummyapps.android.util.HtmlBuilder;
@@ -74,7 +74,7 @@ public class FragmentA extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_a, null);
+        return inflater.inflate(R.layout.content_fragment1, null);
     }
 
     @Override

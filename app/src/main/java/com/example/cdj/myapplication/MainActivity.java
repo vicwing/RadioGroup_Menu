@@ -9,9 +9,9 @@ import android.widget.RadioGroup;
 
 import com.example.cdj.myapplication.base.BaseActivity;
 import com.example.cdj.myapplication.base.BaseApplication;
-import com.example.cdj.myapplication.cusview.MyViewPager;
+import com.example.cdj.myapplication.widget.MyViewPager;
 import com.example.cdj.myapplication.mainfunction.function1.FragmentA;
-import com.example.cdj.myapplication.mainfunction.function2.FragmentSecond;
+import com.example.cdj.myapplication.mainfunction.function2.Fragment2;
 import com.example.cdj.myapplication.mainfunction.function3.Fragment3;
 import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
 import com.example.cdj.myapplication.utils.BarUtils;
@@ -31,9 +31,9 @@ public class MainActivity extends BaseActivity {
     RadioGroup mRadioGroup;
 
     private FragmentA chat;
-    private FragmentSecond address;
-    private FragmentSecond find;
-    private FragmentSecond me;
+    private Fragment2 address;
+    private Fragment2 find;
+    private Fragment2 me;
 
 
     @Override
@@ -84,16 +84,16 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.two:
                         if (address == null) {
-                            address = new FragmentSecond();
+                            address = new Fragment2();
                         }
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, address).commit();
                         break;
                     case R.id.three:
-                        find = new FragmentSecond();
+                        find = new Fragment2();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, find).commit();
                         break;
                     case R.id.four:
-                        me = new FragmentSecond();
+                        me = new Fragment2();
                         getSupportFragmentManager().beginTransaction().replace(R.id.main_content, me).commit();
                         break;
                     default:
@@ -117,7 +117,7 @@ public class MainActivity extends BaseActivity {
 //            fragmentList.add(frag);
 //        }
         fragmentList.add(new FragmentA());
-        fragmentList.add(new FragmentSecond());
+        fragmentList.add(new Fragment2());
         fragmentList.add(Fragment3.newInstance(null,null));
         fragmentList.add(Fragment4.newInstance(null,null));
         //ViewPager设置适配器
@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
         mPager.setOnPageChangeListener(new PageChangeListener());
         mPager.setOffscreenPageLimit(4);
 
-        mRadioGroup.check(R.id.four);
+        mRadioGroup.check(R.id.two);
     }
 
     private class CheckedChangeListener implements RadioGroup.OnCheckedChangeListener {

@@ -13,33 +13,23 @@
               tools:context="com.example.cdj.myapplication.MainActivity"
               tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:id="@+id/iv_logotest"
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:gravity="center"
-        android:text="进入滑动界面"/>
+
+    <Button
+        android:id="@+id/btn_animate"
+        android:layout_width="wrap_content"
+        android:text="animate"
+        android:layout_height="wrap_content"/>
 
     <TextView
-        android:id="@+id/textview"
+        android:id="@+id/tv_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center"
+        android:textColor="@color/black_33333"
         android:text="Hello World!"/>
 
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-    <com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer
-        android:id="@+id/load_more_list_view_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/cube_mints_white">
-
-        <ListView
-            android:id="@+id/load_more_small_image_list_view"
+        <com.example.cdj.myapplication.widget.propertyanimator.MyAnimView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:listitem="@layout/listview_item"/>
-    </com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer>
-
+            android:layout_height="match_parent"/>
 </LinearLayout>

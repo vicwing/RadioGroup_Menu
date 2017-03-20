@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:src="@mipmap/qf_back_normal"/>
 
-        <com.example.cdj.myapplication.cusview.segmentcontrol.SegmentControl
+        <com.example.cdj.myapplication.widget.segmentcontrol.SegmentControl
             xmlns:segmentcontrol="http://schemas.android.com/apk/res-auto"
             android:id="@+id/segment_control"
             android:layout_width="wrap_content"

@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
-import com.example.cdj.myapplication.cusview.CommomEditText;
+import com.example.cdj.myapplication.widget.CommomEditText;
 import com.example.cdj.myapplication.mainfunction.caculate.CaculateMainFragment;
 import com.example.cdj.myapplication.utils.TestDataModel;
 import com.orhanobut.logger.Logger;

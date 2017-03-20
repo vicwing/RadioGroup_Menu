@@ -11,15 +11,15 @@
         android:orientation="vertical"
         android:layout_height="wrap_content">
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_loan"
             style="@style/caculate_CommonFormLayout"/>
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_interest_rate"
             style="@style/caculate_CommonFormLayout"/>
 
-        <com.example.cdj.myapplication.cusview.CommonFormLayout
+        <com.example.cdj.myapplication.widget.CommonFormLayout
             android:id="@+id/frame_loan_year"
             style="@style/caculate_CommonFormLayout"/>
     </LinearLayout>

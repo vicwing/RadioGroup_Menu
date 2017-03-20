@@ -17,7 +17,7 @@ import android.widget.Toast;
 
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BackHandledBaseFragment;
-import com.example.cdj.myapplication.cusview.CommonFormLayout;
+import com.example.cdj.myapplication.widget.CommonFormLayout;
 import com.orhanobut.logger.Logger;
 
 import java.text.NumberFormat;

@@ -60,7 +60,7 @@
         android:layout_height="wrap_content"
         tools:text="高度" />
 
-    <com.example.cdj.myapplication.cusview.CircleCornerTextView
+    <com.example.cdj.myapplication.widget.CircleCornerTextView
         android:id="@+id/tv_circle_coner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
         android:paddingRight="5dp"
         android:paddingTop="3dp" />
 
-    <com.example.cdj.myapplication.cusview.CusTextView
+    <com.example.cdj.myapplication.widget.CusTextView
         android:id="@+id/custextview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

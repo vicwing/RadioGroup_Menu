@@ -1,4 +1,4 @@
-package com.example.cdj.myapplication.cusview;
+package com.example.cdj.myapplication.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
