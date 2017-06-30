@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+              xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
 
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.example.cdj.myapplication.MainActivity">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.example.cdj.myapplication.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
             segmentcontrol:direction="horizon"
             segmentcontrol:horizonGap="8dip"
             segmentcontrol:texts="商业|公积金|组合"
-            segmentcontrol:verticalGap="8dip" />
+            segmentcontrol:verticalGap="8dip"/>
     </LinearLayout>
 
     <ScrollView
@@ -46,49 +46,57 @@
                 android:id="@+id/btn_start_caculator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="房贷计算器" />
+                android:text="房贷计算器"/>
 
             <Button
                 android:id="@+id/btn_start_tax_caculator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="税费计算器" />
+                android:text="税费计算器"/>
 
             <Button
                 android:id="@+id/btn_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="rootview" />
+                android:text="rootview"/>
 
             <TextView
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="点我!" />
+                android:text="点我!"/>
 
             <TextView
                 android:id="@+id/tv_go"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="哈哈" />
+                android:text="哈哈"/>
 
             <Button
                 android:id="@+id/tv_StickyActivity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="StickyActivity.java" />
+                android:text="start stickyactivity"/>
 
             <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="300dp"
-                android:text="哈哈" />
+                android:layout_height="wrap_content"
+                android:text="哈哈"/>
 
             <TextView
                 android:id="@+id/tv_text_end"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="计算器" />
+                android:text="计算器"/>
+
+            <TextView
+                android:id="@+id/tv_webview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:padding="5dp"
+                android:text="start webview"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

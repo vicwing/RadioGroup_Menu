@@ -3,10 +3,10 @@
           package="com.example.cdj.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -19,11 +19,11 @@
             android:name=".MainActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-               <intent-filter>
-                   <action android:name="android.intent.action.MAIN"/>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
 
-                   <category android:name="android.intent.category.LAUNCHER"/>
-               </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity android:name=".RootViewActivity"/>
         <activity android:name=".mainfunction.caculate.MortgageCaculatorAcitivity"/>
@@ -31,11 +31,12 @@
         <activity android:name=".StickyTestActivity"/>
         <activity android:name=".mainfunction.newhouse.NewHouseListActivity">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
-            </activity>
+        </activity>
+        <activity android:name=".activity.webview.WebViewActivity"/>
     </application>
 
 </manifest>

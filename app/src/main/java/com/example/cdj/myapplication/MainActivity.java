@@ -127,7 +127,7 @@ public class MainActivity extends BaseActivity {
         mPager.setOnPageChangeListener(new PageChangeListener());
         mPager.setOffscreenPageLimit(4);
 
-        mRadioGroup.check(R.id.two);
+        mRadioGroup.check(R.id.one);
     }
 
     private class CheckedChangeListener implements RadioGroup.OnCheckedChangeListener {

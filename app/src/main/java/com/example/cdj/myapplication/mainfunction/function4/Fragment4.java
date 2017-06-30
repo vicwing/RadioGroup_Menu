@@ -1,5 +1,6 @@
 package com.example.cdj.myapplication.mainfunction.function4;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,6 +16,7 @@ import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.RootViewActivity;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.StickyTestActivity;
+import com.example.cdj.myapplication.activity.webview.WebViewActivity;
 import com.example.cdj.myapplication.mainfunction.caculate.MortgageCaculatorAcitivity;
 import com.example.cdj.myapplication.mainfunction.taxcaculator.TaxCaculatorActivity;
 import com.example.cdj.myapplication.utils.DateUtil;
@@ -22,6 +24,7 @@ import com.zhy.http.okhttp.OkHttpUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import okhttp3.Call;
 
 /**
@@ -30,155 +33,166 @@ import okhttp3.Call;
 public class Fragment4 extends Fragment implements View.OnClickListener {
 
 
-    //    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
-    public static String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
+	//    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
+	public static String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
 
-    // 名字根据实际需求进行更改
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    @Bind(R.id.btn_start_caculator)
-    Button mBtnStartCaculator;
-    @Bind(R.id.btn_start_tax_caculator)
-    Button mBtnStartTaxCaculator;
+	// 名字根据实际需求进行更改
+	private static final String ARG_PARAM1 = "param1";
+	private static final String ARG_PARAM2 = "param2";
+	@Bind(R.id.btn_start_caculator)
+	Button mBtnStartCaculator;
+	@Bind(R.id.btn_start_tax_caculator)
+	Button mBtnStartTaxCaculator;
 
-    @Bind(R.id.tv_go)
-    TextView mTextGo;
+	@Bind(R.id.tv_go)
+	TextView mTextGo;
 
-    @Bind(R.id.tv_text_end)
-    TextView mTextEnd;
-    @Bind(R.id.btn_login)
-    Button btnLogin;
+	@Bind(R.id.tv_text_end)
+	TextView mTextEnd;
+	@Bind(R.id.btn_login)
+	Button btnLogin;
 
-    // 这里的参数只是一个举例可以根据需求更改
-    private String mParam1;
-    private String mParam2;
+	@Bind(R.id.tv_webview)
+	TextView tvWebview;
 
-    private int pageCount = 3;
-    private TextView tv_time;
+	// 这里的参数只是一个举例可以根据需求更改
+	private String mParam1;
+	private String mParam2;
 
-    /**
-     * 通过工厂方法来创建Fragment实例
-     * 同时给Fragment来提供参数来使用
-     *
-     * @return Master_Fragment的实例.
-     */
-    public static Fragment4 newInstance(String param1, String param2) {
-        Fragment4 fragment = new Fragment4();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+	private int pageCount = 3;
+	private TextView tv_time;
+	private Context context;
 
-    public Fragment4() {
-        // Required empty public constructor
-    }
+	/**
+	 * 通过工厂方法来创建Fragment实例
+	 * 同时给Fragment来提供参数来使用
+	 *
+	 * @return Master_Fragment的实例.
+	 */
+	public static Fragment4 newInstance(String param1, String param2) {
+		Fragment4 fragment = new Fragment4();
+		Bundle args = new Bundle();
+		args.putString(ARG_PARAM1, param1);
+		args.putString(ARG_PARAM2, param2);
+		fragment.setArguments(args);
+		return fragment;
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+	public Fragment4() {
+		// Required empty public constructor
+	}
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        final View layout = inflater.inflate(R.layout.content_fragment4, null);
-        ButterKnife.bind(this, layout);
-        mBtnStartCaculator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), MortgageCaculatorAcitivity.class);
-                startActivity(intent);
-            }
-        });
-        mBtnStartTaxCaculator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TaxCaculatorActivity.class);
-                startActivity(intent);
-            }
-        });
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		context = getActivity();
+		if (getArguments() != null) {
+			mParam1 = getArguments().getString(ARG_PARAM1);
+			mParam2 = getArguments().getString(ARG_PARAM2);
+		}
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+							 Bundle savedInstanceState) {
+		final View layout = inflater.inflate(R.layout.content_fragment4, null);
+		ButterKnife.bind(this, layout);
+		mBtnStartCaculator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), MortgageCaculatorAcitivity.class);
+				startActivity(intent);
+			}
+		});
+		mBtnStartTaxCaculator.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), TaxCaculatorActivity.class);
+				startActivity(intent);
+			}
+		});
 //        initSegmentControl(layout);
-        mTextGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+		mTextGo.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 //                mTvTextgo.scrollTo();
-                scrollTo(layout);
-            }
-        });
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), RootViewActivity.class);
-                startActivity(intent);
-            }
-        });
-        tv_time = (TextView) layout.findViewById(R.id.tv_time);
-        tv_time.setText(DateUtil.timeStamp2Date(System.currentTimeMillis(),DateUtil.DateStyle.YYYY_MM_DD_HH_MM_SS.getValue())+"");
-        layout.findViewById(R.id.tv_StickyActivity).setOnClickListener(this);
-        return layout;
-    }
+				scrollTo(layout);
+			}
+		});
+		btnLogin.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), RootViewActivity.class);
+				startActivity(intent);
+			}
+		});
+		tv_time = (TextView) layout.findViewById(R.id.tv_time);
+		tv_time.setText(DateUtil.timeStamp2Date(System.currentTimeMillis(), DateUtil.DateStyle.YYYY_MM_DD_HH_MM_SS.getValue()) + "");
+		layout.findViewById(R.id.tv_StickyActivity).setOnClickListener(this);
+		return layout;
+	}
 
-    /**
-     * 滚动的到指定的,view的位置
-     *
-     * @param layout
-     */
-    private void scrollTo(View layout) {
-        //        final boolean scrollDown = getIntent().getBooleanExtra(SCROLL_DOWN, false);
-        final ScrollView mRootScrollView = (ScrollView) layout.findViewById(R.id.scrollView);
-        mRootScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                //To change body of implemented methods use File | Settings | File Templates.
+	/**
+	 * 滚动的到指定的,view的位置
+	 *
+	 * @param layout
+	 */
+	private void scrollTo(View layout) {
+		//        final boolean scrollDown = getIntent().getBooleanExtra(SCROLL_DOWN, false);
+		final ScrollView mRootScrollView = (ScrollView) layout.findViewById(R.id.scrollView);
+		mRootScrollView.post(new Runnable() {
+			@Override
+			public void run() {
+				//To change body of implemented methods use File | Settings | File Templates.
 //                    mRootScrollView.fullScroll(ScrollView.FOCUS_DOWN);
-                int[] location = new int[2];
-                mTextEnd.getLocationOnScreen(location);
-                int offset = location[1] - mRootScrollView.getMeasuredHeight();
-                if (offset < 0) {
-                    offset = 0;
-                }
-                mRootScrollView.smoothScrollTo(0, offset);
-            }
-        });
-    }
+				int[] location = new int[2];
+				mTextEnd.getLocationOnScreen(location);
+				int offset = location[1] - mRootScrollView.getMeasuredHeight();
+				if (offset < 0) {
+					offset = 0;
+				}
+				mRootScrollView.smoothScrollTo(0, offset);
+			}
+		});
+	}
 
-    private void requestUpdate(final String currentPageStr) {
-        OkHttpUtils
-                .post()//
-                .url(Url)//
-                .addParams("currentPage", currentPageStr)
-                .build()//
-                .execute(new SecListItemBeanCallback() {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
+	private void requestUpdate(final String currentPageStr) {
+		OkHttpUtils
+				.post()//
+				.url(Url)//
+				.addParams("currentPage", currentPageStr)
+				.build()//
+				.execute(new SecListItemBeanCallback() {
+					@Override
+					public void onError(Call call, Exception e, int id) {
 
-                    }
+					}
 
-                    @Override
-                    public void onResponse(SecListBean response, int id) {
+					@Override
+					public void onResponse(SecListBean response, int id) {
 
-                    }
-                });
-    }
+					}
+				});
+	}
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
-    }
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.unbind(this);
+	}
 
-    @Override
-    public void onClick(View v) {
-        int id = v.getId();
-        if (id==R.id.tv_StickyActivity){
-            Intent intent = new Intent(getActivity(),StickyTestActivity.class);
-            startActivity(intent);
-        }
-    }
+	@Override
+	public void onClick(View v) {
+		int id = v.getId();
+		if (id == R.id.tv_StickyActivity) {
+			Intent intent = new Intent(getActivity(), StickyTestActivity.class);
+			startActivity(intent);
+		}
+	}
+
+	@OnClick({R.id.tv_webview})
+	public void buttonClick(View view) {
+		Intent intent = new Intent(context, WebViewActivity.class);
+		startActivity(intent);
+	}
 }

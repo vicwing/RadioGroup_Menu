@@ -1,83 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:orientation="vertical">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="wrap_content"
+                                             tools:layout_editor_absoluteX="0dp"
+                                             tools:layout_editor_absoluteY="81dp">
 
-    <GridView
-        android:id="@+id/gv_bacicinfo_rent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numColumns="4"
-        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="136dp"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="31dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView6"/>
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="136dp"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/textView7"
+        app:layout_constraintTop_toBottomOf="@+id/textView5"
+        app:layout_constraintLeft_toLeftOf="@+id/textView7"
+        android:layout_marginLeft="0dp"/>
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="0dp"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:text="TextView1"
+        app:layout_constraintBottom_toTopOf="@+id/textView6"
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintLeft_toLeftOf="@+id/textView6"
+        android:layout_marginLeft="0dp"
+        app:layout_constraintVertical_chainStyle="spread"/>
 
     <ImageView
-        android:id="@+id/iv_selector"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/tv_facility_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="电视机"
-        android:textColor="@drawable/selector_detail_baseinfo_textcolor"
-        tools:text="电视机" />
-
-    <LinearLayout
-        android:layout_marginTop="50dp"
-        android:id="@+id/ll_newhousedetail_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
-        android:orientation="horizontal"
-        android:visibility="gone">
-
-    </LinearLayout>
-
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:id="@+id/imageView"
+        android:layout_width="396dp"
+        android:layout_height="270dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/icon_picture"
-        app:riv_border_color="@color/grey_888888"
-        app:riv_border_width="2dp"
-        app:riv_corner_radius="200dp" />
-
-    <TextView
-        android:id="@+id/width_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="宽度" />
-
-    <TextView
-        android:id="@+id/height_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:text="高度" />
-
-    <com.example.cdj.myapplication.widget.CircleCornerTextView
-        android:id="@+id/tv_circle_coner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:paddingBottom="3dp"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
-        android:paddingTop="3dp" />
-
-    <com.example.cdj.myapplication.widget.CusTextView
-        android:id="@+id/custextview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:id="@+id/tv_spanble"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
+        tools:layout_editor_absoluteY="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintDimensionRatio="w,4:3"
+        />
+</android.support.constraint.ConstraintLayout>

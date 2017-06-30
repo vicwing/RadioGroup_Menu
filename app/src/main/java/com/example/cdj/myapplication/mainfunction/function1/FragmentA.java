@@ -2,20 +2,17 @@ package com.example.cdj.myapplication.mainfunction.function1;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Spannable;
-import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
-import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -23,22 +20,10 @@ import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.base.BaseFragment;
-import com.example.cdj.myapplication.baseadapter.adapterhelper.BaseAdapterHelper;
-import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.widget.CircleCornerTextView;
-import com.example.cdj.myapplication.widget.CusTextView;
-import com.example.cdj.myapplication.utils.PreferencesUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
-import com.jrummyapps.android.util.HtmlBuilder;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import butterknife.Bind;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
@@ -46,35 +31,21 @@ import okhttp3.Call;
  * Created by cdj onCallBackData 2016/2/1.
  */
 public class FragmentA extends BaseFragment {
+    //    @Bind(R.id.tv_television)
+//    TextView tvTelevision;
+//    @Bind(R.id.tv_qchat)
+//    TextView tvQchat;
     private Context mContext;
-
-    @Bind(R.id.width_tv)
-    TextView widthTv;
-    @Bind(R.id.height_tv)
-    TextView heightTv;
-
-//    @Bind(R.id.iv_circleimage)
-//    CircleImageView ivCircleimage;
-
-    @Bind(R.id.tv_circle_coner)
-    CircleCornerTextView tvCircleConer;
-
-    @Bind(R.id.custextview)
-    CusTextView custextview;
-    @Bind(R.id.tv_spanble)
-    TextView tvSpanble;
-    @Bind(R.id.ll_newhousedetail_label)
-    LinearLayout mLinearLayout;
-
     private int screenWidth;
     private int screenHeight;
-
-    SpannableString msp = null;
+    private String uritext = "http://www.java2s.com:8080/yourpath/fileName.htm?stove=10&path=32&id=4#harvic";
 
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.content_fragment1, null);
+        View view = inflater.inflate(R.layout.content_fragment1, null);
+        ButterKnife.bind(this, view);
+        return view;
     }
 
     @Override
@@ -83,76 +54,48 @@ public class FragmentA extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         mContext = getActivity();
         ButterKnife.bind(this, view);
-        printScreenDes();
-        String text = "认证田贝四路水工工业区翠北小区海鹏大院x栋301";
 
-        tvCircleConer.setText(text);
-        tvCircleConer.setTextSize(60);
-        tvCircleConer.setBorderColor(getResources().getColor(R.color.orange));
-        Logger.d("哈哈哈哈哈");
-        custextview.setText(text);
+//        testUri();
 
-        addView();
-//        // 设置图片
-//        Drawable drawable = getResources().getDrawable(R.drawable.trash);
-//        drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-//        msp.setSpan(new ImageSpan(drawable), 53, 57, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//
-//        // 设置边框
-//        Drawable bg = getResources().getDrawable(R.drawable.text_background);
-//        msp.setSpan(new ImageSpan(bg) {
+//        tvQchat.setVisibility(View.GONE);
+//        addView();
+//        HtmlBuilder html = new HtmlBuilder();
+//        html.p("Lorem ipsum dolor sit amet, denique detraxit reprimique quo in. Ius dicat omnes mucius cu.");
+//        html.font().color("red").face("sans-serif-condensed").text("Red Text").close();
+//        tvSpanble.setText(html.build());
+//        Logger.d("htmlbuilder  "+html.toString());
+////        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
+////        requestUpdate("110");
+//        ImageView imageView = (ImageView) getActivity().findViewById(R.id.iv_selector);
+//        imageView.setImageDrawable(getResources().getDrawable(R.drawable.qf_collect_selector));
+//        imageView.setSelected(true);
+//        View tv_facility_name = getActivity().findViewById(R.id.tv_facility_name);
+//        tv_facility_name.setSelected(true);
+//        tv_facility_name.setOnClickListener(new View.OnClickListener() {
 //            @Override
-//            public void draw(Canvas canvas, CharSequence text, int start, int end, float x, int top, int y,
-//                             int bottom, Paint paint) {
-//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-//                paint.setTextSize(50);
-//                int len = Math.round(paint.measureText(text, start, end));
-//                getDrawable().setBounds(0, 0, len, 60);
-//                super.draw(canvas, text, start, end, x, top, y, bottom, paint);
-//                paint.setColor(Color.BLUE);
-//                paint.setTypeface(Typeface.create("normal", Typeface.BOLD));
-//                paint.setTextSize(40);
-//                canvas.drawText(text.subSequence(start, end).toString(), x + 10, y, paint);
+//            public void onClick(View v) {
+//                Logger.d("点击时间......................");
 //            }
-//        }, 57, 59, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        mTextView.setText(msp);
-//        mTextView.setMovementMethod(LinkMovementMethod.getInstance());
+//        });
+//
+//        PreferencesUtils.putDouble(mContext,"test1",24241348.454646545d);
+//        double text1 = PreferencesUtils.getDouble(mContext, "test1", 4.5);
+//        Logger.d("PreferencesUtils  test1 "+new DecimalFormat("#").format(text1));
+//        String string = BigDecimal.valueOf(text1).toString();
+//        Logger.d("PreferencesUtils  str "+string);
 
+    }
 
-        //html builder 测试
-        HtmlBuilder html = new HtmlBuilder();
-        html.p("Lorem ipsum dolor sit amet, denique detraxit reprimique quo in. Ius dicat omnes mucius cu.");
-        html.font().color("red").face("sans-serif-condensed").text("Red Text").close();
-        tvSpanble.setText(html.build());
-        Logger.d("htmlbuilder  "+html.toString());
-//        TestDataModel.getInstance().setRetainedTextView(tvSpanble);
-//        requestUpdate("110");
-        ImageView imageView = (ImageView) getActivity().findViewById(R.id.iv_selector);
-        imageView.setImageDrawable(getResources().getDrawable(R.drawable.qf_collect_selector));
-        imageView.setSelected(true);
-        View tv_facility_name = getActivity().findViewById(R.id.tv_facility_name);
-        tv_facility_name.setSelected(true);
-        tv_facility_name.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Logger.d("点击时间......................");
-            }
-        });
-
-//        setRentFacilites();
-
-//        Logger.d("  网络 isMobileConnected   "+ NetWorkUtils.isMobileConnected(mContext));
-//        Logger.d("  网络 isNetworkConnected   "+ NetWorkUtils.isNetworkConnected(mContext));
-//        Logger.d("  网络 getConnectedType   "+ NetWorkUtils.getConnectedType(mContext));
-//        Logger.d("  网络 getAPNType   "+ NetWorkUtils.getAPNType(mContext));
-        PreferencesUtils.putDouble(mContext,"test1",24241348.454646545d);
-//        PreferencesUtils.putDouble(mContext,"test1",Double.MAX_VALUE);
-        double text1 = PreferencesUtils.getDouble(mContext, "test1", 4.5);
-        Logger.d("PreferencesUtils  test1 "+text1);
-        Logger.d("PreferencesUtils  test1 "+new DecimalFormat("#").format(text1));
-        String string = BigDecimal.valueOf(text1).toString();
-        Logger.d("PreferencesUtils  str "+string);
-//        Logger.d("PreferencesUtils  test1 "+PreferencesUtils.getDouble(mContext, "test1", 4.5));
+    private void testUri() {
+        Uri uri = Uri.parse(uritext);
+        Logger.d("getScheme " + uri.getScheme());
+        Logger.d("getSchemeSpecificPart " + uri.getSchemeSpecificPart());
+        Logger.d("getFragment " + uri.getFragment());
+        Logger.d("getAuthority " + uri.getAuthority());
+        Logger.d("getPath " + uri.getPath());
+        Logger.d("getQuery " + uri.getQuery());
+        Logger.d("getHost " + uri.getHost());
+        Logger.d("getPost " + uri.getPort());
     }
 
     int count = 0;
@@ -180,24 +123,12 @@ public class FragmentA extends BaseFragment {
      * 动态添加textview
      */
     private void addView() {
-        mLinearLayout.setVisibility(View.VISIBLE);
-        mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-//        TextView view1 = (TextView) getActivity().getLayoutInflater().inflate(R.layout.item_textview, null);
-//        View view =  getActivity().getLayoutInflater().inflate(R.layout.item_textview, null);
-//        TextView textView = (TextView) view.findViewById(R.id.calculatorBtn);
-//        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
-//                ViewGroup.LayoutParams.WRAP_CONTENT,
-//                ViewGroup.LayoutParams.WRAP_CONTENT);
-//        view.setLayoutParams(vlp);
-//        textView.setText("标签1");
-//        view1.setText("房贷计算器1");
-//        TextView textView1 = makeTextView();
-
-        mLinearLayout.addView(makeTextView());
-        mLinearLayout.addView(makeTextView());
-        mLinearLayout.addView(makeTextView());
-        mLinearLayout.addView(makeTextView());
+//        mLinearLayout.setVisibility(View.VISIBLE);
+//        mLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+//        mLinearLayout.addView(makeTextView());
+//        mLinearLayout.addView(makeTextView());
+//        mLinearLayout.addView(makeTextView());
+//        mLinearLayout.addView(makeTextView());
     }
 
     private TextView makeTextView() {
@@ -245,8 +176,6 @@ public class FragmentA extends BaseFragment {
 
         Logger.e("  DisplayMetrics(222)" + "  screenWidth=" + screenWidth + "    screenHeight=" + screenHeight);
 
-        widthTv.setText("宽度");
-        heightTv.setText("高度");
 
         // 获取屏幕密度（方法1）
         int screenWidth = getActivity().getWindowManager().getDefaultDisplay().getWidth();       // 屏幕宽（像素，如：480px）
@@ -256,15 +185,6 @@ public class FragmentA extends BaseFragment {
         Logger.i("scale " + screenHeight);
     }
 
-    public static int px2dip(Context context, float pxValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (pxValue / scale + 0.5f);
-    }
-
-    public static int dip2px(Context context, float dipValue) {
-        float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
 
     private SpannableStringBuilder setSpanString() {
         SpannableStringBuilder builder = new SpannableStringBuilder();
@@ -317,83 +237,6 @@ public class FragmentA extends BaseFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-    }
-
-    /**
-     * 二手房租房  房屋设置
-     */
-    private void setRentFacilites() {
-        GridView gridView = (GridView) getActivity().findViewById(R.id.gv_bacicinfo_rent);
-//床|电视|洗衣机|空调|热水器|冰箱|宽带|家具|独立厨房|阳台|独立卫生间|游泳池|车位|电梯
-        List<String> facilitesList = new ArrayList<>();
-        final String bed = "床";
-        final String television = "电视";
-        final String washing = "洗衣机";
-        final String heater = "热水器";
-        final String refrigerator = "冰箱";
-        final String elevator = "电梯";
-        final String parking = "车位";
-        final String airconditioner = "空调";
-        String wlan = "宽带";
-        facilitesList.add(television);
-        facilitesList.add(bed);
-        facilitesList.add(washing);
-        facilitesList.add(airconditioner);
-        facilitesList.add(refrigerator);
-        facilitesList.add(parking);
-        facilitesList.add(elevator);
-        facilitesList.add(heater);
-//        facilitesList.add(wlan);
-//        facilitesList.add("家具");
-//        facilitesList.add("独立厨房");
-//        facilitesList.add("阳台");
-//        facilitesList.add("独立卫生间");
-//        facilitesList.add("游泳池");
-
-//        if (TextUtils.isEmpty(data.facilites)) {
-        gridView.setVisibility(View.VISIBLE);
-        final String facilites = "床";
-//            String[] facilites = data.facilites.split(",");
-        gridView.setEnabled(false);
-        gridView.setAdapter(new QuickAdapter<String>(getActivity(), R.layout.item_gridview_detail_basicinfo_rent, facilitesList) {
-
-            @Override
-            protected void convert(BaseAdapterHelper helper, String item) {
-                helper.setText(R.id.tv_facility_name, item);
-//                if (bed.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility, context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_bed));
-//                }
-//                  else if (television.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility,  context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_television));
-//                } else if (elevator.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility,  context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_elevator));
-//                } else if (heater.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility, context.getResources().getDrawable( R.drawable.selector_detail_baseinfo_heater));
-//                } else if (parking.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility, context.getResources().getDrawable( R.drawable.selector_detail_baseinfo_parking));
-//                } else if (refrigerator.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility,  context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_refrigerator));
-//                } else if (washing.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility,  context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_washing));
-//                } else if (airconditioner.equals(item)) {
-//                    helper.setImageDrawable(R.id.iv_icon_detail_facility, context.getResources().getDrawable(R.drawable.selector_detail_baseinfo_airconditioner));
-//                }
-//                }
-
-                if (!TextUtils.isEmpty(facilites)) {
-                    if (facilites.contains(item)) {
-                        ImageView view1 = helper.getView(R.id.iv_icon_detail_facility);
-                        view1.setSelected(true);
-
-                        TextView view = helper.getView(R.id.tv_facility_name);
-                        view.setPressed(true);
-                        Logger.d("这个设备存在  item " + item);
-//                        notifyDataSetChanged();
-                    }
-                }
-            }
-
-        });
     }
 
 }

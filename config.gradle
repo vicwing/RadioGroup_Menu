@@ -22,7 +22,7 @@ ext {
             package          : "com.cdj.radiogroup",
             buildToolsVersion: "25.0.0",
             compileVersion   : 23,
-            minSdk           : 14,
+            minSdk           : 16,
             targetSdk        : 23,
             version_code     : 1,
             version_name     : "0.0.1",
