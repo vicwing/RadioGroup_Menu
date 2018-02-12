@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.base.BaseActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
  */
 
 public class WebViewActivity extends BaseActivity {
-	@Bind(R.id.webview)
+	@BindView(R.id.webview)
 	WebView webView;
 
 	@Override
@@ -49,7 +49,7 @@ public class WebViewActivity extends BaseActivity {
 		webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_INSET);
 		webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
 //		webView.requestFocus();
-		webView.loadUrl("file:////android_asset/test.html");
+		webView.loadUrl("file:////android_asset/ye.html");
 		webView.zoomOut();
 //		webView.setWebViewClient(new WebViewClient() {
 //			@Override

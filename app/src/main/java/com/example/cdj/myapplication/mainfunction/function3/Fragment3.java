@@ -144,7 +144,7 @@ public class Fragment3 extends Fragment {
 
         mPtrFrameLayout.autoRefresh(true);
         requestUpdate(String.valueOf(currentPage));
-        Logger.d("222222222222222222222222222222222222222");
+//        Logger.d("222222222222222222222222222222222222222");
         return layout;
     }
 
@@ -165,7 +165,7 @@ public class Fragment3 extends Fragment {
     public static String Url = "http://shenzhen.qfang.com/appapi/v4_5/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
     private void requestUpdate(final String currentPageStr) {
         String httpUrl = Url + "&currentPage=" + currentPageStr;
-        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
+//        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
         OkHttpUtils
                 .get()//
                 .url(httpUrl)

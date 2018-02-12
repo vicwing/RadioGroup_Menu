@@ -3,11 +3,11 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RadioGroup_Menu.iml" filepath="$PROJECT_DIR$/RadioGroup_Menu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/StickyHeaderListView/StickyHeaderListView.iml" filepath="$PROJECT_DIR$/StickyHeaderListView/StickyHeaderListView.iml" />
+      <module fileurl="file://D:\github_code\RadioGroup_Menu\StickyListView\StickyHeaderListView.iml" filepath="D:\github_code\RadioGroup_Menu\StickyListView\StickyHeaderListView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/StickyListView/StickyListView.iml" filepath="$PROJECT_DIR$/StickyListView/StickyListView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/filter-lib/filter-lib.iml" filepath="$PROJECT_DIR$/filter-lib/filter-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaapplication/javaapplication.iml" filepath="$PROJECT_DIR$/javaapplication/javaapplication.iml" />
-      <module fileurl="file://$PROJECT_DIR$/okhttputils2/okhttputils2.iml" filepath="$PROJECT_DIR$/okhttputils2/okhttputils2.iml" />
       <module fileurl="file://$PROJECT_DIR$/popup_tooltip_library/popup_tooltip_library.iml" filepath="$PROJECT_DIR$/popup_tooltip_library/popup_tooltip_library.iml" />
       <module fileurl="file://$PROJECT_DIR$/ptr-lib/ptr-lib.iml" filepath="$PROJECT_DIR$/ptr-lib/ptr-lib.iml" />
     </modules>

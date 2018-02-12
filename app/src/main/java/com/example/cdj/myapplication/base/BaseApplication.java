@@ -4,22 +4,18 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
 
+import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.socks.library.KLog;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.cookie.CacheInterceptor;
-import com.zhy.http.okhttp.log.LoggerInterceptor;
 
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
-import okhttp3.OkHttpClient;
 
 /**
  * Created by cdj onCallBackData 2016/3/7.
@@ -32,6 +28,7 @@ public class BaseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Utils.init(this);
 //        initOldCrashHandler();
         CrashHandlerNew crashHandlerNew = CrashHandlerNew.getInstance();
         crashHandlerNew.init(getApplicationContext());
@@ -54,16 +51,16 @@ public class BaseApplication extends Application {
 //                //其他配置
 //                .build();
 
-
-        OkHttpClient okHttpClient = new OkHttpClient();
-        OkHttpClient newClient = okHttpClient.newBuilder()
-                .addNetworkInterceptor(new CacheInterceptor())
-                .addInterceptor(new LoggerInterceptor("okhttp_request"))
-                .cache(provideCache())
-                .connectTimeout(20, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
-                .build();
-        OkHttpUtils.initClient(newClient);
+//
+//        OkHttpClient okHttpClient = new OkHttpClient();
+//        OkHttpClient newClient = okHttpClient.newBuilder()
+//                .addNetworkInterceptor(new CacheInterceptor())
+//                .addInterceptor(new LoggerInterceptor("okhttp_request"))
+//                .cache(provideCache())
+//                .connectTimeout(20, TimeUnit.SECONDS)
+//                .readTimeout(20, TimeUnit.SECONDS)
+//                .build();
+//        OkHttpUtils.initClient(newClient);
     }
 
     public Cache provideCache() {

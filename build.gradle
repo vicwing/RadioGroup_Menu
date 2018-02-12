@@ -4,14 +4,15 @@ apply from: "config.gradle"
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.3'
-        classpath 'com.novoda:bintray-release:0.3.4'
+        classpath 'com.android.tools.build:gradle:3.0.0'
+        classpath 'com.novoda:bintray-release:0.5.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.3'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
 
@@ -20,10 +21,50 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
+        google()
     }
 }
+//
+//task clean(type: Delete) {
+//    delete rootProject.buildDir
+//}
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+task(yugangshuo).doLast {
+    println "start execute yuangshuo"
+    haveFun()
+}
+
+def haveFun() {
+    println "have fun!"
+    System.out.println("have fun!")
+    1
+    def file1 = new File("a.txt")
+    def file2 = new File("a.txt")
+    assert file1 == file2
+    assert !file1.is(file2)
+}
+
+class Book {
+    private String name
+
+    String getName() { return name }
+
+    void setName(String name) { this.name = name }
+}
+
+task hello << {
+    println 'Hello Earth'
+}
+hello.doFirst {
+    println 'Hello Venus'
+}
+hello.doLast {
+    println 'Hello Mars'
+}
+hello << {
+    println 'Hello Jupiter'
+}
+hello << {
+    println 'Hello Jupiter2222'
 }
 

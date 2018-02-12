@@ -11,7 +11,7 @@ import com.example.cdj.myapplication.R;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
@@ -74,7 +74,7 @@ public class GirdDropDownAdapter extends BaseAdapter {
     }
 
     static class ViewHolder {
-        @Bind(R.id.text)
+        @BindView(R.id.text)
         TextView mText;
 
         ViewHolder(View view) {

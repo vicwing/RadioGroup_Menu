@@ -19,11 +19,11 @@
 
 ext {
     configuration = [
-            package          : "com.cdj.radiogroup",
-            buildToolsVersion: "25.0.0",
-            compileVersion   : 23,
-            minSdk           : 16,
-            targetSdk        : 23,
+            package          : "com.cdj.group",
+            buildToolsVersion: "26.0.2",
+            compileVersion   : 25,
+            minSdk           : 23,
+            targetSdk        : 25,
             version_code     : 1,
             version_name     : "0.0.1",
     ]

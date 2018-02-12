@@ -3,17 +3,16 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
-        <option name="distributionType" value="DEFAULT_WRAPPED" />
+        <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="D:/gradle/gradle-3.3" />
+        <option name="gradleHome" value="D:/gradle/gradle-4.2.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/StickyHeaderListView" />
+            <option value="$PROJECT_DIR$/StickyListView" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
-            <option value="$PROJECT_DIR$/okhttputils2" />
             <option value="$PROJECT_DIR$/popup_tooltip_library" />
             <option value="$PROJECT_DIR$/ptr-lib" />
           </set>

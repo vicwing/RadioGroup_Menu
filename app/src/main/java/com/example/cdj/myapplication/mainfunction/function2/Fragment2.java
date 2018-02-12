@@ -1,9 +1,13 @@
 package com.example.cdj.myapplication.mainfunction.function2;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,13 +16,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.blankj.utilcode.util.ImageUtils;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.widget.propertyanimator.MyAnimView;
 import com.orhanobut.logger.Logger;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -28,12 +33,13 @@ import butterknife.OnClick;
 public class Fragment2 extends Fragment implements View.OnClickListener {
 
 
-    @Bind(R.id.btn_animate)
+    @BindView(R.id.btn_animate)
     Button mBtnAnimate;
 
-    @Bind(R.id.tv_textview)
-    TextView textview;
-    @Bind(R.id.animate_view)
+    @BindView(R.id.iv_fragment2)
+    ImageView iv_fragment2;
+
+    @BindView(R.id.animate_view)
     MyAnimView animateView;
 
     @Override
@@ -64,8 +70,46 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 //            return;
 //        }
 //        ContextCompat.checkSelfPermission();
+        Bitmap decodeResource = BitmapFactory.decodeResource(getResources(), R.drawable.icon_picture);
+        Bitmap addReflection = ImageUtils.addReflection(decodeResource,1000);
+        Bitmap fastBlur = ImageUtils.fastBlur(addReflection, 1, 3);
+        iv_fragment2.setImageBitmap(fastBlur);
     }
 
+    /**
+     * 倒影模糊并且加黑色阴影效果
+     * @param src
+     * @param reflectionHeight
+     * @param recycle
+     * @return
+     */
+    public static Bitmap addReflection(Bitmap src, int reflectionHeight, boolean recycle) {
+        if (isEmptyBitmap(src)) return null;
+        // 原图与倒影之间的间距
+        final int REFLECTION_GAP = 0;
+        int srcWidth = src.getWidth();
+        int srcHeight = src.getHeight();
+        Matrix matrix = new Matrix();
+        matrix.preScale(1, -1);
+        Bitmap reflectionBitmap = Bitmap.createBitmap(src, 0, srcHeight - reflectionHeight,
+                srcWidth, reflectionHeight, matrix, false);
+        Bitmap ret = Bitmap.createBitmap(srcWidth, srcHeight + reflectionHeight, src.getConfig());
+        Canvas canvas = new Canvas(ret);
+        canvas.drawBitmap(src, 0, 0, null);
+        canvas.drawBitmap(reflectionBitmap, 0, srcHeight + REFLECTION_GAP, null);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        LinearGradient shader = new LinearGradient(0, srcHeight,
+                0, ret.getHeight() + REFLECTION_GAP,
+                0x70FFFFFF, 0x00FFFFFF, Shader.TileMode.MIRROR);
+        paint.setShader(shader);
+        paint.setXfermode(new PorterDuffXfermode(android.graphics.PorterDuff.Mode.DST_IN));
+        canvas.drawRect(0, srcHeight + REFLECTION_GAP,
+                srcWidth, ret.getHeight(), paint);
+        if (!reflectionBitmap.isRecycled()) reflectionBitmap.recycle();
+        if (recycle && !src.isRecycled()) src.recycle();
+        return ret;
+    }
     private int checkSelfPermission(String storage) {
         return 0;
     }
@@ -88,17 +132,17 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
     @OnClick(R.id.btn_move1)
     void textviewOnClick1(){
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(textview, "translationX",0, 100);
-        objectAnimator.setDuration(300);
-//        objectAnimator.setupEndValues();
-        objectAnimator.start();
+//        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(textview, "translationX",0, 100);
+//        objectAnimator.setDuration(300);
+////        objectAnimator.setupEndValues();
+//        objectAnimator.start();
     }
     @OnClick(R.id.btn_move2)
     void textviewOnClick2(){
-        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(textview, "translationX",0, 400);
-        objectAnimator.setupStartValues();
-        objectAnimator.setDuration(300);
-        objectAnimator.start();
+//        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(textview, "translationX",0, 400);
+//        objectAnimator.setupStartValues();
+//        objectAnimator.setDuration(300);
+//        objectAnimator.start();
     }
 
     private void startObjectAnimator() {
@@ -110,25 +154,24 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 //        animator.start();
 
         //多个动画同时执行  进入动画结束后  旋转,淡入淡出同时执行
-        ObjectAnimator moveIn = ObjectAnimator.ofFloat(textview, "translationX", -500f, 0f);
-        ObjectAnimator rotate = ObjectAnimator.ofFloat(textview, "rotation", 0f, 360f);
-        ObjectAnimator fadeInOut = ObjectAnimator.ofFloat(textview, "alpha", 1f, 0f, 1f);
-        AnimatorSet animSet = new AnimatorSet();
-        animSet.play(rotate).with(fadeInOut).after(moveIn);
-        animSet.setDuration(5000);
-        animSet.start();
-        animSet.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-            }
-        });
+//        ObjectAnimator moveIn = ObjectAnimator.ofFloat(textview, "translationX", -500f, 0f);
+//        ObjectAnimator rotate = ObjectAnimator.ofFloat(textview, "rotation", 0f, 360f);
+//        ObjectAnimator fadeInOut = ObjectAnimator.ofFloat(textview, "alpha", 1f, 0f, 1f);
+//        AnimatorSet animSet = new AnimatorSet();
+//        animSet.play(rotate).with(fadeInOut).after(moveIn);
+//        animSet.setDuration(5000);
+//        animSet.start();
+//        animSet.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                super.onAnimationStart(animation);
+//            }
+//        });
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
     }
 
     @Override
@@ -142,5 +185,14 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
             default:
                 break;
         }
+    }
+    /**
+     * 判断bitmap对象是否为空
+     *
+     * @param src 源图片
+     * @return {@code true}: 是<br>{@code false}: 否
+     */
+    private static boolean isEmptyBitmap(Bitmap src) {
+        return src == null || src.getWidth() == 0 || src.getHeight() == 0;
     }
 }

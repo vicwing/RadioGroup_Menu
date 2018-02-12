@@ -7,9 +7,7 @@
               android:orientation="vertical"
               android:paddingLeft="@dimen/activity_horizontal_margin"
               android:paddingRight="@dimen/activity_horizontal_margin"
-              app:layout_behavior="@string/appbar_scrolling_view_behavior"
-              tools:context="com.example.cdj.myapplication.MainActivity"
-              tools:showIn="@layout/activity_main">
+            >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="button1"/>
+
         <Button
             android:id="@+id/btn_move2"
             android:layout_width="wrap_content"
@@ -34,17 +33,15 @@
 
     </LinearLayout>
 
-
-    <TextView
-        android:id="@+id/tv_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Hello World!"
-        android:textColor="@color/black_33333"/>
+    <ImageView
+        android:id="@+id/iv_fragment2"
+        android:layout_width="match_parent"
+        android:scaleType="centerCrop"
+        android:layout_height="match_parent"/>
 
     <com.example.cdj.myapplication.widget.propertyanimator.MyAnimView
         android:id="@+id/animate_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:visibility="gone"/>
 </LinearLayout>

@@ -18,12 +18,12 @@ import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
-import com.example.cdj.myapplication.widget.DropDownMenu;
-import com.example.cdj.myapplication.widget.MyListView;
-import com.example.cdj.myapplication.widget.StickyScrollView;
 import com.example.cdj.myapplication.mainfunction.newhouse.adapter.ConstellationAdapter;
 import com.example.cdj.myapplication.mainfunction.newhouse.adapter.GirdDropDownAdapter;
 import com.example.cdj.myapplication.mainfunction.newhouse.adapter.ListDropDownAdapter;
+import com.example.cdj.myapplication.widget.DropDownMenu;
+import com.example.cdj.myapplication.widget.MyListView;
+import com.example.cdj.myapplication.widget.StickyScrollView;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.Call;
 
@@ -45,7 +45,7 @@ import okhttp3.Call;
 public class NewHouseListActivity  extends Activity {
 
 
-    @Bind(R.id.dropDownMenu)
+    @BindView(R.id.dropDownMenu)
     DropDownMenu mDropDownMenu;
     private String headers[] = {"城市", "年龄", "性别", "星座"};
     private List<View> popupViews = new ArrayList<>();

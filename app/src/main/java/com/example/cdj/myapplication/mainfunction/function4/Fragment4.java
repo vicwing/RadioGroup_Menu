@@ -22,7 +22,7 @@ import com.example.cdj.myapplication.mainfunction.taxcaculator.TaxCaculatorActiv
 import com.example.cdj.myapplication.utils.DateUtil;
 import com.zhy.http.okhttp.OkHttpUtils;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import okhttp3.Call;
@@ -39,20 +39,20 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 	// 名字根据实际需求进行更改
 	private static final String ARG_PARAM1 = "param1";
 	private static final String ARG_PARAM2 = "param2";
-	@Bind(R.id.btn_start_caculator)
+	@BindView(R.id.btn_start_caculator)
 	Button mBtnStartCaculator;
-	@Bind(R.id.btn_start_tax_caculator)
+	@BindView(R.id.btn_start_tax_caculator)
 	Button mBtnStartTaxCaculator;
 
-	@Bind(R.id.tv_go)
+	@BindView(R.id.tv_go)
 	TextView mTextGo;
 
-	@Bind(R.id.tv_text_end)
+	@BindView(R.id.tv_text_end)
 	TextView mTextEnd;
-	@Bind(R.id.btn_login)
+	@BindView(R.id.btn_login)
 	Button btnLogin;
 
-	@Bind(R.id.tv_webview)
+	@BindView(R.id.tv_webview)
 	TextView tvWebview;
 
 	// 这里的参数只是一个举例可以根据需求更改
@@ -178,7 +178,6 @@ public class Fragment4 extends Fragment implements View.OnClickListener {
 	@Override
 	public void onDestroyView() {
 		super.onDestroyView();
-		ButterKnife.unbind(this);
 	}
 
 	@Override
