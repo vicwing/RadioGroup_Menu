@@ -4,13 +4,18 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.os.RemoteCallbackList;
 import android.os.RemoteException;
+import android.os.SystemClock;
 
 import com.czy.server.Book;
 import com.czy.server.BookController;
+import com.czy.server.IOnNewBookArrivedListener;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Description : 学习 aidl模拟的服务端
@@ -28,6 +33,14 @@ public class BookManagerService extends Service {
      */
     private CopyOnWriteArrayList<Book> bookList = new CopyOnWriteArrayList<>();
 
+    private AtomicBoolean mIsServiceDestroyed = new AtomicBoolean(false);
+
+    /**
+     * 监听集合
+     */
+//    private CopyOnWriteArrayList<IOnNewBookArrivedListener> mListenerList = new CopyOnWriteArrayList<>();
+
+    private RemoteCallbackList<IOnNewBookArrivedListener> mListenerList = new RemoteCallbackList<>();
 
     private final Binder mbinder = new BookController.Stub() {
 
@@ -35,6 +48,7 @@ public class BookManagerService extends Service {
         @Override
         public List<Book> getBookList() throws RemoteException {
 //            ToastUtils.showShort("查询书本...");
+            SystemClock.sleep(5000);
             return bookList;
         }
 
@@ -53,6 +67,31 @@ public class BookManagerService extends Service {
         public void addBookOut(Book book) throws RemoteException {
         }
 
+        @Override
+        public void registerListener(IOnNewBookArrivedListener listener) throws RemoteException {
+//            if (!mListenerList.contains(listener)) {
+//                mListenerList.add(listener);
+//            } else {
+//                Logger.d(" already  已经存在");
+//            }
+            mListenerList.register(listener);
+            Logger.d(" 已经注册   list size  " + mListenerList.getRegisteredCallbackCount());
+        }
+
+        @Override
+        public void unregisterListener(IOnNewBookArrivedListener listener) throws RemoteException {
+//            if (mListenerList.contains(listener)) {
+//                mListenerList.remove(listener);
+//                Logger.d(" 注册成功.......");
+//            } else {
+//                Logger.d(" 没有  注册.......");
+//            }
+
+            mListenerList.unregister(listener);
+            Logger.d(" 解除注册   list size  " + mListenerList.getRegisteredCallbackCount());
+        }
+
+
     };
 
 
@@ -65,6 +104,12 @@ public class BookManagerService extends Service {
     public void onCreate() {
         super.onCreate();
         initData();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mIsServiceDestroyed.set(true);
     }
 
     private void initData() {
@@ -80,5 +125,52 @@ public class BookManagerService extends Service {
         bookList.add(book4);
         bookList.add(book5);
         bookList.add(book6);
+        new Thread(new ServiceWork()).start();
+    }
+
+    /**
+     * 每隔五秒添加一本书.
+     */
+    private class ServiceWork implements Runnable {
+        @Override
+        public void run() {
+            //do background
+            while (!mIsServiceDestroyed.get()) {
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                int bookId = bookList.size() + 1;
+                Book book = new Book(("新添加的书籍" + String.valueOf(bookId)));
+                try {
+                    OnNewBookArrived(book);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+
+        private void OnNewBookArrived(Book book) throws RemoteException {
+            bookList.add(book);
+//            方法一:
+//            Logger.d(" list   list size  " + mListenerList.size());
+//            for (int i = 0; i < mListenerList.size(); i++) {
+//                IOnNewBookArrivedListener iOnNewBookArrivedListener = mListenerList.get(i);
+//                Logger.d("background  有注册用户哦 ");
+//                iOnNewBookArrivedListener.onNewBookArrived(book);
+//            }
+//            改进方法一
+            int registeredcallbackcount = mListenerList.beginBroadcast();
+            for (int i = 0; i < registeredcallbackcount; i++) {
+                IOnNewBookArrivedListener listener = mListenerList.getBroadcastItem(i);
+                if (listener != null) {
+                    listener.onNewBookArrived(book);
+                }
+            }
+            //必须和 beginBroadcast 配对使用
+            mListenerList.finishBroadcast();
+        }
     }
 }

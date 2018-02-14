@@ -6,13 +6,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.view.View;
 import android.widget.TextView;
 
 import com.czy.server.Book;
 import com.czy.server.BookController;
+import com.czy.server.IOnNewBookArrivedListener;
 import com.orhanobut.logger.Logger;
 import com.sunfusheng.StickyHeaderListView.R;
 
@@ -33,6 +36,22 @@ public class ClientMainActivity extends Activity {
     @BindView(R.id.tv_aidl_test)
     TextView tvAidlTest;
 
+    private static final int MESSAGE_NEW_BOOK_ARRIVED = 529;
+
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case MESSAGE_NEW_BOOK_ARRIVED:
+                    Logger.d("ClientMainActivity    handleMessage:  receive new book " + msg.obj);
+                    break;
+                default:
+                    super.handleMessage(msg);
+                    break;
+            }
+        }
+    };
+
     private BookController iBookManager;
 
     private ServiceConnection connection = new ServiceConnection() {
@@ -44,7 +63,8 @@ public class ClientMainActivity extends Activity {
                 iBookManager = BookController.Stub.asInterface(service);
                 List<Book> bookList = iBookManager.getBookList();
                 Logger.d("booklist  " + bookList.size() + " type " + bookList.getClass().getCanonicalName());
-
+                iBookManager.registerListener(iOnNewBookArrivedListener);
+                Logger.d("ClientMainActivity    onServiceConnected:   注册监听 ");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -53,6 +73,15 @@ public class ClientMainActivity extends Activity {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             Logger.d(" ServiceConnection  onServiceDisconnected " + name);
+            iBookManager = null;
+        }
+    };
+
+    private IOnNewBookArrivedListener iOnNewBookArrivedListener = new IOnNewBookArrivedListener.Stub() {
+
+        @Override
+        public void onNewBookArrived(Book newBook) throws RemoteException {
+            handler.obtainMessage(MESSAGE_NEW_BOOK_ARRIVED, newBook).sendToTarget();
         }
     };
 
@@ -66,6 +95,15 @@ public class ClientMainActivity extends Activity {
 
     @Override
     protected void onDestroy() {
+        if (iBookManager != null && iBookManager.asBinder().isBinderAlive()) {
+            try {
+                Logger.d("ClientMainActivity    onDestroy:   解除注册..");
+                iBookManager.unregisterListener(iOnNewBookArrivedListener);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
         unbindService(connection);
         super.onDestroy();
     }
@@ -84,18 +122,27 @@ public class ClientMainActivity extends Activity {
                 }
                 break;
             case R.id.tv_getlist:
-                try {
-                    List<Book> bookList = iBookManager.getBookList();
-                    Logger.d("booklist  " + bookList.size() + " type " + bookList.getClass().getCanonicalName());
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+                getBookList();
                 break;
             case R.id.tv_start_service:
                 bindService();
                 break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * 异步执行
+     */
+    private void getBookList() {
+        try {
+            if (iBookManager != null) {
+                List<Book> bookList = iBookManager.getBookList();
+                Logger.d("booklist  " + bookList.size() + " type " + bookList.getClass().getCanonicalName());
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
