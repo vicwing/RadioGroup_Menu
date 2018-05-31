@@ -5,16 +5,12 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="D:/gradle/gradle-4.2.1" />
+        <option name="gradleHome" value="$USER_HOME$/Applications/gradle-4.4" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/StickyListView" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/filter-lib" />
             <option value="$PROJECT_DIR$/javaapplication" />
-            <option value="$PROJECT_DIR$/popup_tooltip_library" />
-            <option value="$PROJECT_DIR$/ptr-lib" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

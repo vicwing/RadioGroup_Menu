@@ -1,1 +1,1 @@
-include ':app', ':ptr-lib', ':javaapplication', ':StickyListView', ':filter-lib', ':popup_tooltip_library'
+include ':app', ':javaapplication'

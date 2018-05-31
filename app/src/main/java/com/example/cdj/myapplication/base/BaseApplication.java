@@ -7,7 +7,6 @@ import android.os.Environment;
 import com.blankj.utilcode.util.Utils;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
-import com.socks.library.KLog;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -35,7 +34,6 @@ public class BaseApplication extends Application {
         Logger.init("vicwing").logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
 //        Logger.init().setMethodCount(1).hideThreadInfo().logLevel(LogLevel.NONE);
 //        Logger.clear();
-        KLog.init(false);
 //        String androidId = System.getString(getContentResolver(), System.ANDROID_ID);
 //        LogUtils.getLogConfig()
 //                .configAllowLog(GloabalConstant.isDebug)

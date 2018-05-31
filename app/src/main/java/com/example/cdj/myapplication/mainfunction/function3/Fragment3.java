@@ -7,17 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.baseadapter.SecListItemAdapter;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.widget.segmentcontrol.SegmentControl;
 import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
 import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
 import com.example.cdj.myapplication.loadmore.LoadMoreUIHandler;
+import com.example.cdj.myapplication.widget.segmentcontrol.SegmentControl;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -26,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import in.srain.cube.views.ptr.PtrClassicFrameLayout;
-import in.srain.cube.views.ptr.PtrDefaultHandler;
-import in.srain.cube.views.ptr.PtrFrameLayout;
-import in.srain.cube.views.ptr.PtrHandler;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -54,7 +47,7 @@ public class Fragment3 extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private PtrClassicFrameLayout mPtrFrameLayout;
+//    private PtrClassicFrameLayout mPtrFrameLayout;
     private ListView mListView;
     private QuickAdapter<SecListItemEntity> mAdapter;
     private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
@@ -99,51 +92,51 @@ public class Fragment3 extends Fragment {
 
         initSegmentControl(layout);
 
-//        // pull to refresh
-        mPtrFrameLayout = (PtrClassicFrameLayout) layout.findViewById(R.id.load_more_list_view_ptr_frame);
-        mPtrFrameLayout.setLoadingMinTime(1000);
-//        mPtrFrameLayout.setLastUpdateTimeKey(System.currentTimeMillis());
-        // the following are default settings
-        mPtrFrameLayout.setResistance(1.7f);
-        mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
-        mPtrFrameLayout.setDurationToClose(200);
-        mPtrFrameLayout.setDurationToCloseHeader(1000);
-        // default is false
-        mPtrFrameLayout.setPullToRefresh(true);
-        // default is true
-        mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
-        mPtrFrameLayout.setPtrHandler(new PtrHandler() {
-            @Override
-            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-//                Logger.d("checkCanDoRefresh  ");
-                // here check list view, not content.
-                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
-            }
-
-            @Override
-            public void onRefreshBegin(PtrFrameLayout frame) {
-//                Logger.i("onRefreshBegin  ");
-                currentPage = 1;
-                if (loadMoreListViewContainer != null) {
-                    loadMoreListViewContainer.loadMoreFinish(false, true);
-                }
-                requestUpdate(String.valueOf(currentPage));
-            }
-
-        });
-//        // list view
-        // header place holder
-        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
-        setLoadMoreDefaultFootView(loadMoreListViewContainer);
-//        setLoadMoreFootView(loadMoreListViewContainer);
-
-        mListView = (ListView) layout.findViewById(R.id.load_more_small_image_list_view);
-//        mAdapter = new SecListItemAdapter(getActivity(), mSecListItemEntities);
-        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
-        mListView.setAdapter(mAdapter);
-
-        mPtrFrameLayout.autoRefresh(true);
-        requestUpdate(String.valueOf(currentPage));
+////        // pull to refresh
+//        mPtrFrameLayout = (PtrClassicFrameLayout) layout.findViewById(R.id.load_more_list_view_ptr_frame);
+//        mPtrFrameLayout.setLoadingMinTime(1000);
+////        mPtrFrameLayout.setLastUpdateTimeKey(System.currentTimeMillis());
+//        // the following are default settings
+//        mPtrFrameLayout.setResistance(1.7f);
+//        mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
+//        mPtrFrameLayout.setDurationToClose(200);
+//        mPtrFrameLayout.setDurationToCloseHeader(1000);
+//        // default is false
+//        mPtrFrameLayout.setPullToRefresh(true);
+//        // default is true
+//        mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
+//        mPtrFrameLayout.setPtrHandler(new PtrHandler() {
+//            @Override
+//            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+////                Logger.d("checkCanDoRefresh  ");
+//                // here check list view, not content.
+//                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
+//            }
+//
+//            @Override
+//            public void onRefreshBegin(PtrFrameLayout frame) {
+////                Logger.i("onRefreshBegin  ");
+//                currentPage = 1;
+//                if (loadMoreListViewContainer != null) {
+//                    loadMoreListViewContainer.loadMoreFinish(false, true);
+//                }
+//                requestUpdate(String.valueOf(currentPage));
+//            }
+//
+//        });
+////        // list view
+//        // header place holder
+//        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
+//        setLoadMoreDefaultFootView(loadMoreListViewContainer);
+////        setLoadMoreFootView(loadMoreListViewContainer);
+//
+//        mListView = (ListView) layout.findViewById(R.id.load_more_small_image_list_view);
+////        mAdapter = new SecListItemAdapter(getActivity(), mSecListItemEntities);
+//        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
+//        mListView.setAdapter(mAdapter);
+//
+//        mPtrFrameLayout.autoRefresh(true);
+//        requestUpdate(String.valueOf(currentPage));
 //        Logger.d("222222222222222222222222222222222222222");
         return layout;
     }
@@ -166,30 +159,30 @@ public class Fragment3 extends Fragment {
     private void requestUpdate(final String currentPageStr) {
         String httpUrl = Url + "&currentPage=" + currentPageStr;
 //        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
-        OkHttpUtils
-                .get()//
-                .url(httpUrl)
-                .addHeader("Cache-Control","no-cache")
-                .build()
-                .execute(new SecListItemBeanCallback() {
-
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        mPtrFrameLayout.refreshComplete();
-                    }
-
-                    @Override
-                    public void onResponse(SecListBean response, int id) {
-                        mPtrFrameLayout.refreshComplete();
-//                        mSecListItemEntities.addAll(response.getResult().getList());
-                        mAdapter.addAll(response.getResult().getList());
-//                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
-                        pageCount = response.getResult().getPageCount();
-                        if (currentPage <= pageCount) {
-                            loadMoreListViewContainer.loadMoreFinish(false, true);
-                        }
-                    }
-                });
+//        OkHttpUtils
+//                .get()//
+//                .url(httpUrl)
+//                .addHeader("Cache-Control","no-cache")
+//                .build()
+//                .execute(new SecListItemBeanCallback() {
+//
+//                    @Override
+//                    public void onError(Call call, Exception e, int id) {
+//                        mPtrFrameLayout.refreshComplete();
+//                    }
+//
+//                    @Override
+//                    public void onResponse(SecListBean response, int id) {
+//                        mPtrFrameLayout.refreshComplete();
+////                        mSecListItemEntities.addAll(response.getResult().getList());
+//                        mAdapter.addAll(response.getResult().getList());
+////                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
+//                        pageCount = response.getResult().getPageCount();
+//                        if (currentPage <= pageCount) {
+//                            loadMoreListViewContainer.loadMoreFinish(false, true);
+//                        }
+//                    }
+//                });
 
 //        getCacheRequset(httpUrl);
 

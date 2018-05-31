@@ -20,16 +20,26 @@
 ext {
     configuration = [
             package          : "com.cdj.group",
-            buildToolsVersion: "26.0.2",
+            buildToolsVersion: "27.0.3",
             compileVersion   : 25,
             minSdk           : 23,
             targetSdk        : 25,
             version_code     : 1,
-            version_name     : "0.0.1",
+            version_name     : "0.0.1"
     ]
-
-    libraries = [
-            supportVersion    : "23.2.0",
+    version = [
+            androidSupportSdkVersion: "27.1.0",
+            retrofitSdkVersion      : "2.4.0",
+            dagger2SdkVersion       : "2.15",
+            glideSdkVersion         : "4.6.1",
+            butterknifeSdkVersion   : "8.8.1",
+            rxlifecycleSdkVersion   : "1.0",
+            rxlifecycle2SdkVersion  : "2.2.1",
+            espressoSdkVersion      : "3.0.1",
+            canarySdkVersion        : "1.5.4"
+    ]
+    dependencies = [
+            supportVersion    : "25.3.0",
             retrofit          : "2.0.0-beta2",
             rxandroid         : "1.1.0",
             dagger            : "2.0",

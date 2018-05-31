@@ -31,23 +31,4 @@
             segmentcontrol:texts="商业|公积金|组合"
             segmentcontrol:verticalGap="8dip"/>
     </LinearLayout>
-
-    <in.srain.cube.views.ptr.PtrClassicFrameLayout
-        android:id="@+id/load_more_list_view_ptr_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-        <com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer
-            android:id="@+id/load_more_list_view_container"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/cube_mints_white">
-
-            <ListView
-                android:id="@+id/load_more_small_image_list_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/listview_item"/>
-        </com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer>
-    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
 </LinearLayout>
