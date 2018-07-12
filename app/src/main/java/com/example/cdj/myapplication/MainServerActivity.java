@@ -53,9 +53,9 @@ public class MainServerActivity extends BaseActivity {
         String SerialNumber = android.os.Build.SERIAL;
 
         DeviceUuidFactory deviceUuidFactory = new DeviceUuidFactory(this);
-        Logger.d("SerialNumber  "+ SerialNumber);
-        Logger.d("deviceUuidFactory  "+ deviceUuidFactory.getDeviceUuid());
-//        deviceUuidFactory=null;
+//        Logger.d("SerialNumber  "+ SerialNumber);
+//        Logger.d("deviceUuidFactory  "+ deviceUuidFactory.getDeviceUuid());
+//        deviceUuidFactory=null;s
         deviceUuidFactory.getDeviceUuid();
         startServeTime();
 

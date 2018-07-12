@@ -1,5 +1,15 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
 apply from: "config.gradle"
+//task(yugangshuo).doLast {
+//    println "start execute yuangshuo"
+////    haveFun()
+//}
+
+//task showInfo <<{
+//    println "start execute showinfo"
+//}
+
+//apply plugin: 'pluginsrc'
+
 
 buildscript {
     repositories {
@@ -7,7 +17,7 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.1.3'
 //        classpath 'com.novoda:bintray-release:0.5.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,43 +38,123 @@ allprojects {
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+//
+//task(yugangshuo).doLast {
+//    println "start execute yuangshuo"
+//    haveFun()
+//}
+//
+//def haveFun() {
+//    println "have fun!"
+//    System.out.println("have fun!")
+//    1
+//    def file1 = new File("a.txt")
+//    def file2 = new File("a.txt")
+//    assert file1 == file2
+//    assert !file1.is(file2)
+//}
+//
+//class Book {
+//    private String name
+//
+//    String getName() { return name }
+//
+//    void setName(String name) { this.name = name }
+//}
+//
+//task hello << {
+////    LocalTime time = LocalTime.now();
+////    System.out.println("local time now : " + time);
+////    LocalDate localDate = LocalDate.now();
+////    System.out.println("local date now : " + localDate);
+////    LocalDateTime localDateTime = LocalDateTime.now();
+////    System.out.println("local dateTime now : " + localDateTime);
+////
+////    String dayAfterTommorrow = "20140116";
+////    LocalDate formattedLocalDateTime = LocalDate.parse(dayAfterTommorrow, DateTimeFormatter.BASIC_ISO_DATE);
+////    System.out.println("local dateTime now : " + formattedLocalDateTime);
+////
+////
+////    LocalDateTime arrivalDate = LocalDateTime.now();
+////    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
+////    String landing = arrivalDate.format(format);
+////    System.out.println("apk 包日期: " + landing);
+////    println 'Hello Earth'
+//}
+//task getData << {
+//    LocalDateTime arrivalDate = LocalDateTime.now();
+//    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
+//    def format1 = arrivalDate.format(format)
+//    println format1
+//    return format1;
+//}
+//hello.doFirst {
+//    println 'Hello Venus'
+//}
+//hello.doLast {
+//    println 'Hello Mars'
+//}
+//hello << {
+//    println 'Hello Jupiter'
+//}
+//hello << {
+//    println 'Hello Jupiter2222'
+//}
+//
+//getLocalDate() {
+//    LocalDateTime arrivalDate = LocalDateTime.now();
+//    DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
+//    return arrivalDate.format(format);
+//}
 
-task(yugangshuo).doLast {
-    println "start execute yuangshuo"
-    haveFun()
+//
+////学习2
+//public class Person {
+//
+//    String name;
+//
+//    int age;
+//
+//    @Override
+//    public String toString() {
+//        return "I am $name, $age years old"
+//    }
+//}
+//class MyPlugin implements Plugin<Project>{
+//    @Override
+//    void apply(Project project) {
+//        project.extensions.add("person", Person)
+//        Person ext = project.person
+//        println ext
+//    }
+//}
+//person{
+//    name  'atom'
+//    age  18
+//}
+
+
+apply plugin: 'MyInfo'
+apply plugin: 'pluginsrc'
+
+customPlugin {
+    name = "bobo"
+    age = "25"
+    address = "广东珠海"
 }
 
-def haveFun() {
-    println "have fun!"
-    System.out.println("have fun!")
-    1
-    def file1 = new File("a.txt")
-    def file2 = new File("a.txt")
-    assert file1 == file2
-    assert !file1.is(file2)
-}
+//pluginsrc {
+//    doLast {
+//
+//        message = 'hello gradle plugin'
+//    }
+//}
 
-class Book {
-    private String name
 
-    String getName() { return name }
 
-    void setName(String name) { this.name = name }
-}
 
-task hello << {
-    println 'Hello Earth'
-}
-hello.doFirst {
-    println 'Hello Venus'
-}
-hello.doLast {
-    println 'Hello Mars'
-}
-hello << {
-    println 'Hello Jupiter'
-}
-hello << {
-    println 'Hello Jupiter2222'
-}
+
+
+
+
 

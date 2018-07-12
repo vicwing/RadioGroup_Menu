@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RadioGroup_Menu.iml" filepath="$PROJECT_DIR$/RadioGroup_Menu.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/buildSrc/buildSrc.iml" filepath="$PROJECT_DIR$/buildSrc/buildSrc.iml" />
       <module fileurl="file://$PROJECT_DIR$/javaapplication/javaapplication.iml" filepath="$PROJECT_DIR$/javaapplication/javaapplication.iml" />
     </modules>
   </component>

@@ -4,6 +4,9 @@ import com.example.pojo.Car;
 import com.example.pojo.Student;
 
 import java.lang.ref.WeakReference;
+import java.time.DateTimeException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class MyClass {
 
@@ -29,16 +32,45 @@ public class MyClass {
 //        testWeakRefrence2();
 
 
-        Car car = new Car(22000,"silver");
+//        weakReferenceTest();
+//        LocalTime time = LocalTime.now();
+//        System.out.println("local time now : " + time);
+//        LocalDate localDate = LocalDate.now();
+//        System.out.println("local date now : " + localDate);
+//        LocalDateTime localDateTime = LocalDateTime.now();
+//        System.out.println("local dateTime now : " + localDateTime);
+//
+//        String dayAfterTommorrow = "20140116";
+//        LocalDate formattedLocalDateTime = LocalDate.parse(dayAfterTommorrow, DateTimeFormatter.BASIC_ISO_DATE);
+//        System.out.println("local dateTime now : " + formattedLocalDateTime);
+
+        LocalDateTime arrivalDate = LocalDateTime.now();
+        try {
+//            DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM dd yyyy  hh:mm a");
+            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
+            String landing = arrivalDate.format(format);
+            System.out.printf("Arriving at :  %s %n", landing);
+        } catch (DateTimeException ex) {
+            System.out.printf("%s can't be formatted!%n", arrivalDate);
+            ex.printStackTrace();
+        }
+
+        double lat = 22.547076;
+        double lng = 113.96026;
+        System.out.println("lat " + String.valueOf(lat) + " " + String.valueOf(lng));
+    }
+
+    private static void weakReferenceTest() {
+        Car car = new Car(22000, "silver");
         WeakReference<Car> weakCar = new WeakReference<Car>(car);
 
-        int i=0;
+        int i = 0;
 
-        while(true){
-            if(weakCar.get()!=null){
+        while (true) {
+            if (weakCar.get() != null) {
                 i++;
-                System.out.println("Object is alive for "+i+" loops - "+weakCar);
-            }else{
+                System.out.println("Object is alive for " + i + " loops - " + weakCar);
+            } else {
                 System.out.println("Object has been collected.");
                 break;
             }

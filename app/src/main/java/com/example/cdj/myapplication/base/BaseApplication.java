@@ -5,8 +5,11 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.blankj.utilcode.util.Utils;
-import com.orhanobut.logger.LogLevel;
+import com.example.cdj.myapplication.BuildConfig;
+import com.example.cdj.myapplication.utils.LogCatStrategy;
+import com.orhanobut.logger.AndroidLogAdapter;
 import com.orhanobut.logger.Logger;
+import com.orhanobut.logger.PrettyFormatStrategy;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -31,7 +34,7 @@ public class BaseApplication extends Application {
 //        initOldCrashHandler();
         CrashHandlerNew crashHandlerNew = CrashHandlerNew.getInstance();
         crashHandlerNew.init(getApplicationContext());
-        Logger.init("vicwing").logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
+
 //        Logger.init().setMethodCount(1).hideThreadInfo().logLevel(LogLevel.NONE);
 //        Logger.clear();
 //        String androidId = System.getString(getContentResolver(), System.ANDROID_ID);
@@ -59,13 +62,31 @@ public class BaseApplication extends Application {
 //                .readTimeout(20, TimeUnit.SECONDS)
 //                .build();
 //        OkHttpUtils.initClient(newClient);
+        setLoggerConfig();
+    }
+
+    private void setLoggerConfig() {
+        //        Logger.init("vicwing").logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
+
+        PrettyFormatStrategy strategy = PrettyFormatStrategy.newBuilder()
+                .showThreadInfo(false)
+                .logStrategy(new LogCatStrategy())
+                .methodCount(1)
+                .tag(getPackageName())
+                .build();
+        com.orhanobut.logger.Logger.addLogAdapter(new AndroidLogAdapter(strategy) {
+            @Override
+            public boolean isLoggable(int priority, String tag) {
+                return BuildConfig.DEBUG;
+            }
+        });
     }
 
     public Cache provideCache() {
         String sdPath = getSDPath();
         File cacheDir = getCacheDir();
-        File file = new File(sdPath+"/vicwing");
-        Logger.d("cacheDir  " + cacheDir+" sdPath "+sdPath);
+        File file = new File(sdPath + "/vicwing");
+        Logger.d("cacheDir  " + cacheDir + " sdPath " + sdPath);
         Logger.d("cacheDir  " + file.getAbsolutePath());
         Cache cache = new Cache(file, 1024 * 1024);
         return cache;
