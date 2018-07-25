@@ -32,7 +32,8 @@ allprojects {
         jcenter()
         mavenCentral()
         maven { url "https://jitpack.io" }
-        google()
+//        google()
+        maven { url 'https://maven.google.com' }
     }
 }
 task clean(type: Delete) {
@@ -143,12 +144,6 @@ customPlugin {
     address = "广东珠海"
 }
 
-//pluginsrc {
-//    doLast {
-//
-//        message = 'hello gradle plugin'
-//    }
-//}
 
 
 

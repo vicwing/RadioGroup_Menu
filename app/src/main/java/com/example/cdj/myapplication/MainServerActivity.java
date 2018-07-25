@@ -16,7 +16,6 @@ import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
 import com.example.cdj.myapplication.utils.BarUtils;
 import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
 import com.example.cdj.myapplication.widget.MyViewPager;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -42,6 +41,7 @@ public class MainServerActivity extends BaseActivity {
         BarUtils.hideStatusBar(this);
         setContentView(R.layout.radiogroup_mainactivity);
         ButterKnife.bind(this);
+//        lifeListenter= LifeListenter();
 //        initView();
         initViewPager();
 
@@ -58,8 +58,8 @@ public class MainServerActivity extends BaseActivity {
 //        deviceUuidFactory=null;s
         deviceUuidFactory.getDeviceUuid();
         startServeTime();
-
-
+        LifeListenter lifeListenter = new LifeListenter(getLifecycle());
+        getLifecycle().addObserver(lifeListenter);
     }
 
     private void startServeTime() {
@@ -118,8 +118,8 @@ public class MainServerActivity extends BaseActivity {
 //        }
         fragmentList.add(new FragmentA());
         fragmentList.add(new Fragment2());
-        fragmentList.add(Fragment3.newInstance(null,null));
-        fragmentList.add(Fragment4.newInstance(null,null));
+        fragmentList.add(Fragment3.newInstance(null, null));
+        fragmentList.add(Fragment4.newInstance(null, null));
         //ViewPager设置适配器
         mPager.setAdapter(new MyFragmentPagerAdapter(getSupportFragmentManager(), fragmentList));
 
@@ -135,16 +135,16 @@ public class MainServerActivity extends BaseActivity {
         public void onCheckedChanged(RadioGroup group, int checkedId) {
             switch (checkedId) {
                 case R.id.one:
-                    mPager.setCurrentItem(0,false);
+                    mPager.setCurrentItem(0, false);
                     break;
                 case R.id.two:
-                    mPager.setCurrentItem(1,false);
+                    mPager.setCurrentItem(1, false);
                     break;
                 case R.id.three:
-                    mPager.setCurrentItem(2,false);
+                    mPager.setCurrentItem(2, false);
                     break;
                 case R.id.four:
-                    mPager.setCurrentItem(3,false);
+                    mPager.setCurrentItem(3, false);
                     break;
             }
         }
@@ -204,10 +204,12 @@ public class MainServerActivity extends BaseActivity {
      */
     public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
         ArrayList<Fragment> list;
-        public MyFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> list){
+
+        public MyFragmentPagerAdapter(FragmentManager fm, ArrayList<Fragment> list) {
             super(fm);
-            this.list=list;
+            this.list = list;
         }
+
         @Override
         public Fragment getItem(int position) {
             return list.get(position);
