@@ -21,14 +21,14 @@ ext {
     android = [
             package          : "com.cdj.group",
             buildToolsVersion: "27.0.3",
-            compileVersion   : 26,
-            minSdk           : 23,
-            targetSdk        : 26,
+            compileVersion   : 27,
+            minSdk           : 21,
+            targetSdk        : 27,
             version_code     : 1,
             version_name     : "0.0.1"
     ]
     version = [
-            androidSupportSdkVersion: "27.1.0",
+            androidSupportSdkVersion: "27.1.1",
             retrofitSdkVersion      : "2.4.0",
             dagger2SdkVersion       : "2.15",
             glideSdkVersion         : "4.6.1",
@@ -37,7 +37,7 @@ ext {
             rxlifecycle2SdkVersion  : "2.2.1",
             espressoSdkVersion      : "3.0.1",
             canarySdkVersion        : "1.5.4",
-            supportVersion          : "26.1.0",
+
 
             retrofit                : "2.0.0-beta2",
             rxandroid               : "1.1.0",

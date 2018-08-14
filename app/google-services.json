@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "789118665254",
+    "firebase_url": "https://vic9996012.firebaseio.com",
+    "project_id": "vic9996012",
+    "storage_bucket": "vic9996012.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789118665254:android:7a3431ce5a6c8adb",
+        "android_client_info": {
+          "package_name": "com.cdj.group"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789118665254-bb12mko1evltau34ljpl3r0dc3mqoer6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3dZpAOHy54-2EoNF-5uE7macifPgWZ5Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

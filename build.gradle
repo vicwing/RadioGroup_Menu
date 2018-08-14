@@ -17,13 +17,15 @@ buildscript {
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 //        classpath 'com.novoda:bintray-release:0.5.0'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
 //        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.2'
 //        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
+        classpath 'com.google.gms:google-services:4.0.0'
     }
 }
 
@@ -31,11 +33,16 @@ allprojects {
     repositories {
         jcenter()
         mavenCentral()
-        maven { url "https://jitpack.io" }
+        maven {
+            url 'https://jitpack.io'
+        }
+        maven {
+            url 'https://maven.google.com'
+        }
 //        google()
-        maven { url 'https://maven.google.com' }
     }
 }
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
@@ -134,15 +141,14 @@ task clean(type: Delete) {
 //    age  18
 //}
 
-
-apply plugin: 'MyInfo'
-apply plugin: 'pluginsrc'
-
-customPlugin {
-    name = "bobo"
-    age = "25"
-    address = "广东珠海"
-}
+//apply plugin: 'MyInfo'
+//apply plugin: 'pluginsrc'
+//
+//customPlugin {
+//    name = "bobo"
+//    age = "25"
+//    address = "广东珠海"
+//}
 
 
 

@@ -4,60 +4,29 @@ import com.example.pojo.Car;
 import com.example.pojo.Student;
 
 import java.lang.ref.WeakReference;
-import java.time.DateTimeException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 public class MyClass {
 
     public static void main(String[] args) {
 
-//        long l = Double.doubleToRawLongBits(8.5d);
-//        System.out.println("Value = " + l);
 
-//        Double value = new Double("8.5");
-        //returns the bits that represent the floating-point number
-//        System.out.println("Value = " + Double.doubleToRawLongBits(8.5d));
-//        System.out.println("Value = " + Double.doubleToRawLongBits(value));
+//        LocalDateTime arrivalDate = LocalDateTime.now();
+//        try {
+//            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
+//            String landing = arrivalDate.format(format);
+//            System.out.printf("Arriving at :  %s %n", landing);
+//        } catch (DateTimeException ex) {
+//            System.out.printf("%s can't be formatted!%n", arrivalDate);
+//            ex.printStackTrace();
+//        }
+//        double lat = 22.547076;
+//        double lng = 113.96026;
+//        System.out.println("lat " + String.valueOf(lat) + " " + String.valueOf(lng));
 
-//        SortUtils.arrangementSelect(new String[]{
-//                "1", "2", "3", "4"
-//        }, 2);
-//        SortUtils.combinationSelect(new String[]{
-//                "1", "2", "3", "4", "5"
-//        }, 3);
-
-//        testWeakRefrence();
-//
-//        testWeakRefrence2();
-
-
-//        weakReferenceTest();
-//        LocalTime time = LocalTime.now();
-//        System.out.println("local time now : " + time);
-//        LocalDate localDate = LocalDate.now();
-//        System.out.println("local date now : " + localDate);
-//        LocalDateTime localDateTime = LocalDateTime.now();
-//        System.out.println("local dateTime now : " + localDateTime);
-//
-//        String dayAfterTommorrow = "20140116";
-//        LocalDate formattedLocalDateTime = LocalDate.parse(dayAfterTommorrow, DateTimeFormatter.BASIC_ISO_DATE);
-//        System.out.println("local dateTime now : " + formattedLocalDateTime);
-
-        LocalDateTime arrivalDate = LocalDateTime.now();
-        try {
-//            DateTimeFormatter format = DateTimeFormatter.ofPattern("MMM dd yyyy  hh:mm a");
-            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
-            String landing = arrivalDate.format(format);
-            System.out.printf("Arriving at :  %s %n", landing);
-        } catch (DateTimeException ex) {
-            System.out.printf("%s can't be formatted!%n", arrivalDate);
-            ex.printStackTrace();
-        }
-
-        double lat = 22.547076;
-        double lng = 113.96026;
-        System.out.println("lat " + String.valueOf(lat) + " " + String.valueOf(lng));
+        String uuid = UUID.randomUUID().toString();
+        System.out.println("uuid  "+uuid);
+//        String iid = InstanceID.getInstance(context).getId()
     }
 
     private static void weakReferenceTest() {

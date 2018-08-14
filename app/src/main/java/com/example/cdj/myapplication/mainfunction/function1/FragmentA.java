@@ -1,6 +1,7 @@
 package com.example.cdj.myapplication.mainfunction.function1;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -33,8 +34,12 @@ import android.widget.TextView;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
+import com.example.cdj.myapplication.activity.webview.StickyHeaderListViewActivity;
 import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.utils.ScreenUtil;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -161,9 +166,33 @@ public class FragmentA extends BaseFragment {
             }
 
         });
+
+
     }
 
+    /**
+     * firebases生成的设备唯一标识,卸载app后会有变化.
+     *
+     * @param instanceId
+     */
+    private void firebaseInstanceId(Task<InstanceIdResult> instanceId) {
+        String id = FirebaseInstanceId.getInstance().getId();
+        Logger.d("firebaseInstanceId:   " + "instanceId = [" + id + "]");
+        InstanceIdResult instanceIdResult = instanceId.getResult();
+        Logger.d("firebaseInstanceId:   " + "instanceId = [" + instanceIdResult.getId() + "]" + " token =" + instanceIdResult.getToken());
+    }
 
+    /**
+     * // 标识设备唯一号
+     * 这个已经废弃,google
+     * implementation 'com.google.android.gms:play-services-gcm:15.0.1' 已经变成firebase
+     *
+     * @return
+     */
+//    private String getInstanceId() {
+//        String iid = InstanceID.getInstance(getContext()).getId();
+//        return iid;
+//    }
     @NonNull
     private Observer generateObserver() {
         //观察者方式一
@@ -323,11 +352,15 @@ public class FragmentA extends BaseFragment {
     }
 
 
-    @OnClick({R.id.btn_subthread})
+    @OnClick({R.id.btn_subthread, R.id.textView7})
     void btnOnclick(View v) {
         switch (v.getId()) {
             case R.id.btn_subthread:
                 makeThread();
+                break;
+            case R.id.textView7:
+                Intent intent = new Intent(getContext(), StickyHeaderListViewActivity.class);
+                startActivity(intent);
                 break;
             default:
                 break;

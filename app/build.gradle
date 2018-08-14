@@ -1,16 +1,17 @@
 apply plugin: 'com.android.application'
 
-def cfg = rootProject.ext.android // 配置
-def libs = rootProject.ext.version // 库
+def config_android = rootProject.ext.android // 配置
+def ext_version = rootProject.ext.version // 库
 
 android {
-    compileSdkVersion cfg.compileVersion
-    buildToolsVersion cfg.buildToolsVersion
+    buildToolsVersion config_android.buildToolsVersion
+    compileSdkVersion config_android.compileVersion
+
     defaultConfig {
-        applicationId cfg.package
-        minSdkVersion cfg.minSdk
-        targetSdkVersion cfg.targetSdk
-        versionName cfg.version_name
+        applicationId config_android.package
+        minSdkVersion config_android.minSdk
+        targetSdkVersion config_android.targetSdk
+        versionName config_android.version_name
         multiDexEnabled true
     }
 
@@ -62,30 +63,28 @@ android {
         // but continue the build even when errors are found:
         abortOnError false
     }
-}
 
-repositories {
-    maven { url "https://jitpack.io" }
 }
 
 
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
-    testImplementation 'junit:junit:4.12'
-//    implementation project(':ptr-lib')
+//    testImplementation 'junit:junit:4.12'
     implementation 'com.android.support:multidex:1.0.3'
-    implementation "com.android.support:support-v4:${libs.supportVersion}"
-    implementation "com.android.support:appcompat-v7:${libs.supportVersion}"
-    implementation "com.android.support:design:${libs.supportVersion}"
-    implementation "com.android.support:cardview-v7:${libs.supportVersion}"
-    implementation "com.android.support:recyclerview-v7:${libs.supportVersion}"
+    implementation "com.android.support:support-v4:${ext_version.androidSupportSdkVersion}"
+    implementation "com.android.support:appcompat-v7:${ext_version.androidSupportSdkVersion}"
+//    implementation "com.android.support:annotations:${ext_version.androidSupportSdkVersion}"
+    implementation "com.android.support:design:${ext_version.androidSupportSdkVersion}"
+    implementation "com.android.support:cardview-v7:${ext_version.androidSupportSdkVersion}"
+    implementation "com.android.support:recyclerview-v7:${ext_version.androidSupportSdkVersion}"
+
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation "com.github.bumptech.glide:glide:${libs.glide}"
-    implementation "jp.wasabeef:recyclerview-animators:${libs.recycler_animators}"
-    implementation "de.hdodenhof:circleimageview:${libs.circleimageview}"
+
+    implementation "com.github.bumptech.glide:glide:${ext_version.glide}"
+    implementation "jp.wasabeef:recyclerview-animators:${ext_version.recycler_animators}"
+    implementation "de.hdodenhof:circleimageview:${ext_version.circleimageview}"
     implementation 'com.orhanobut:logger:2.2.0'
     implementation 'com.daimajia.swipelayout:library:1.2.0@aar'
     implementation 'com.zhy:okhttputils:2.6.2'
@@ -111,27 +110,38 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     implementation rootProject.ext.dependencies["logger"]
 
-    def lifecycle_version = "1.1.1"
-    // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
-    // alternatively - just ViewModel
-    implementation "android.arch.lifecycle:viewmodel:$lifecycle_version" // use -ktx for Kotlin
-    // alternatively - just LiveData
-    implementation "android.arch.lifecycle:livedata:$lifecycle_version"
-    // alternatively - Lifecycles only (no ViewModel or LiveData).
-    //     Support library depends on this lightweight import
-    implementation "android.arch.lifecycle:runtime:$lifecycle_version"
-    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
-    // alternately - if using Java8, use the following instead of compiler
-    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
-    // optional - ReactiveStreams support for LiveData
-    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
-    // optional - Test helpers for LiveData
-    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+//    def lifecycle_version = "1.1.1"
+//    // ViewModel and LiveData
+//    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+//    // alternatively - just ViewModel
+//    implementation "android.arch.lifecycle:viewmodel:$lifecycle_version" // use -ktx for Kotlin
+//    // alternatively - just LiveData
+//    implementation "android.arch.lifecycle:livedata:$lifecycle_version"
+//    // alternatively - Lifecycles only (no ViewModel or LiveData).
+//    //     Support library depends on this lightweight import
+//    implementation "android.arch.lifecycle:runtime:$lifecycle_version"
+//    annotationProcessor "android.arch.lifecycle:compiler:$lifecycle_version"
+//    // alternately - if using Java8, use the following instead of compiler
+//    implementation "android.arch.lifecycle:common-java8:$lifecycle_version"
+//    // optional - ReactiveStreams support for LiveData
+//    implementation "android.arch.lifecycle:reactivestreams:$lifecycle_version"
+//    // optional - Test helpers for LiveData
+//    testImplementation "android.arch.core:core-testing:$lifecycle_version"
+//
+//    //Paging对RxJava2的原生支持
+//    implementation "android.arch.paging:rxjava2:1.0.1"
+//
+////    implementation 'com.timehop.stickyheadersrecyclerview:library:[0.4.3]@aar'
+////    implementation 'com.google.android.gms:play-services-identity:15.0.1'
+//    implementation 'com.google.android.gms:play-services-gcm:15.0.1'
 
-    //Paging对RxJava2的原生支持
-    implementation "android.arch.paging:rxjava2:1.0.1"
+    implementation "com.google.firebase:firebase-messaging:17.1.0"
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+
 }
+
+// ADD THIS AT THE BOTTOM
+apply plugin: 'com.google.gms.google-services'
 
 //android.applicationVariants.all { variant ->
 //    variant.outputs.all { output ->

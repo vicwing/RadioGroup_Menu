@@ -31,4 +31,8 @@
             segmentcontrol:texts="商业|公积金|组合"
             segmentcontrol:verticalGap="8dip"/>
     </LinearLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycleview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 </LinearLayout>

@@ -1,12 +1,18 @@
 package com.example.cdj.myapplication.mainfunction.function3;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
@@ -23,6 +29,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import okhttp3.CacheControl;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -34,25 +43,26 @@ import okhttp3.Response;
  * Created by cdj onCallBackData 2016/5/6.
  */
 public class Fragment3 extends Fragment {
-
-
     //    public static  String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=20&currentPage=1&s=SHENZHEN";
-
-
     // 名字根据实际需求进行更改
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    @BindView(R.id.segment_control)
+    SegmentControl mSegmentControl;
+
+    @BindView(R.id.recycleview)
+    RecyclerView recycleview;
+    Unbinder unbinder;
 
     // 这里的参数只是一个举例可以根据需求更改
     private String mParam1;
     private String mParam2;
 
-//    private PtrClassicFrameLayout mPtrFrameLayout;
+    //    private PtrClassicFrameLayout mPtrFrameLayout;
     private ListView mListView;
     private QuickAdapter<SecListItemEntity> mAdapter;
     private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
     private LoadMoreListViewContainer loadMoreListViewContainer;
-    private SegmentControl mSegmentControl;
     private int pageCount = 0;
 
     /**
@@ -89,60 +99,34 @@ public class Fragment3 extends Fragment {
 //        return inflater.inflate(R.layout.content_fragment3, container, false);
         // set up views
         final View layout = inflater.inflate(R.layout.content_fragment3, null);
-
+        unbinder = ButterKnife.bind(this, layout);
         initSegmentControl(layout);
-
-////        // pull to refresh
-//        mPtrFrameLayout = (PtrClassicFrameLayout) layout.findViewById(R.id.load_more_list_view_ptr_frame);
-//        mPtrFrameLayout.setLoadingMinTime(1000);
-////        mPtrFrameLayout.setLastUpdateTimeKey(System.currentTimeMillis());
-//        // the following are default settings
-//        mPtrFrameLayout.setResistance(1.7f);
-//        mPtrFrameLayout.setRatioOfHeaderHeightToRefresh(1.2f);
-//        mPtrFrameLayout.setDurationToClose(200);
-//        mPtrFrameLayout.setDurationToCloseHeader(1000);
-//        // default is false
-//        mPtrFrameLayout.setPullToRefresh(true);
-//        // default is true
-//        mPtrFrameLayout.setKeepHeaderWhenRefresh(true);
-//        mPtrFrameLayout.setPtrHandler(new PtrHandler() {
-//            @Override
-//            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
-////                Logger.d("checkCanDoRefresh  ");
-//                // here check list view, not content.
-//                return PtrDefaultHandler.checkContentCanBePulledDown(frame, mListView, header);
-//            }
-//
-//            @Override
-//            public void onRefreshBegin(PtrFrameLayout frame) {
-////                Logger.i("onRefreshBegin  ");
-//                currentPage = 1;
-//                if (loadMoreListViewContainer != null) {
-//                    loadMoreListViewContainer.loadMoreFinish(false, true);
-//                }
-//                requestUpdate(String.valueOf(currentPage));
-//            }
-//
-//        });
-////        // list view
-//        // header place holder
-//        loadMoreListViewContainer = (LoadMoreListViewContainer) layout.findViewById(R.id.load_more_list_view_container);
-//        setLoadMoreDefaultFootView(loadMoreListViewContainer);
-////        setLoadMoreFootView(loadMoreListViewContainer);
-//
-//        mListView = (ListView) layout.findViewById(R.id.load_more_small_image_list_view);
-////        mAdapter = new SecListItemAdapter(getActivity(), mSecListItemEntities);
-//        mAdapter = new SecListItemAdapter(getActivity(), R.layout.item_list_secondlist);
-//        mListView.setAdapter(mAdapter);
-//
-//        mPtrFrameLayout.autoRefresh(true);
-//        requestUpdate(String.valueOf(currentPage));
-//        Logger.d("222222222222222222222222222222222222222");
         return layout;
     }
 
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        ArrayList<String> arrayList = new ArrayList<>();
+        arrayList.add("A");
+        arrayList.add("b");
+        arrayList.add("c");
+        arrayList.add("d");
+        arrayList.add("e");
+        arrayList.add("f");
+        arrayList.add("h");
+        arrayList.add("i");
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL);
+        MySimpledapter mySimpledapter = new MySimpledapter(arrayList);
+        recycleview.addItemDecoration(dividerItemDecoration);
+        recycleview.setLayoutManager(linearLayoutManager);
+        recycleview.setAdapter(mySimpledapter);
+    }
+
+
     private void initSegmentControl(View layout) {
-        mSegmentControl = (SegmentControl) layout.findViewById(R.id.segment_control);
         mSegmentControl.setOnSegmentControlClickListener(new SegmentControl.OnSegmentControlClickListener() {
             @Override
             public void onSegmentControlClick(int index) {
@@ -156,6 +140,7 @@ public class Fragment3 extends Fragment {
 
     private int currentPage = 1;
     public static String Url = "http://shenzhen.qfang.com/appapi/v4_5/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
+
     private void requestUpdate(final String currentPageStr) {
         String httpUrl = Url + "&currentPage=" + currentPageStr;
 //        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
@@ -190,6 +175,7 @@ public class Fragment3 extends Fragment {
 
     /**
      * 实现了缓存的okhttp
+     *
      * @param httpUrl
      */
     private void getCacheRequset(String httpUrl) {
@@ -297,5 +283,24 @@ public class Fragment3 extends Fragment {
                 });
             }
         }.start();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    public static class MySimpledapter extends BaseQuickAdapter<String, BaseViewHolder> {
+
+        public MySimpledapter(@Nullable List data) {
+            super(R.layout.item_list_simple_text, data);
+        }
+
+
+        @Override
+        protected void convert(BaseViewHolder helper, String item) {
+            helper.setText(R.id.tv_avg_price, "item " + helper.getAdapterPosition());
+        }
     }
 }
