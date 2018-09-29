@@ -1,5 +1,6 @@
 package com.example.cdj.myapplication.mainfunction.function1;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,15 +32,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.cdj.myapplication.Bean.MobileAddress;
 import com.example.cdj.myapplication.Bean.SecListBean;
+import com.example.cdj.myapplication.Bean.User;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.activity.webview.StickyHeaderListViewActivity;
 import com.example.cdj.myapplication.base.BaseFragment;
+import com.example.cdj.myapplication.rxjava.RxjavaTest;
 import com.example.cdj.myapplication.utils.ScreenUtil;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
+import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
@@ -47,6 +50,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +59,16 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.Call;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 /**
  * Created by cdj onCallBackData 2016/2/1.
@@ -79,6 +91,30 @@ public class FragmentA extends BaseFragment {
     private int screenHeight;
     private String uritext = "http://www.java2s.com:8080/yourpath/fileName.htm?datasource=shenzhen&path=32&id=4#harvic";
 
+    Observer observer = new Observer() {
+        @Override
+        public void onSubscribe(Disposable d) {
+            Logger.i("onSubscribe:   " + "d = [" + d + "]");
+
+        }
+
+        @Override
+        public void onNext(Object o) {
+            Logger.d("onNext:   " + "o = [" + o + "]");
+
+        }
+
+        @Override
+        public void onError(Throwable e) {
+
+        }
+
+        @Override
+        public void onComplete() {
+
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -87,6 +123,7 @@ public class FragmentA extends BaseFragment {
         return view;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
@@ -105,20 +142,141 @@ public class FragmentA extends BaseFragment {
 //		testWeakRefrence();
 //		testSoftRefrence();
 
-//        Observable.create(n -> System.out.println("2222222222"));
-//        Observable observable = Observable.create(new ObservableOnSubscribe<Integer>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<Integer> e) throws Exception {
-//                Logger.d("=========================currentThread name: " + Thread.currentThread().getName());
-//                e.onNext(1);
-//                e.onNext(2);
-//                e.onNext(3);
-//                e.onComplete();
-//            }
-//        });
-
 
         //lambda 方式调用
+//        observableMethod1();
+//        observableMethod2();
+
+//        Observable.just("images/logo.png", "321") // 输入类型 String
+//                .map(new Function<String, Object>() {
+//                    @Override
+//                    public Object apply(String s) throws Exception {
+//                        Logger.d("apply:   " + "s = [" + s + "]");
+//
+//                        return null;
+//                    }
+//                })
+//                .subscribe(observer);
+        ArrayList<User> objects = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            User user = new User();
+            objects.add(user);
+        }
+        Observable.fromArray(objects) // 输入类型 String
+                .doOnNext(new Consumer<ArrayList<User>>() {
+                    @Override
+                    public void accept(ArrayList<User> users) throws Exception {
+                        String name = Thread.currentThread().getName();
+                        Logger.d("Consumer  thread name = " + name);
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ArrayList<User>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ArrayList<User> users) {
+                        Logger.d("Observer....onNext......");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        RxjavaTest.rangeTest();
+
+        Observable.create(new ObservableOnSubscribe<Response>() {
+            @Override
+            public void subscribe(@NonNull ObservableEmitter<Response> e) throws Exception {
+//                Response.Builder builder = new Response.Builder()
+//                        .url("http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512")
+//                        .get();
+//                Request request = builder.build();
+//                Call call = new OkHttpClient().newCall(request);
+//                Response response = call.execute();
+//                e.onNext(response);
+
+
+                Request request = new Request.Builder()
+                        .url("http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512")
+                        .get()
+                        .build();
+                Call call = new OkHttpClient().newCall(request);
+                Response response = call.execute();
+                e.onNext(response);
+            }
+        }).map(new Function<Response, MobileAddress>() {
+            @Override
+            public MobileAddress apply(@NonNull Response response) throws Exception {
+                if (response.isSuccessful()) {
+                    ResponseBody body = response.body();
+                    if (body != null) {
+                        Logger.e("map:转换前:" + response.body().toString());
+                        return new Gson().fromJson(body.string(), MobileAddress.class);
+                    }
+                }
+                return null;
+            }
+        }).observeOn(AndroidSchedulers.mainThread())
+                .doOnNext(new Consumer<MobileAddress>() {
+                    @Override
+                    public void accept(@NonNull MobileAddress s) throws Exception {
+                        Logger.e("doOnNext: 保存成功：" + s.toString() + "\n");
+                    }
+                }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MobileAddress>() {
+                    @Override
+                    public void accept(@NonNull MobileAddress data) throws Exception {
+                        Logger.d("成功:" + data.toString() + "\n");
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(@NonNull Throwable throwable) throws Exception {
+                        Logger.d("失败：" + throwable.getMessage() + "\n");
+                    }
+                });
+
+    }
+
+
+    private void observableMethod2() {
+        Observable observable = Observable.just("Hello", "Hi", "Aloha");
+        observable.subscribe(new Observer() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Logger.i("onSubscribe:   " + "d = [" + d + "]");
+
+            }
+
+            @Override
+            public void onNext(Object o) {
+                Logger.d("onNext:   " + "o = [" + o + "]");
+
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    private void observableMethod1() {
         Observable<Object> lambdaObservable1 = Observable.create(emitter -> {
                     emitter.onNext(1);
                     emitter.onNext(2);
@@ -166,20 +324,15 @@ public class FragmentA extends BaseFragment {
             }
 
         });
-
-
     }
 
     /**
      * firebases生成的设备唯一标识,卸载app后会有变化.
-     *
-     * @param instanceId
      */
-    private void firebaseInstanceId(Task<InstanceIdResult> instanceId) {
-        String id = FirebaseInstanceId.getInstance().getId();
-        Logger.d("firebaseInstanceId:   " + "instanceId = [" + id + "]");
-        InstanceIdResult instanceIdResult = instanceId.getResult();
-        Logger.d("firebaseInstanceId:   " + "instanceId = [" + instanceIdResult.getId() + "]" + " token =" + instanceIdResult.getToken());
+    private void firebaseInstanceId() {
+        FirebaseInstanceId instance = FirebaseInstanceId.getInstance();
+        String id = instance.getId();
+        Logger.d(" 设备唯一标识 : firebaseInstanceId:   " + "instanceId = [" + id + "]");
     }
 
     /**
@@ -356,7 +509,8 @@ public class FragmentA extends BaseFragment {
     void btnOnclick(View v) {
         switch (v.getId()) {
             case R.id.btn_subthread:
-                makeThread();
+//                makeThread();
+
                 break;
             case R.id.textView7:
                 Intent intent = new Intent(getContext(), StickyHeaderListViewActivity.class);

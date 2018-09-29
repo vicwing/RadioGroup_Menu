@@ -35,6 +35,12 @@
     <color name="mask_color">#88888888</color>
     <color name="check_bg">#f2f2f2</color>
     <color name="un_press_color">#9C27B0</color>
-
-
+    <color name="grey_dcdcdc">#dcdcdc</color>
+    <color name="orange_e28c12">#e28c12</color>
+    <color name="orange_ff9933_text">#ff9933</color>
+    <color name="grey_f5f5f5">#f5f5f5</color>
+    <color name="white_f9f9f9">#f9f9f9</color>
+    <color name="grey_eaeaea">#eaeaea</color>
+    <color name="red_ef6666">#ef6666</color>
+    <color name="red_FF6D6D">#ff6d6d</color>
 </resources>

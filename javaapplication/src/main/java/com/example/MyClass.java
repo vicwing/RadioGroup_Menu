@@ -2,15 +2,15 @@ package com.example;
 
 import com.example.pojo.Car;
 import com.example.pojo.Student;
+import com.example.rxjava.RxjavaTest;
 
 import java.lang.ref.WeakReference;
-import java.util.UUID;
+
+import io.reactivex.Observable;
 
 public class MyClass {
 
     public static void main(String[] args) {
-
-
 //        LocalDateTime arrivalDate = LocalDateTime.now();
 //        try {
 //            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
@@ -24,9 +24,114 @@ public class MyClass {
 //        double lng = 113.96026;
 //        System.out.println("lat " + String.valueOf(lat) + " " + String.valueOf(lng));
 
-        String uuid = UUID.randomUUID().toString();
-        System.out.println("uuid  "+uuid);
+//        String uuid = UUID.randomUUID().toString();
+//        System.out.println("uuid  " + uuid);
+
 //        String iid = InstanceID.getInstance(context).getId()
+//        List<String> list = new ArrayList<>();
+//        list.add("H");
+//        list.add("e");
+//        list.add("l");
+//        list.add("l");
+//        list.add("o");
+//        list.add(" ");
+//        list.add("W");
+//        list.add("o");
+//        list.add("r");
+//        list.add("l");
+//        list.add("d");
+//        list.stream().forEach(s -> System.out.println(s)); // Java8
+
+//        flatMapTest();
+
+//        int mapTest1 = flatMapTest1(10);
+
+
+//        List<String> names = Arrays.asList("Hafiz", "Waleed", "Hussain", "Steve");
+//        for (int i = 0; i < names.size(); i++) {
+//            if (i % 2 == 0) continue;
+//            System.out.println(names.get(i));
+//        }
+//
+//        Observable.range(0, names.size())
+//                .filter(index -> index % 2 == 1)
+//                .subscribe(index -> System.out.println("rxjava   " + names.get(index)));
+
+
+//        new Thread(() -> {
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            greeting();
+//        }).start();
+
+//        Observable.interval(0, 1, TimeUnit.SECONDS)
+//                .subscribe(aLong -> greeting());
+
+//        Observable.create(new ObservableOnSubscribe<Integer>() {
+//            @Override
+//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+//
+//            }
+//        }).subscribe(new Observer<Integer>() {
+//            @Override
+//            public void onSubscribe(Disposable d) {
+//
+//            }
+//
+//            @Override
+//            public void onNext(Integer integer) {
+//
+//            }
+//
+//            @Override
+//            public void onError(Throwable e) {
+//
+//            }
+//
+//            @Override
+//            public void onComplete() {
+//
+//            }
+//        });
+
+//        rxjavaTest.mapTest();
+//        rxjavaTest.mapTest2();
+//        RxjavaTest.flatMapTest();
+//        RxjavaTest.createTest();
+//        RxjavaTest.interval();
+//        RxjavaTest.rangeTest();
+//        RxjavaTest.filterTest();
+        RxjavaTest.flowableTest();
+    }
+
+    public static void greeting() {
+        System.out.println("Hello");
+    }
+
+    public static int flatMapTest1(int a) {
+        if (a == 0 || a == 1) {
+            System.out.println(1);
+            return 1;
+        } else {
+
+            int i = flatMapTest1(a - 2) + flatMapTest1(a - 1);
+            System.out.println(i);
+            return i;
+        }
+    }
+
+    public static void flatMapTest() {
+//
+        Observable.range(0, 5)
+                .doAfterNext(i ->
+                        System.out.println(i)
+                )
+                .flatMap(integer -> Observable.range(0, 5))
+                .doOnNext(j -> System.out.print(j))
+                .subscribe();
     }
 
     private static void weakReferenceTest() {

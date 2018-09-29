@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="com.example.cdj.myapplication">
+    package="com.example.cdj.myapplication">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -18,16 +19,16 @@
             android:name=".MainServerActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN"/>-->
 
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER"/>-->
+            <!--</intent-filter>-->
         </activity>
-        <activity android:name=".RootViewActivity"/>
-        <activity android:name=".mainfunction.caculate.MortgageCaculatorAcitivity"/>
-        <activity android:name=".mainfunction.taxcaculator.TaxCaculatorActivity"/>
-        <activity android:name=".StickyTestActivity"/>
+        <activity android:name=".RootViewActivity" />
+        <activity android:name=".mainfunction.caculate.MortgageCaculatorAcitivity" />
+        <activity android:name=".mainfunction.taxcaculator.TaxCaculatorActivity" />
+        <activity android:name=".StickyTestActivity" />
         <activity android:name=".mainfunction.newhouse.NewHouseListActivity">
             <!--<intent-filter>-->
             <!--<action android:name="android.intent.action.MAIN"/>-->
@@ -35,19 +36,27 @@
             <!--<category android:name="android.intent.category.LAUNCHER"/>-->
             <!--</intent-filter>-->
         </activity>
-        <activity android:name=".activity.webview.StickyHeaderListViewActivity"/>
+        <activity android:name=".activity.webview.StickyHeaderListViewActivity" />
+
         <service
             android:name=".service.BookManagerService"
             android:enabled="true"
-            android:exported="true"
-            >
+            android:exported="true">
             <intent-filter>
-                <action android:name="com.cdj.group.action"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name="com.cdj.group.action" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
         </service>
-        <activity android:name=".activity.webview.WebViewActivity"/>
+
+        <activity android:name=".activity.webview.WebViewActivity" />
+        <activity android:name=".activity.ScrollDetailActivity">
+            <intent-filter>-->
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

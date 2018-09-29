@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.example.cdj.myapplication.widget.qframelayout.QfangFrameLayout
+        android:id="@+id/qfangframelayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/grey_f5f5f5">
+
+        <com.example.cdj.myapplication.widget.CusNestedScrollView
+            android:id="@+id/scrollview_entrust_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_entrust_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            </LinearLayout>
+        </com.example.cdj.myapplication.widget.CusNestedScrollView>
+    </com.example.cdj.myapplication.widget.qframelayout.QfangFrameLayout>
+    <!--顶部标题-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ll_entrust_title"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white_f9f9f9"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="3dp"
+        android:paddingTop="3dp"
+        tools:text="二手房详情"
+        tools:visibility="visible">
+
+        <ImageView
+            android:id="@+id/iv_scoll_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@mipmap/icon_common_return_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@mipmap/icon_common_return_white" />
+
+        <TextView
+            android:id="@+id/tv_entrust_house_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:maxLines="1"
+            app:layout_constraintBottom_toTopOf="@+id/tv_top_price"
+            app:layout_constraintEnd_toStartOf="@+id/iv_share"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/iv_scoll_back"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园翠海花园"
+            tools:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/tv_top_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="1"
+            android:textSize="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/iv_share"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_entrust_house_name"
+            app:layout_constraintTop_toBottomOf="@+id/tv_entrust_house_name"
+            tools:text="7200元/月"
+            tools:visibility="gone" />
+
+        <ImageView
+            android:id="@+id/iv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:src="@mipmap/icon_detail_share_white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+    </android.support.constraint.ConstraintLayout>
+
+    <!--<LinearLayout-->
+    <!--android:id="@+id/ll_entrust_detail_bottom"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="60dp"-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:background="@color/white"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:paddingBottom="8dp"-->
+    <!--android:paddingLeft="15dp"-->
+    <!--android:paddingRight="15dp"-->
+    <!--android:paddingTop="8dp"-->
+    <!--android:visibility="gone"-->
+    <!--tools:visibility="visible">-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_entrust_do"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="44dp"-->
+    <!--android:layout_weight="1"-->
+    <!--android:background="@drawable/btn_orange_bg"-->
+    <!--android:text="操作"-->
+    <!--android:textColor="@color/white" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/btn_entrust_contact_agent"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="44dp"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_weight="3"-->
+    <!--android:background="@drawable/btn_yellow_bg"-->
+    <!--android:enabled="false"-->
+    <!--android:text="联系经纪人"-->
+    <!--android:textColor="@color/white" />-->
+    <!--</LinearLayout>-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/ll_detail_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:clipChildren="false"
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <LinearLayout
+            android:id="@+id/linearLayout1_line"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/grey_eaeaea"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0"
+            android:orientation="vertical" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="8dp"
+            android:background="@color/white"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/btn_collection"
+            android:layout_width="45dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@null"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/qf_detail_collect_selector"
+            android:gravity="center"
+            android:text="关注"
+            android:textColor="@color/grey_888888"
+            android:textSize="11dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_appointment"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+
+        <TextView
+            android:id="@+id/tv_appointment"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="1"
+            android:background="@drawable/selector_base_detail_red_ff6d6d_2dp"
+            android:gravity="center"
+            android:text="预约看房"
+            android:textColor="@color/white"
+            android:textSize="14dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/layout_contact"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/btn_collection"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_specail_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@mipmap/ic_house_detail_free_car"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_appointment"
+            app:layout_constraintEnd_toEndOf="@+id/tv_appointment"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/tv_appointment"
+            tools:visibility="visible" />
+
+        <RelativeLayout
+            android:id="@+id/layout_contact"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="7dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/btn_yellow_bg"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/tv_appointment"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="5dp"
+                android:drawablePadding="6dp"
+                android:gravity="center"
+                android:text="联系经纪人"
+                android:textColor="@color/black_33333"
+                android:textSize="14dp"
+                tools:drawableLeft="@mipmap/qf_icon_apartment_detail_call_agent"
+                tools:text="联系经纪人" />
+
+        </RelativeLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</FrameLayout>
