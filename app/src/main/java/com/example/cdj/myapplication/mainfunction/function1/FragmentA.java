@@ -1,8 +1,10 @@
 package com.example.cdj.myapplication.mainfunction.function1;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,6 +22,8 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -28,29 +32,33 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.cdj.myapplication.Bean.MobileAddress;
 import com.example.cdj.myapplication.Bean.SecListBean;
-import com.example.cdj.myapplication.Bean.User;
+import com.example.cdj.myapplication.Interceptor.LoggerInterceptor;
+import com.example.cdj.myapplication.Interceptor.NetInterceptor;
+import com.example.cdj.myapplication.Interceptor.NoNetInterceptor;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
-import com.example.cdj.myapplication.activity.webview.StickyHeaderListViewActivity;
 import com.example.cdj.myapplication.base.BaseFragment;
-import com.example.cdj.myapplication.rxjava.RxjavaTest;
+import com.example.cdj.myapplication.utils.NetWorkUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -59,33 +67,32 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
+import okhttp3.Cache;
+import okhttp3.CacheControl;
 import okhttp3.Call;
+import okhttp3.Headers;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
 
 /**
  * Created by cdj onCallBackData 2016/2/1.
  */
 public class FragmentA extends BaseFragment {
-    @BindView(R.id.textView7)
-    TextView textView7;
-    @BindView(R.id.textView6)
-    TextView textView6;
-    @BindView(R.id.textView5)
-    TextView textView5;
-    @BindView(R.id.imageView)
-    ImageView imageView;
+    //    @BindView(R.id.textView7)
+//    TextView textView7;
+//    @BindView(R.id.textView6)
+//    TextView textView6;
+//    @BindView(R.id.textView5)
+//    TextView textView5;
+//    @BindView(R.id.imageView)
+//    ImageView imageView;
     //    @BindView(R.id.tv_television)
 //    TextView tvTelevision;
-//    @BindView(R.id.tv_qchat)
-//    TextView tvQchat;
+    @BindView(R.id.tv_texcontent)
+    TextView textView;
     private Context mContext;
     private int screenWidth;
     private int screenHeight;
@@ -114,6 +121,7 @@ public class FragmentA extends BaseFragment {
 
         }
     };
+    private Disposable disposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -131,6 +139,8 @@ public class FragmentA extends BaseFragment {
         mContext = getActivity();
 //		testUri();
 
+//        okHttpTest();
+//        testCacheControl();
 
 //		String abc=new String("abc");  //1
 //		SoftReference<String> abcSoftRef=new SoftReference<String>(abc);  //2
@@ -142,112 +152,401 @@ public class FragmentA extends BaseFragment {
 //		testWeakRefrence();
 //		testSoftRefrence();
 
-
-        //lambda 方式调用
-//        observableMethod1();
-//        observableMethod2();
-
-//        Observable.just("images/logo.png", "321") // 输入类型 String
-//                .map(new Function<String, Object>() {
+//        ArrayList<User> objects = new ArrayList<>();
+//        for (int i = 0; i < 3; i++) {
+//            User user = new User();
+//            objects.add(user);
+//        }
+//        Observable.fromArray(objects) // 输入类型 String
+//                .doOnNext(new Consumer<ArrayList<User>>() {
 //                    @Override
-//                    public Object apply(String s) throws Exception {
-//                        Logger.d("apply:   " + "s = [" + s + "]");
-//
-//                        return null;
+//                    public void accept(ArrayList<User> users) throws Exception {
+//                        String name = Thread.currentThread().getName();
+//                        Logger.d("Consumer  thread name = " + name);
 //                    }
-//                })
-//                .subscribe(observer);
-        ArrayList<User> objects = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
-            User user = new User();
-            objects.add(user);
-        }
-        Observable.fromArray(objects) // 输入类型 String
-                .doOnNext(new Consumer<ArrayList<User>>() {
-                    @Override
-                    public void accept(ArrayList<User> users) throws Exception {
-                        String name = Thread.currentThread().getName();
-                        Logger.d("Consumer  thread name = " + name);
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ArrayList<User>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ArrayList<User> users) {
-                        Logger.d("Observer....onNext......");
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        RxjavaTest.rangeTest();
-
-        Observable.create(new ObservableOnSubscribe<Response>() {
-            @Override
-            public void subscribe(@NonNull ObservableEmitter<Response> e) throws Exception {
-//                Response.Builder builder = new Response.Builder()
+//                }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<ArrayList<User>>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onNext(ArrayList<User> users) {
+//                        Logger.d("Observer....onNext......");
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//
+//                    }
+//                });
+//        Observable.create(new ObservableOnSubscribe<Response>() {
+//            @Override
+//            public void subscribe(@NonNull ObservableEmitter<Response> e) throws Exception {
+////                Response.Builder builder = new Response.Builder()
+////                        .url("http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512")
+////                        .get();
+////                Request request = builder.build();
+////                Call call = new OkHttpClient().newCall(request);
+////                Response response = call.execute();
+////                e.onNext(response);
+//
+//
+//                Request request = new Request.Builder()
 //                        .url("http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512")
-//                        .get();
-//                Request request = builder.build();
+//                        .get()
+//                        .build();
 //                Call call = new OkHttpClient().newCall(request);
 //                Response response = call.execute();
 //                e.onNext(response);
+//            }
+//        }).map(new Function<Response, MobileAddress>() {
+//            @Override
+//            public MobileAddress apply(@NonNull Response response) throws Exception {
+//                if (response.isSuccessful()) {
+//                    ResponseBody body = response.body();
+//                    if (body != null) {
+//                        Logger.e("map:转换前:" + response.body().toString());
+//                        return new Gson().fromJson(body.string(), MobileAddress.class);
+//                    }
+//                }
+//                return null;
+//            }
+//        }).observeOn(AndroidSchedulers.mainThread())
+//                .doOnNext(new Consumer<MobileAddress>() {
+//                    @Override
+//                    public void accept(@NonNull MobileAddress s) throws Exception {
+//                        Logger.e("doOnNext: 保存成功：" + s.toString() + "\n");
+//                    }
+//                }).subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<MobileAddress>() {
+//                    @Override
+//                    public void accept(@NonNull MobileAddress data) throws Exception {
+//                        Logger.d("成功:" + data.toString() + "\n");
+//                    }
+//                }, new Consumer<Throwable>() {
+//                    @Override
+//                    public void accept(@NonNull Throwable throwable) throws Exception {
+//                        Logger.d("失败：" + throwable.getMessage() + "\n");
+//                    }
+//                });
 
-
-                Request request = new Request.Builder()
-                        .url("http://api.avatardata.cn/MobilePlace/LookUp?key=ec47b85086be4dc8b5d941f5abd37a4e&mobileNumber=13021671512")
-                        .get()
-                        .build();
-                Call call = new OkHttpClient().newCall(request);
-                Response response = call.execute();
-                e.onNext(response);
-            }
-        }).map(new Function<Response, MobileAddress>() {
-            @Override
-            public MobileAddress apply(@NonNull Response response) throws Exception {
-                if (response.isSuccessful()) {
-                    ResponseBody body = response.body();
-                    if (body != null) {
-                        Logger.e("map:转换前:" + response.body().toString());
-                        return new Gson().fromJson(body.string(), MobileAddress.class);
-                    }
-                }
-                return null;
-            }
-        }).observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(new Consumer<MobileAddress>() {
-                    @Override
-                    public void accept(@NonNull MobileAddress s) throws Exception {
-                        Logger.e("doOnNext: 保存成功：" + s.toString() + "\n");
-                    }
-                }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MobileAddress>() {
-                    @Override
-                    public void accept(@NonNull MobileAddress data) throws Exception {
-                        Logger.d("成功:" + data.toString() + "\n");
-                    }
-                }, new Consumer<Throwable>() {
-                    @Override
-                    public void accept(@NonNull Throwable throwable) throws Exception {
-                        Logger.d("失败：" + throwable.getMessage() + "\n");
-                    }
-                });
+//        disposable = RxjavaTest.rangeTest(this);
+//        RxjavaTest.interval(this);
+//        SystemClock.sleep(10000);
+        getImEiMethod();
 
     }
 
+    /**
+     * 获取imei号,有sim卡才能获取.
+     */
+    private void getImEiMethod() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
+                    Manifest.permission.READ_PHONE_STATE)) {
+
+                // Show an expanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+
+            } else {
+
+                // No explanation needed, we can request the permission.
+
+                ActivityCompat.requestPermissions((Activity) mContext,
+                        new String[]{Manifest.permission.READ_PHONE_STATE},
+                        MY_PERMISSIONS_REQUEST_READ_CONTACTS);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+
+
+                String imei = null;
+                if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    imei = getImei();
+                }
+                Logger.d("onViewCreated:   " + "imei = " + imei);
+
+                return;
+            }
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private String getImei() {
+        TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+        return tm.getImei();
+    }
+
+    int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
+    private final Interceptor REWRITE_RESPONSE_INTERCEPTOR = new Interceptor() {
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            String requestCacheContrl = request.header("Cache-Control");
+            if ("only-if-cached".equals(requestCacheContrl)) {
+                okhttp3.Response originalResponse = chain.proceed(request);
+                String cacheControl = originalResponse.header("Cache-Control");
+                if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
+                        cacheControl.contains("must-revalidate") || cacheControl.contains("max-age=0")) {
+                    Response response = originalResponse.newBuilder()
+                            .removeHeader("Pragma")
+                            .header("Cache-Control", "public, max-age=" + 66)
+                            .build();
+                    Headers headers = response.headers();
+                    if (headers != null) {
+                        Logger.d("reponse================" + "\n" + headers.toString());
+                    }
+                    return response;
+
+                } else {
+                    return originalResponse;
+                }
+            } else {
+                return chain.proceed(request);
+            }
+
+
+//            okhttp3.Response originalResponse = chain.proceed(chain.request());
+//            String cacheControl = originalResponse.header("Cache-Control");
+//            if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
+//                    cacheControl.contains("must-revalidate") || cacheControl.contains("max-age=0")) {
+//                Response response = originalResponse.newBuilder()
+//                        .removeHeader("Pragma")
+//                        .header("Cache-Control", "public, max-age=" + 66)
+//                        .build();
+//                Headers headers = response.headers();
+//                if (headers != null) {
+//                    Logger.d("reponse================" + "\n" + headers.toString());
+//                }
+//                return response;
+//
+//            } else {
+//                return originalResponse;
+//            }
+        }
+    };
+
+    private final Interceptor REWRITE_RESPONSE_INTERCEPTOR_OFFLINE = new Interceptor() {
+        @Override
+        public okhttp3.Response intercept(Chain chain) throws IOException {
+            Request request = chain.request();
+            if (!NetWorkUtils.isNetworkConnected(getContext())) {
+                request = request.newBuilder()
+                        .removeHeader("Pragma")
+                        .header("Cache-Control", "public, only-if-cached")
+                        .build();
+            }
+            return chain.proceed(request);
+        }
+    };
+
+    private String getCurrentTime() {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日 HH:mm:ss");// HH:mm:ss
+        Date date = new Date(System.currentTimeMillis());
+//        time1.setText("Date获取当前日期时间" + simpleDateFormat.format(date));
+
+
+        final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss z",
+                Locale.ENGLISH);
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+8"));
+
+        return simpleDateFormat.format(date);
+    }
+
+    private void testCacheControl() {
+        //缓存文件夹
+        File cacheFile = new File(mContext.getExternalCacheDir().toString(), "cache");
+        //缓存大小为10M
+        int cacheSize = 10 * 1024 * 1024;
+        //创建缓存对象
+        final Cache cache = new Cache(cacheFile, cacheSize);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .cache(cache)
+                        .addNetworkInterceptor(new NetInterceptor())
+                        .addInterceptor(new NoNetInterceptor())
+//                        .addInterceptor(new BaseInterceptor(getContext()))
+                        .addInterceptor(new LoggerInterceptor("曹操", true))
+                        .build();
+                //设置缓存时间为60秒
+                CacheControl cacheControl = new CacheControl.Builder()
+                        .maxAge(30, TimeUnit.SECONDS)
+//                        .onlyIfCached()
+//                        .noCache()
+                        .build();
+
+                Request request = new Request.Builder()
+                        .header("Accept-Datetime", getCurrentTime())
+                        .header("abc", "123")
+//                        .url("http://api.k780.com/?app=life.time&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json")
+                        .url("http://mapi.qfang.com/appapi/v7_0_3/transaction/list?devId=00000000-0e37-d1e5-5782-fcf90033c587&devModel=9&sign=78b19112a9e2fa8673bbb2f8f3aaac4f&dataSource=SHENZHEN&version=v7_0_3&platform=android&m_channel=qfangMarket&timestamp=1541666168426&bizType=SALE&pageSize=1&currentPage=1")
+                        .cacheControl(cacheControl)
+//                        .cacheControl(CacheControl.FORCE_CACHE)
+                        .build();
+
+                try {
+                    Response response1 = client.newCall(request).execute();
+                    Logger.i(" response1 :" + response1.toString());
+                    String string = response1.body().string();
+                    Logger.i(" response1 body :" + string);
+                    Logger.i(" response1 缓存数据 :" + response1.cacheResponse());
+                    Logger.i(" response1 网络数据 :" + response1.networkResponse());
+
+                    Response cacheResponse = response1.cacheResponse();
+//                    if (cacheResponse != null) {
+////                        String string1 = response1.body().string();
+//                        setTextOnUi("缓存数据" + string);
+//                    } else {
+//                        Response networkResponse = response1.networkResponse();
+//                        if (networkResponse != null) {
+////                            String string2 = response1.body().string();
+//                            setTextOnUi(" 网络返回" + string);
+//                        } else {
+//                            ((Activity) mContext).runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    ToastUtils.showShort(" 缓存和网络都有数据.");
+//                                }
+//                            });
+//                        }
+//                    }
+//                    if (response1.code() != 504) {
+//                        // 资源已经缓存了，可以直接使用
+//                        Response cacheResponse = response1.cacheResponse();
+//                        if (cacheResponse != null) {
+//                            String string = response1.body().string();
+//                            setTextOnUi("缓存数据" + string);
+//                        } else {
+////                            ((Activity) mContext).runOnUiThread(new Runnable() {
+////                                @Override
+////                                public void run() {
+////                                    ToastUtils.showShort("缓存获取失败.");
+////                                }
+////                            });
+//                            Response networkResponse = response1.networkResponse();
+//                            if (networkResponse != null) {
+//                                String string = response1.body().string();
+//                                setTextOnUi("!=504 网络返回" + string);
+//                            } else {
+//                                ((Activity) mContext).runOnUiThread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        ToastUtils.showShort(" 缓存和网络都有数据.");
+//                                    }
+//                                });
+//                            }
+//                        }
+//                    } else {
+//                        // 资源没有缓存，或者是缓存不符合条件了。
+//                        Request request1 = new Request.Builder()
+//                                .header("Accept-Datetime", getCurrentTime())
+//                                .url("http://api.k780.com/?app=life.time&appkey=10003&sign=b59bc3ef6191eb9f747dd4e83c99f2a4&format=json")
+//                                .cacheControl(CacheControl.FORCE_NETWORK)
+//                                .build();
+//                        response1 = client.newCall(request1).execute();
+//                        String string1 = response1.body().string();
+//                        setTextOnUi("网络数据" + string1);
+//                    }
+                    setTextOnUi("数据\n" + string);
+                    response1.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    private void setTextOnUi(String string) {
+        ((Activity) mContext).runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                textView.setText(string);
+            }
+        });
+    }
+
+    private void okHttpTest() {
+        //缓存文件夹
+        File cacheFile = new File(mContext.getExternalCacheDir().toString(), "cache");
+        //缓存大小为10M
+        int cacheSize = 10 * 1024 * 1024;
+        //创建缓存对象
+        final Cache cache = new Cache(cacheFile, cacheSize);
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .cache(cache)
+                        .build();
+                //官方的一个示例的url
+                String url = "http://mapi.qfang.com/appapi/v7_0_3/school/area?devId=00000000-0e37-d1e5-5782-fcf90033c587&devModel=9&schoolType=w1&sign=9c25ad8b94fc962f498fe2fb08c960f7&dataSource=SHENZHEN&version=v7_0_3&platform=android&m_channel=qfangMarket&timestamp=1541498207519";
+
+                Request request = new Request.Builder()
+                        .url(url)
+                        .build();
+                Call call1 = client.newCall(request);
+                Response response1 = null;
+                try {
+                    //第一次网络请求
+                    response1 = call1.execute();
+//                    Logger.i("testCache: response1 :" + response1.body().string());
+//                    Logger.i("testCache: response1 cache :" + response1.cacheResponse());
+//                    Logger.i("testCache: response1 network :" + response1.networkResponse());
+                    response1.body().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                Call call12 = client.newCall(request);
+
+                try {
+                    //第二次网络请求
+                    Response response2 = call12.execute();
+                    Logger.i("testCache: response2 :" + response2.body().string());
+                    Logger.i("testCache: response2 cache :" + response2.cacheResponse());
+                    Logger.i("testCache: response2 network :" + response2.networkResponse());
+                    Logger.i("testCache: response1 equals response2:" + response2.equals(response1));
+                    response2.body().close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+//        disposable.dispose();
+        Logger.d("onDestroy:  disposable  ");
+
+    }
 
     private void observableMethod2() {
         Observable observable = Observable.just("Hello", "Hi", "Aloha");
@@ -475,7 +774,7 @@ public class FragmentA extends BaseFragment {
                             case 0:
                                 break;
                             case 1:
-                                textView7.setText(" 非ui 线程");
+//                                textView7.setText(" 非ui 线程");
 //								textView7.invalidate();
                                 break;
                             case 2:
@@ -505,17 +804,18 @@ public class FragmentA extends BaseFragment {
     }
 
 
-    @OnClick({R.id.btn_subthread, R.id.textView7})
+    @OnClick({R.id.btn_subthread})
     void btnOnclick(View v) {
         switch (v.getId()) {
             case R.id.btn_subthread:
 //                makeThread();
-
+                textView.setText("");
+                testCacheControl();
                 break;
-            case R.id.textView7:
-                Intent intent = new Intent(getContext(), StickyHeaderListViewActivity.class);
-                startActivity(intent);
-                break;
+//            case R.id.textView7:
+//                Intent intent = new Intent(getContext(), StickyHeaderListViewActivity.class);
+//                startActivity(intent);
+//                break;
             default:
                 break;
         }
@@ -542,7 +842,6 @@ public class FragmentA extends BaseFragment {
 //		}
     }
 
-    int count = 0;
     public static String Url = "http://10.251.93.254:8010/appapi/v4_3/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
 
     private void requestUpdate(final String currentPageStr) {
