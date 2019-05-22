@@ -34,14 +34,14 @@ import java.math.BigDecimal;
  * 创建人：vicwing
  * 创建时间：2019-05-22 11:36
  * 最后修改人：vicwing
- * @version
- *
  */
 public class LinePageIndicator extends BasePageIndicator {
 
-    private final Paint mPaintUnselected = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private final Paint mPaintbackground = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint mPaintSelected = new Paint(Paint.ANTI_ALIAS_FLAG);
     private float mLineWidth;
+    private float strokeHeight;
+    private boolean lineTypeHasCorner;
 
     public LinePageIndicator(Context context) {
         this(context, null);
@@ -60,62 +60,21 @@ public class LinePageIndicator extends BasePageIndicator {
         final int defaultUnselectedColor = res.getColor(R.color.default_line_indicator_unselected_color);
         final float defaultLineWidth = res.getDimension(R.dimen.default_line_indicator_line_width);
         final float defaultStrokeWidth = res.getDimension(R.dimen.default_line_indicator_stroke_width);
-        final boolean defaultCentered = res.getBoolean(R.bool.default_line_indicator_centered);
-
         //Retrieve styles attributes
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LinePageIndicator, defStyle, 0);
 
         mLineWidth = a.getDimension(R.styleable.LinePageIndicator_lineWidth, defaultLineWidth);
-//        mGapWidth = a.getDimension(R.styleable.LinePageIndicator_gapWidth, defaultGapWidth);
-        setStrokeWidth(a.getDimension(R.styleable.LinePageIndicator_strokeWidth, defaultStrokeWidth));
-        mPaintUnselected.setColor(a.getColor(R.styleable.LinePageIndicator_unselectedColor, defaultUnselectedColor));
+        strokeHeight = a.getDimension(R.styleable.LinePageIndicator_strokeWidth, defaultStrokeWidth);
+        setStrokeWidth(strokeHeight);
+        mPaintbackground.setColor(a.getColor(R.styleable.LinePageIndicator_unselectedColor, defaultUnselectedColor));
         mPaintSelected.setColor(a.getColor(R.styleable.LinePageIndicator_selectedColor, defaultSelectedColor));
-
         Drawable background = a.getDrawable(R.styleable.LinePageIndicator_android_background);
+        lineTypeHasCorner = a.getBoolean(R.styleable.LinePageIndicator_lineTypeCorner, false);
         if (background != null) {
             setBackgroundDrawable(background);
         }
-
         a.recycle();
     }
-
-    public void setUnselectedColor(int unselectedColor) {
-        mPaintUnselected.setColor(unselectedColor);
-        invalidate();
-    }
-
-    public int getUnselectedColor() {
-        return mPaintUnselected.getColor();
-    }
-
-    public void setSelectedColor(int selectedColor) {
-        mPaintSelected.setColor(selectedColor);
-        invalidate();
-    }
-
-    public int getSelectedColor() {
-        return mPaintSelected.getColor();
-    }
-
-    public void setLineWidth(float lineWidth) {
-        mLineWidth = lineWidth;
-        invalidate();
-    }
-
-    public float getLineWidth() {
-        return mLineWidth;
-    }
-
-    public void setStrokeWidth(float lineHeight) {
-        mPaintSelected.setStrokeWidth(lineHeight);
-        mPaintUnselected.setStrokeWidth(lineHeight);
-        invalidate();
-    }
-
-    public float getStrokeWidth() {
-        return mPaintSelected.getStrokeWidth();
-    }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -140,17 +99,20 @@ public class LinePageIndicator extends BasePageIndicator {
 
         float verticalOffset = paddingTop + ((getHeight() - paddingTop - getPaddingBottom()) / 2.0f);
         float horizontalOffset = paddingLeft;
-
-
+        float radius = 0;
+        if (lineTypeHasCorner) {
+            radius = strokeHeight / 2;
+            mPaintbackground.setStrokeCap(Paint.Cap.ROUND);
+            mPaintSelected.setStrokeCap(Paint.Cap.ROUND);
+        }
         float starx = horizontalOffset;
-        float endx = starx + indicatorTotalWidth;
-        canvas.drawLine(starx, verticalOffset, endx, verticalOffset, mPaintUnselected);
-//        Logger.d("onDraw:   " + "scrollX = [" + scrollX + "]" + "computeVerticalScrollOffset = " + computeVerticalScrollOffset);
+        float endx = horizontalOffset + indicatorTotalWidth;
 
+        canvas.drawLine(starx + radius, verticalOffset, endx - radius, verticalOffset, mPaintbackground);
         float dx = getdx(indicatorTotalWidth);
-        float startxSelect = starx + dx;
+        float startxSelect = horizontalOffset + dx;
         float endXSelet = startxSelect + mLineWidth;
-        canvas.drawLine(startxSelect, verticalOffset, endXSelet, verticalOffset, mPaintSelected);
+        canvas.drawLine(startxSelect + radius, verticalOffset, endXSelet - radius, verticalOffset, mPaintSelected);
     }
 
 
@@ -215,6 +177,43 @@ public class LinePageIndicator extends BasePageIndicator {
         return (int) Math.ceil(result);
     }
 
+    public void setUnselectedColor(int unselectedColor) {
+        mPaintbackground.setColor(unselectedColor);
+        invalidate();
+    }
+
+    public int getUnselectedColor() {
+        return mPaintbackground.getColor();
+    }
+
+    public void setSelectedColor(int selectedColor) {
+        mPaintSelected.setColor(selectedColor);
+        invalidate();
+    }
+
+    public int getSelectedColor() {
+        return mPaintSelected.getColor();
+    }
+
+    public void setLineWidth(float lineWidth) {
+        mLineWidth = lineWidth;
+        invalidate();
+    }
+
+    public float getLineWidth() {
+        return mLineWidth;
+    }
+
+    public void setStrokeWidth(float lineHeight) {
+        mPaintSelected.setStrokeWidth(lineHeight);
+        mPaintbackground.setStrokeWidth(lineHeight);
+        invalidate();
+    }
+
+    public float getStrokeWidth() {
+        return mPaintSelected.getStrokeWidth();
+    }
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         SavedState savedState = (SavedState) state;
@@ -223,7 +222,7 @@ public class LinePageIndicator extends BasePageIndicator {
         requestLayout();
     }
 
-        @Override
+    @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
         SavedState savedState = new SavedState(superState);
@@ -262,6 +261,7 @@ public class LinePageIndicator extends BasePageIndicator {
             }
         };
     }
+
     public float div(float v1, float v2) {
         BigDecimal b1 = new BigDecimal(Float.toString(v1));
         BigDecimal b2 = new BigDecimal(Float.toString(v2));

@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        app:gapWidth="0dp"
         app:lineWidth="40dp"
+        app:selectedColor="@color/colorAccent"
         app:strokeWidth="20dp"
-        app:unselectedColor="@color/cube_mints_black"
-        app:selectedColor="@color/colorAccent" />
+        app:lineTypeCorner="true"
+        app:unselectedColor="@color/cube_mints_black" />
 </LinearLayout>

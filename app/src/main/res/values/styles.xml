@@ -1,7 +1,4 @@
-<resources
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:CommonFormLayout="http://schemas.android.com/apk/com.example.cdj.myapplication.cusview"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:CommonFormLayout="http://schemas.android.com/apk/com.example.cdj.myapplication.cusview" xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -18,7 +15,7 @@
         <item name="android:activityCloseEnterAnimation">@anim/push_right_in</item>
         <item name="android:activityCloseExitAnimation">@anim/push_right_out</item>
     </style>
-<!--淡入淡出-->
+    <!--淡入淡出-->
     <style name="XPTAnimationActivity" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@android:anim/fade_in</item>
         <item name="android:activityOpenExitAnimation">@android:anim/fade_out</item>
@@ -31,9 +28,9 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="radio_button">
         <item name="android:layout_weight">1</item>
@@ -100,8 +97,6 @@
     </style>
 
     <declare-styleable name="LinePageIndicator">
-        <!-- Whether or not the indicators should be centered. -->
-        <attr name="centered" />
         <!-- Color of the unselected lines that represent the pages. -->
         <attr name="unselectedColor" />
         <!-- Color of the selected line that represents the current page. -->
@@ -110,9 +105,9 @@
         <attr name="lineWidth" format="dimension" />
         <!-- Width of each indicator line's stroke. -->
         <attr name="strokeWidth" />
-        <!-- Width of the gap between each indicator line. -->
-        <attr name="gapWidth" format="dimension" />
+        <!-- type of  corner or rectangle. -->
+        <attr name="lineTypeCorner" format="boolean" />
         <!-- View background -->
-        <attr name="android:background"/>
+        <attr name="android:background" />
     </declare-styleable>
 </resources>

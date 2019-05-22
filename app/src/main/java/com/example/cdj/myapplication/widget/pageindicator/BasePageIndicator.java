@@ -66,7 +66,7 @@ public class BasePageIndicator extends View implements PageIndicator {
             RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
             if (layoutManager instanceof GridLayoutManager && ((GridLayoutManager) layoutManager).getOrientation() == LinearLayoutManager.HORIZONTAL) {
                 horizontalOffset = mRecyclerView.computeHorizontalScrollOffset();
-                float recycleViewWidth = getRecycleViewWidth();
+//                float recycleViewWidth = getRecycleViewWidth();
 //                Logger.d("horizontalOffset:   " + horizontalOffset + "  scollXDistance = [" + scollXDistance + "]"
 //                        + "  recycleViewWidth = [" + recycleViewWidth + "]"
 //                        + "  overallXScroll = [" + overallXScroll + "]"
@@ -98,7 +98,6 @@ public class BasePageIndicator extends View implements PageIndicator {
 
         mCurrentPage = position;
         invalidate();
-
         if (mListener != null) {
             mListener.onPageSelected(position);
         }
