@@ -23,6 +23,28 @@ public class RxjavaTest {
 
     private static final String TAG = RxjavaTest.class.getSimpleName();
 
+    /**
+     * 最简单的异步操作
+     */
+    public static void createTest1() {
+        Observable.create(new ObservableOnSubscribe<Object>() {
+            @Override
+            public void subscribe(ObservableEmitter<Object> emitter) throws Exception {
+                System.out.println("disposed 1= " + emitter.isDisposed());
+                threadName();
+                emitter.onComplete();
+                System.out.println("disposed 2= " + emitter.isDisposed());
+            }
+        })
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object o) throws Exception {
+                        System.out.println("consumer " + o);
+                    }
+                });
+    }
 
     public static void createTest() {
         Observable.create(new ObservableOnSubscribe<Object>() {
@@ -35,39 +57,16 @@ public class RxjavaTest {
                 System.out.println("disposed 2= " + emitter.isDisposed());
             }
         })
-                .subscribeOn(Schedulers.trampoline())
+                .subscribeOn(Schedulers.io())
                 .subscribe(new Consumer<Object>() {
                     @Override
                     public void accept(Object o) throws Exception {
                         System.out.println("consumer " + o);
                     }
                 });
-//                .subscribeOn(Schedulers.io())
-//                .subscribe(new Observer<Object>() {
-//                    @Override
-//                    public void onSubscribe(Disposable d) {
-//                        System.out.println("disposed 3= " + d.isDisposed());
-//                    }
-//
-//                    @Override
-//                    public void onNext(Object o) {
-//                        System.out.println("result=" + o);
-//                        threadName();
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onComplete() {
-//                        System.out.println("complete..");
-//                    }
-//                });
     }
 
-    private static void threadName() {
+    public static void threadName() {
         String name = Thread.currentThread().getName();
         System.out.println("thread name  " + name);
     }
@@ -216,7 +215,7 @@ public class RxjavaTest {
     }
 
     public static void flowableTest() {
-        Flowable.just("Hello,I am China!","B2")
+        Flowable.just("Hello,I am China!", "B2")
                 //将1.x中的Func1,2改为Function和BiFunction，Func3-9改为Function3-9
                 //多参数FuncN改为Function<Object[],R>
 

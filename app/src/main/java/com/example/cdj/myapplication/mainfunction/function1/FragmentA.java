@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,13 +17,18 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Shader;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.telephony.TelephonyManager;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
@@ -32,16 +38,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Interceptor.LoggerInterceptor;
 import com.example.cdj.myapplication.Interceptor.NetInterceptor;
 import com.example.cdj.myapplication.Interceptor.NoNetInterceptor;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
+import com.example.cdj.myapplication.activity.LinearIndicatorActivity;
+import com.example.cdj.myapplication.activity.SnapHelperActivity;
 import com.example.cdj.myapplication.base.BaseFragment;
+import com.example.cdj.myapplication.mainfunction.adapter.FragmentAAdapter;
 import com.example.cdj.myapplication.utils.NetWorkUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -55,7 +66,9 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
@@ -81,47 +94,30 @@ import okhttp3.Response;
  * Created by cdj onCallBackData 2016/2/1.
  */
 public class FragmentA extends BaseFragment {
+    private final String rx_binding_test = "RX_binding_test";
+    private final String snapheler_recycleview = "snapheler_recycleview";
+    private final String LINEAR_PAGE_INDICATOR = "linear_page_indicator";
     //    @BindView(R.id.textView7)
-//    TextView textView7;
-//    @BindView(R.id.textView6)
-//    TextView textView6;
-//    @BindView(R.id.textView5)
-//    TextView textView5;
-//    @BindView(R.id.imageView)
-//    ImageView imageView;
+    //    TextView textView7;
+    //    @BindView(R.id.textView6)
+    //    TextView textView6;
+    //    @BindView(R.id.textView5)
+    //    TextView textView5;
+    //    @BindView(R.id.imageView)
+    //    ImageView imageView;
     //    @BindView(R.id.tv_television)
-//    TextView tvTelevision;
+    //    TextView tvTelevision;
+    @BindView(R.id.btn_subthread)
+    Button btnSubthread;
     @BindView(R.id.tv_texcontent)
-    TextView textView;
+    TextView tvTexcontent;
+    @BindView(R.id.recycleview)
+    RecyclerView recycleview;
     private Context mContext;
     private int screenWidth;
     private int screenHeight;
+
     private String uritext = "http://www.java2s.com:8080/yourpath/fileName.htm?datasource=shenzhen&path=32&id=4#harvic";
-
-    Observer observer = new Observer() {
-        @Override
-        public void onSubscribe(Disposable d) {
-            Logger.i("onSubscribe:   " + "d = [" + d + "]");
-
-        }
-
-        @Override
-        public void onNext(Object o) {
-            Logger.d("onNext:   " + "o = [" + o + "]");
-
-        }
-
-        @Override
-        public void onError(Throwable e) {
-
-        }
-
-        @Override
-        public void onComplete() {
-
-        }
-    };
-    private Disposable disposable;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -137,6 +133,40 @@ public class FragmentA extends BaseFragment {
 
         super.onViewCreated(view, savedInstanceState);
         mContext = getActivity();
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
+        recycleview.setLayoutManager(linearLayoutManager);
+        List<String> datas = new ArrayList<>();
+        datas.add(snapheler_recycleview);
+        datas.add(rx_binding_test);
+        datas.add(LINEAR_PAGE_INDICATOR);
+        FragmentAAdapter adapter = new FragmentAAdapter(datas);
+        recycleview.setAdapter(adapter);
+        adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                Logger.d("onItemClick:   ");
+                List<String> data = adapter.getData();
+                if (data != null) {
+                    for (int i = 0; i < data.size(); i++) {
+                        String resut = data.get(i);
+                        Intent intent = null;
+                        switch (resut) {
+                            case snapheler_recycleview:
+                                intent = new Intent(mContext, SnapHelperActivity.class);
+                                mContext.startActivity(intent);
+                                break;
+                            case LINEAR_PAGE_INDICATOR:
+                                intent = new Intent(mContext, LinearIndicatorActivity.class);
+                                mContext.startActivity(intent);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
+        });
 //		testUri();
 
 //        okHttpTest();
@@ -244,13 +274,35 @@ public class FragmentA extends BaseFragment {
 //        SystemClock.sleep(10000);
         getImEiMethod();
 
+        printdifrentPath();
+    }
+
+    public void printdifrentPath() {
+        Logger.d("getCacheDir=" + mContext.getCacheDir());
+        Logger.d("getFilesDir=" + mContext.getFilesDir());
+        Logger.d("getExternalCacheDir=" + mContext.getExternalCacheDir());
+        Logger.d("getExternalFilesDir=" + mContext.getExternalFilesDir(null));
+        Logger.d("getExternalFilesDir=" + getCacheFilePath(mContext));
+    }
+
+    public static String getCacheFilePath(Context context) {
+        //缓存目录
+        String cachePath;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())
+                || !Environment.isExternalStorageRemovable()) {
+            //sd卡缓存目录
+            cachePath = context.getExternalCacheDir().getPath();
+        } else {
+            cachePath = context.getCacheDir().getPath();
+        }
+        return cachePath;
     }
 
     /**
      * 获取imei号,有sim卡才能获取.
      */
     private void getImEiMethod() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext,
@@ -291,6 +343,7 @@ public class FragmentA extends BaseFragment {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("MissingPermission")
     private String getImei() {
         TelephonyManager tm = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
@@ -300,11 +353,11 @@ public class FragmentA extends BaseFragment {
     int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 2001;
     private final Interceptor REWRITE_RESPONSE_INTERCEPTOR = new Interceptor() {
         @Override
-        public okhttp3.Response intercept(Chain chain) throws IOException {
+        public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             String requestCacheContrl = request.header("Cache-Control");
             if ("only-if-cached".equals(requestCacheContrl)) {
-                okhttp3.Response originalResponse = chain.proceed(request);
+                Response originalResponse = chain.proceed(request);
                 String cacheControl = originalResponse.header("Cache-Control");
                 if (cacheControl == null || cacheControl.contains("no-store") || cacheControl.contains("no-cache") ||
                         cacheControl.contains("must-revalidate") || cacheControl.contains("max-age=0")) {
@@ -348,7 +401,7 @@ public class FragmentA extends BaseFragment {
 
     private final Interceptor REWRITE_RESPONSE_INTERCEPTOR_OFFLINE = new Interceptor() {
         @Override
-        public okhttp3.Response intercept(Chain chain) throws IOException {
+        public Response intercept(Chain chain) throws IOException {
             Request request = chain.request();
             if (!NetWorkUtils.isNetworkConnected(getContext())) {
                 request = request.newBuilder()
@@ -484,7 +537,7 @@ public class FragmentA extends BaseFragment {
         ((Activity) mContext).runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                textView.setText(string);
+                tvTexcontent.setText(string);
             }
         });
     }
@@ -809,7 +862,7 @@ public class FragmentA extends BaseFragment {
         switch (v.getId()) {
             case R.id.btn_subthread:
 //                makeThread();
-                textView.setText("");
+                tvTexcontent.setText("");
                 testCacheControl();
                 break;
 //            case R.id.textView7:

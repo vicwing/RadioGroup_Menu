@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--<item name="itemCacheData" type="id"></item>-->
+    <!--<item name="itemCacheView" type="id"></item>-->
+    <!--<item name="xzlRent" type="id"></item>-->
+    <!--<item name="xzlSale" type="id"></item>-->
+    <!--<item name="zhmxListView" type="id"></item>-->
+    <!--<item name="hbmxListView" type="id"></item>-->
+    <!--<item name="tab_button" type="id">false</item>-->
+
+    <!--<item name="left" type="id" />-->
+    <!--<item name="right" type="id" />-->
+    <!--<item name="scrollview" type="id" />-->
+
+    <!--&lt;!&ndash;<item name="tvContent" type="id" />&ndash;&gt;-->
+    <!--<item name="expand_collapse" type="id" />-->
+    <!--&lt;!&ndash;filterview&ndash;&gt;-->
+    <!--<item name="fixedTabIndicator" type="id" />-->
+    <!--<item name="mFilterContentView" type="id" />-->
+
+    <item name="statusbarutil_fake_status_bar_view" type="id" />
+    <item name="statusbarutil_translucent_view" type="id" />
+    <!--<item name="entrust_image_id" type="id" />-->
+</resources>

@@ -1,6 +1,10 @@
 package com.example.cdj.myapplication.widget;
 
 import android.animation.ObjectAnimator;
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -11,15 +15,20 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.blankj.utilcode.util.ScreenUtils;
 import com.example.cdj.myapplication.R;
+import com.example.cdj.myapplication.utils.StatusBarUtil;
 import com.example.cdj.myapplication.widget.qframelayout.QfangFrameLayout;
 import com.orhanobut.logger.Logger;
+
+import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +38,7 @@ import butterknife.ButterKnife;
  * Created by vicwing
  * Created Time 2018/9/26
  */
-public class ScrollDetailView extends LinearLayout implements CusNestedScrollView.OnScrollListener {
+public class ScrollDetailView extends LinearLayout implements CusNestedScrollView.OnScrollListener ,LifecycleObserver {
 
     /**
      * 设置透明标题变化高度
@@ -109,8 +118,48 @@ public class ScrollDetailView extends LinearLayout implements CusNestedScrollVie
         cusNestedScrollView.setOnScrollListener(this);
     }
 
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        //view加载完成时回调
+        container.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // TODO Auto-generated method stub
+                if (Build.VERSION.SDK_INT >= 16) {
+                    container.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                } else {
+                    container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                }
+
+                int statusBarHeight = StatusBarUtil.getStatusBarHeight(context);
+                int containerHeight = container.getHeight();
+                int screenHeight = ScreenUtils.getScreenHeight();
+                Logger.d(" screenHeight =" + screenHeight +
+                        "   containerHeight = [" + containerHeight + "]" + " statusBarHeight= " + statusBarHeight +
+                        "  result=" + (containerHeight + statusBarHeight));
+                int bottomHeight = ConvertUtils.dp2px(60);
+                int result = screenHeight - (statusBarHeight + containerHeight);
+                if (result >= 0 || Math.abs(result) < bottomHeight) {
+                    //container的高度小于屏幕一定高度时,直接显示底部控件
+                    changeBottom(1);
+                }
+            }
+        });
+    }
+
     public void addContainer(View v) {
         container.addView(v);
+    }
+    @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
+    public void oncreate(@NotNull LifecycleOwner owner) {
+        Logger.e("Lifecycle oncreate:  ...... ");
+    }
+
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    void onDestroy(@NotNull LifecycleOwner owner){
+        Logger.d("Lifecycle ON_START:   "+"v = [" + "" + "]");
     }
 
     @Override

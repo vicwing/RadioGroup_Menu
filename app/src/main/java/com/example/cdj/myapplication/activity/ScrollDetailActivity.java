@@ -1,5 +1,8 @@
 package com.example.cdj.myapplication.activity;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleOwner;
+import android.arch.lifecycle.LifecycleRegistry;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -24,10 +27,18 @@ import butterknife.ButterKnife;
  * Created by vicwing
  * Created Time 2018/9/26
  */
-public class ScrollDetailActivity extends BaseActivity {
+public class ScrollDetailActivity extends BaseActivity  implements LifecycleOwner {
 
     @BindView(R.id.scrollview_detail)
     ScrollDetailView scrollviewDetail;
+
+
+    LifecycleRegistry mLifecycleRegistry = new LifecycleRegistry(this);
+
+    @Override
+    public Lifecycle getLifecycle() {
+        return mLifecycleRegistry;
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +51,7 @@ public class ScrollDetailActivity extends BaseActivity {
         linearLayout1.setBackgroundColor(getColor(R.color.red));
         scrollviewDetail.addContainer(linearLayout1);
         LinearLayout linearLayout2 = new LinearLayout(this);
-        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ConvertUtils.dp2px(500));
+        LinearLayout.LayoutParams layoutParams2 = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ConvertUtils.dp2px(100));
         linearLayout2.setLayoutParams(layoutParams2);
         linearLayout2.setBackgroundColor(getColor(R.color.black_33333));
         scrollviewDetail.addContainer(linearLayout2);
@@ -54,12 +65,24 @@ public class ScrollDetailActivity extends BaseActivity {
             com.orhanobut.logger.Logger.d(" onclick....:   ");
 
         });
-
-
         entrustBottomUi();
-//        scrollviewDetail.entrustBottomUi();
-    }
 
+//        mLifecycleRegistry = new LifecycleRegistry(this);
+//        mLifecycleRegistry.markState(Lifecycle.State.CREATED);
+        getLifecycle().addObserver(scrollviewDetail);
+//        scrollviewDetail.entrustBottomUi();
+
+//        mLifecycleRegistry.handleLifecycleEvent(Lifecycle.Event.ON_START);
+    }
+//
+//    @Override
+//    public Lifecycle getLifecycle() {
+//        return super.getLifecycle();
+//    }
+
+    /**
+     *
+     */
     private void entrustBottomUi() {
         scrollviewDetail.setVisibilityView(R.id.btn_collection, false);
         scrollviewDetail.setVisibilityView(R.id.tv_appointment, true);

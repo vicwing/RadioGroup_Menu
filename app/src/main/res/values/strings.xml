@@ -47,4 +47,5 @@
     <string name="kprogress_change_text">换个词试试</string>
     <string name="kprogress_search_all_neighbourhood">查看全部</string>
     <string name="tips_search_empty">小Q玩命也没搜索出结果,要不换个词试试?</string>
+    <string name="test_ui">test ui</string>
 </resources>

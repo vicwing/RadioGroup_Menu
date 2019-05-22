@@ -1,110 +1,167 @@
 package com.example;
 
+import com.example.lambda.LambdaTest;
 import com.example.pojo.Car;
+import com.example.pojo.FilterMoreEnum;
 import com.example.pojo.Student;
 import com.example.rxjava.RxjavaTest;
+import com.example.utils.RowAndColumm;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class MyClass {
 
     public static void main(String[] args) {
-//        LocalDateTime arrivalDate = LocalDateTime.now();
-//        try {
-//            DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy/MM/dd/hh");
-//            String landing = arrivalDate.format(format);
-//            System.out.printf("Arriving at :  %s %n", landing);
-//        } catch (DateTimeException ex) {
-//            System.out.printf("%s can't be formatted!%n", arrivalDate);
-//            ex.printStackTrace();
-//        }
-//        double lat = 22.547076;
-//        double lng = 113.96026;
-//        System.out.println("lat " + String.valueOf(lat) + " " + String.valueOf(lng));
-
-//        String uuid = UUID.randomUUID().toString();
-//        System.out.println("uuid  " + uuid);
-
-//        String iid = InstanceID.getInstance(context).getId()
-//        List<String> list = new ArrayList<>();
-//        list.add("H");
-//        list.add("e");
-//        list.add("l");
-//        list.add("l");
-//        list.add("o");
-//        list.add(" ");
-//        list.add("W");
-//        list.add("o");
-//        list.add("r");
-//        list.add("l");
-//        list.add("d");
-//        list.stream().forEach(s -> System.out.println(s)); // Java8
-
-//        flatMapTest();
-
-//        int mapTest1 = flatMapTest1(10);
-
-
-//        List<String> names = Arrays.asList("Hafiz", "Waleed", "Hussain", "Steve");
-//        for (int i = 0; i < names.size(); i++) {
-//            if (i % 2 == 0) continue;
-//            System.out.println(names.get(i));
-//        }
-//
-//        Observable.range(0, names.size())
-//                .filter(index -> index % 2 == 1)
-//                .subscribe(index -> System.out.println("rxjava   " + names.get(index)));
-
-
-//        new Thread(() -> {
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            greeting();
-//        }).start();
-
-//        Observable.interval(0, 1, TimeUnit.SECONDS)
-//                .subscribe(aLong -> greeting());
-
-//        Observable.create(new ObservableOnSubscribe<Integer>() {
-//            @Override
-//            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
-//
-//            }
-//        }).subscribe(new Observer<Integer>() {
-//            @Override
-//            public void onSubscribe(Disposable d) {
-//
-//            }
-//
-//            @Override
-//            public void onNext(Integer integer) {
-//
-//            }
-//
-//            @Override
-//            public void onError(Throwable e) {
-//
-//            }
-//
-//            @Override
-//            public void onComplete() {
-//
-//            }
-//        });
-
 //        rxjavaTest.mapTest();
 //        rxjavaTest.mapTest2();
 //        RxjavaTest.flatMapTest();
-//        RxjavaTest.createTest();
+//        RxjavaTest.createTest1();
 //        RxjavaTest.interval();
 //        RxjavaTest.rangeTest();
 //        RxjavaTest.filterTest();
-        RxjavaTest.flowableTest();
+//        RxjavaTest.flowableTest();
+//        blockSubscribe();
+
+//        Observable.create(new ObservableOnSubscribe<String>() {
+//
+//            @Override
+//            public void subscribe(ObservableEmitter<String> e) throws Exception {
+//                e.onNext("hello");
+//            }
+//
+//        }).subscribe(new Consumer<String>() {
+//
+//            @Override
+//            public void accept(String s) {
+//                System.out.println(s);
+//            }
+//        });
+//        System.out.println("枚举名字::"+ EntrustTitle.UNDER_COMMISSIONING.getName());
+//        int currentIndex = 6;
+
+//        int count = 1;
+//        for (int i = 0; i < 10; i++) {
+//            int currentIndex = i % count + 1;
+//            System.out.println("currentIndex  = " + currentIndex);
+//        }
+//        String value = "-0.222";
+//        double v = Double.parseDouble(value);
+//        if (v>0){
+//            System.out.println(" 哒哒哒哒  = " + v);
+//        }else {
+//            System.out.println(" 小小小  = " + v);
+//        }
+        ArrayList<String> mData = new ArrayList<>();
+        for (int i = 0; i < 50; i++) {
+            if (i < 10) {
+                mData.add("0" + i);
+            } else {
+                mData.add(i+"");
+            }
+        }
+        RowAndColumm.printData(mData, 5);
+        System.out.println("------------------------");
+        List<String> dealData = RowAndColumm.dealData(mData, 3, 5);
+        RowAndColumm.printData(dealData, 5);
+//        System.out.println("结果="+5%5);
+    }
+
+    private static void 枚举测试类() {
+        Car car = new Car(123, "红色");
+        LambdaTest.test1(car, (Car c) -> c.getColour());
+
+        HashMap<FilterMoreEnum, String> hashMap = new HashMap<>();
+        hashMap.put(FilterMoreEnum.FILTER_HOUSE_POINT, "1");
+        hashMap.put(FilterMoreEnum.FILTER_NEWHOUSE_DECORATION, "2");
+        hashMap.put(FilterMoreEnum.FILTER_HOUSE_TYPE, "3");
+        hashMap.put(FilterMoreEnum.FILTER_HOUSE_POINT, "4");
+//        System.out.println("枚举" + FilterMoreEnum.FILTER_HOUSE_POINT);
+//        Set<Map.Entry<FilterMoreEnum, String>> entrySet = hashMap.entrySet();
+        for (Map.Entry<FilterMoreEnum, String> entry : hashMap.entrySet()) {
+            System.out.println("k =" + entry.getKey() + " v = " + entry.getValue());
+        }
+        System.out.println("equas   =  " + FilterMoreEnum.FILTER_HOUSE_POINT.equals("FILTER_HOUSE_POINT"));
+        String strings = "sssss,aaa,bbb,ccc,ddd";
+        StringBuilder stringBuilder = arraysDelete(strings.split(","), "sssss");
+        StringBuilder stringBuilder1 = arraysDelete(strings.split(","), "aaa");
+        StringBuilder stringBuilder2 = arraysDelete(strings.split(","), "ddd");
+        System.out.println(stringBuilder.toString());
+        System.out.println(stringBuilder1.toString());
+        System.out.println(stringBuilder2.toString());
+    }
+
+    /**
+     * 删除某个元素,结果拼接成aaa,bbb,ccc
+     *
+     * @param split
+     * @param target
+     * @return
+     */
+    private static StringBuilder arraysDelete(String[] split, String target) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < split.length; i++) {
+            String s = split[i];
+            if (s.equals(target)) {
+                continue;
+            }
+            if (i > 0 && stringBuilder.length() != 0) {
+                stringBuilder.append(",");
+            }
+            stringBuilder.append(s);
+        }
+        return stringBuilder;
+    }
+
+    private static void blockSubscribe() {
+        //创建一个上游 Observable：
+        Observable<Integer> observable = Observable.create(new ObservableOnSubscribe<Integer>() {
+            @Override
+            public void subscribe(ObservableEmitter<Integer> emitter) throws Exception {
+                System.out.println("subscribe...");
+                RxjavaTest.threadName();
+                emitter.onNext(1);
+                emitter.onNext(2);
+                emitter.onNext(3);
+                emitter.onComplete();
+            }
+        }).subscribeOn(Schedulers.io());
+        //创建一个下游 Observer
+        Observer<Integer> observer = new Observer<Integer>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                System.out.println("subscribe");
+                RxjavaTest.threadName();
+            }
+
+            @Override
+            public void onNext(Integer value) {
+//                System.out.println("on next ");
+//                RxjavaTest.threadName();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+            }
+
+            @Override
+            public void onComplete() {
+                System.out.println("on complete ");
+                RxjavaTest.threadName();
+            }
+        };
+        //建立连接
+        observable.blockingSubscribe(observer);
     }
 
     public static void greeting() {
