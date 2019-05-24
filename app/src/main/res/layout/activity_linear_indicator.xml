@@ -24,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_gravity="center"
-        app:lineWidth="40dp"
+        app:lineWidth="30dp"
         app:selectedColor="@color/colorAccent"
-        app:strokeWidth="20dp"
+        app:strokeWidth="2dp"
         app:lineTypeCorner="true"
         app:unselectedColor="@color/cube_mints_black" />
 </LinearLayout>

@@ -13,7 +13,6 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.widget.pageindicator.LinePageIndicator;
-import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +43,6 @@ public class LinearIndicatorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_linear_indicator);
         ButterKnife.bind(this);
         initData();
-//        orignalRecycleview();
         secondRecycleView();
     }
 
@@ -52,19 +50,18 @@ public class LinearIndicatorActivity extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, row, LinearLayoutManager.HORIZONTAL, false);
         int screenWidth = ScreenUtils.getScreenWidth() - mRecyclerView.getPaddingLeft() - mRecyclerView.getPaddingRight();
         int itemWidth = screenWidth / column;
-        Logger.d("secondRecycleView:  left =  " + mRecyclerView.getPaddingLeft());
-
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(new IndicatorAdapter(mData, itemWidth));
         pageIndicator.setRecyclerView(mRecyclerView);
         pageIndicator.setPageColumn(column);
-        pageIndicator.setCurrentItem(1);
+//        pageIndicator.setCurrentItem(10);
+
     }
 
 
     private void initData() {
         mData = new ArrayList<>();
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 12; i++) {
             mData.add("i=" + i);
         }
         ArrayList<String> objects = new ArrayList<>();

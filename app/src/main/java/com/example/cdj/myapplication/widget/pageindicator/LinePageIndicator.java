@@ -26,6 +26,7 @@ import android.os.Parcelable;
 import android.util.AttributeSet;
 
 import com.example.cdj.myapplication.R;
+import com.orhanobut.logger.Logger;
 
 import java.math.BigDecimal;
 
@@ -74,6 +75,8 @@ public class LinePageIndicator extends BasePageIndicator {
             setBackgroundDrawable(background);
         }
         a.recycle();
+
+
     }
 
     @Override
@@ -82,17 +85,22 @@ public class LinePageIndicator extends BasePageIndicator {
         if (mRecyclerView == null) {
             return;
         }
-        final int count = pageCount();
-        if (count == 0) {
+        final int pageCount = pageCount();
+        if (pageCount <= 1) {
+            setVisibility(INVISIBLE);
             return;
         }
 
-        if (mCurrentPage >= count) {
-            setCurrentItem(count - 1);
+        if (mCurrentPage >= pageCount) {
+            setCurrentItem(pageCount - 1);
             return;
         }
 
-        final float indicatorTotalWidth = (count * mLineWidth);
+
+        float lastPageWidth = mLineWidth * (mPageColumn - lastPageItemColumn()) / mPageColumn;
+        final float indicatorTotalWidth = pageCount * mLineWidth - lastPageWidth;
+//        final float indicatorTotalWidth = (pageCount * mLineWidth);
+
         final float paddingTop = getPaddingTop();
         final float paddingLeft = getPaddingLeft();
         final float paddingRight = getPaddingRight();
@@ -113,8 +121,15 @@ public class LinePageIndicator extends BasePageIndicator {
         float startxSelect = horizontalOffset + dx;
         float endXSelet = startxSelect + mLineWidth;
         canvas.drawLine(startxSelect + radius, verticalOffset, endXSelet - radius, verticalOffset, mPaintSelected);
+
+
     }
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Logger.d("onDraw:   " + " pageCount = [" + pageCount() + "]" + " eachPageItemCount =  " + eachPageItemCount());
+    }
 
     private float getdx(float mLineWidth) {
         float div = div(horizontalOffset, getRecycleViewWidth());
@@ -267,4 +282,6 @@ public class LinePageIndicator extends BasePageIndicator {
         BigDecimal b2 = new BigDecimal(Float.toString(v2));
         return b1.divide(b2, 10, BigDecimal.ROUND_HALF_UP).floatValue();
     }
+
+
 }

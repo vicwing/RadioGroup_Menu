@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
 /**
  * Created by HanHailong on 2017/9/24.
  */
@@ -20,7 +22,7 @@ public class BasePageIndicator extends View implements PageIndicator {
     protected RecyclerView mRecyclerView;
     private OnPageChangeListener mListener;
     private int mScrollState;
-    private int mPageColumn = DEFAULT_COLUMN;
+    protected int mPageColumn = DEFAULT_COLUMN;
     protected int mCurrentPage;
     protected int horizontalOffset;
 
@@ -89,7 +91,13 @@ public class BasePageIndicator extends View implements PageIndicator {
         int position = layoutManager.findFirstVisibleItemPosition();
         View firstVisiableChildView = layoutManager.findViewByPosition(position);
         int viewWidth = firstVisiableChildView.getWidth();
-        return viewWidth * mPageColumn * pageCount();
+        int totalColumn = 0;
+        if (pageCount() > 1) {
+            totalColumn = mPageColumn * pageCount() - (mPageColumn - lastPageItemColumn());
+        } else {
+            totalColumn = mPageColumn;
+        }
+        return viewWidth * totalColumn;
     }
 
     @Override
@@ -187,6 +195,11 @@ public class BasePageIndicator extends View implements PageIndicator {
         return row * mPageColumn;
     }
 
+    /**
+     * 当前页数据量
+     *
+     * @return
+     */
     protected int pageCount() {
         if (mRecyclerView == null || mRecyclerView.getAdapter() == null)
             return 0;
@@ -199,5 +212,30 @@ public class BasePageIndicator extends View implements PageIndicator {
 
         return itemCount % eachPageCount == 0 ?
                 itemCount / eachPageCount : itemCount / eachPageCount + 1;
+    }
+
+    /**
+     * @return
+     */
+    protected int lastPageItemColumn() {
+        if (mRecyclerView == null || mRecyclerView.getAdapter() == null) {
+            return 0;
+        }
+        int pageCount = pageCount();
+        if (pageCount > 1) {
+            int itemCount = mRecyclerView.getAdapter().getItemCount();
+            int lastPageItemCount = itemCount - (pageCount - 1) * eachPageItemCount();
+            RecyclerView.LayoutManager layoutManager = mRecyclerView.getLayoutManager();
+            if (layoutManager != null) {
+                if (layoutManager instanceof GridLayoutManager) {
+                    GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+                    int row = gridLayoutManager.getSpanCount();
+                    int column = lastPageItemCount / row;
+                    Logger.d("lastPageItemColumn:   " + lastPageItemCount + "column" + column);
+                    return column;
+                }
+            }
+        }
+        return 0;
     }
 }
