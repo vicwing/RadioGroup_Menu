@@ -93,7 +93,7 @@ public class BasePageIndicator extends View implements PageIndicator {
         int viewWidth = firstVisiableChildView.getWidth();
         int totalColumn = 0;
         if (pageCount() > 1) {
-            totalColumn = mPageColumn * pageCount() - (mPageColumn - lastPageItemColumn());
+            totalColumn = mPageColumn * pageCount() - (mPageColumn - getLastPageItemColumn());
         } else {
             totalColumn = mPageColumn;
         }
@@ -215,9 +215,11 @@ public class BasePageIndicator extends View implements PageIndicator {
     }
 
     /**
+     * 获取最后一页的列数
+     *
      * @return
      */
-    protected int lastPageItemColumn() {
+    protected int getLastPageItemColumn() {
         if (mRecyclerView == null || mRecyclerView.getAdapter() == null) {
             return 0;
         }
@@ -231,7 +233,7 @@ public class BasePageIndicator extends View implements PageIndicator {
                     GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
                     int row = gridLayoutManager.getSpanCount();
                     int column = lastPageItemCount / row;
-                    Logger.d("lastPageItemColumn:   " + lastPageItemCount + "column" + column);
+                    Logger.d("getLastPageItemColumn:   " + lastPageItemCount + "column" + column);
                     return column;
                 }
             }

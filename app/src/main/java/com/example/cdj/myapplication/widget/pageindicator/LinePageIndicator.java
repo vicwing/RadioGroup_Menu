@@ -97,7 +97,7 @@ public class LinePageIndicator extends BasePageIndicator {
         }
 
 
-        float lastPageWidth = mLineWidth * (mPageColumn - lastPageItemColumn()) / mPageColumn;
+        float lastPageWidth = mLineWidth * (mPageColumn - getLastPageItemColumn()) / mPageColumn;
         final float indicatorTotalWidth = pageCount * mLineWidth - lastPageWidth;
 //        final float indicatorTotalWidth = (pageCount * mLineWidth);
 
@@ -121,7 +121,6 @@ public class LinePageIndicator extends BasePageIndicator {
         float startxSelect = horizontalOffset + dx;
         float endXSelet = startxSelect + mLineWidth;
         canvas.drawLine(startxSelect + radius, verticalOffset, endXSelet - radius, verticalOffset, mPaintSelected);
-
 
     }
 

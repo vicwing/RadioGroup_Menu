@@ -10,7 +10,6 @@ import com.example.utils.RowAndColumm;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -67,14 +66,24 @@ public class MyClass {
             if (i < 10) {
                 mData.add("0" + i);
             } else {
-                mData.add(i+"");
+                mData.add(i + "");
             }
         }
-        RowAndColumm.printData(mData, 5);
+        RowAndColumm.printDataToend(mData, 5);
         System.out.println("------------------------");
-        List<String> dealData = RowAndColumm.dealData(mData, 3, 5);
-        RowAndColumm.printData(dealData, 5);
-//        System.out.println("结果="+5%5);
+//        List<String> sortRowAndColumnData = RowAndColumm.sortRowAndColumnData(mData, 2, 5);
+//        RowAndColumm.printDataToend(sortRowAndColumnData, 5);
+
+
+        RowAndColumm.sortRowAndColumnData1(mData, 2, 5);
+
+//        BigDecimal bigDecimal = BigDecimal.valueOf(20);
+//        double intValue = bigDecimal.divide(BigDecimal.valueOf(6), RoundingMode.UP).doubleValue();
+//        System.out.println(" 除数10 = "+intValue);
+
+        for (int i = 0; i < 6; i++) {
+            System.out.println(i + " % " + 5 + " = " + i % 5);
+        }
     }
 
     private static void 枚举测试类() {
