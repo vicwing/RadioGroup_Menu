@@ -89,7 +89,7 @@ public class RowAndColumm {
     }
 
     /**
-     * 将结合按照阵列顺序排序
+     * 二位数组阵列排序
      *
      * @param sourceList
      * @param row

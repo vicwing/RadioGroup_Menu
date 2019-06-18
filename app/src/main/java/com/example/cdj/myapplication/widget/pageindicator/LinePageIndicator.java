@@ -82,6 +82,7 @@ public class LinePageIndicator extends BasePageIndicator {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        Logger.d("onDraw:   " + "width = [" + getWidth() + "]" + "height = " + getHeight());
         if (mRecyclerView == null) {
             return;
         }
@@ -106,7 +107,9 @@ public class LinePageIndicator extends BasePageIndicator {
         final float paddingRight = getPaddingRight();
 
         float verticalOffset = paddingTop + ((getHeight() - paddingTop - getPaddingBottom()) / 2.0f);
-        float horizontalOffset = paddingLeft;
+        //居中偏移量
+        float gravtyLeft = (getWidth() - indicatorTotalWidth) / 2;
+        float horizontalOffset = paddingLeft + gravtyLeft;
         float radius = 0;
         if (lineTypeHasCorner) {
             radius = strokeHeight / 2;
@@ -115,6 +118,7 @@ public class LinePageIndicator extends BasePageIndicator {
         }
         float starx = horizontalOffset;
         float endx = horizontalOffset + indicatorTotalWidth;
+
 
         canvas.drawLine(starx + radius, verticalOffset, endx - radius, verticalOffset, mPaintbackground);
         float dx = getdx(indicatorTotalWidth);

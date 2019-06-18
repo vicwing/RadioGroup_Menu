@@ -9,8 +9,6 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.view.View;
 
-import com.orhanobut.logger.Logger;
-
 /**
  * Created by HanHailong on 2017/9/24.
  */
@@ -233,7 +231,7 @@ public class BasePageIndicator extends View implements PageIndicator {
                     GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
                     int row = gridLayoutManager.getSpanCount();
                     int column = lastPageItemCount / row;
-                    Logger.d("getLastPageItemColumn:   " + lastPageItemCount + "column" + column);
+//                    Logger.d("getLastPageItemColumn:   " + lastPageItemCount + "column" + column);
                     return column;
                 }
             }

@@ -5,7 +5,6 @@ import com.example.pojo.Car;
 import com.example.pojo.FilterMoreEnum;
 import com.example.pojo.Student;
 import com.example.rxjava.RxjavaTest;
-import com.example.utils.RowAndColumm;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -69,21 +68,24 @@ public class MyClass {
                 mData.add(i + "");
             }
         }
-        RowAndColumm.printDataToend(mData, 5);
+//        RowAndColumm.printDataToend(mData, 5);
         System.out.println("------------------------");
 //        List<String> sortRowAndColumnData = RowAndColumm.sortRowAndColumnData(mData, 2, 5);
 //        RowAndColumm.printDataToend(sortRowAndColumnData, 5);
 
 
-        RowAndColumm.sortRowAndColumnData1(mData, 2, 5);
+//        RowAndColumm.sortRowAndColumnData1(mData, 2, 5);
 
 //        BigDecimal bigDecimal = BigDecimal.valueOf(20);
 //        double intValue = bigDecimal.divide(BigDecimal.valueOf(6), RoundingMode.UP).doubleValue();
 //        System.out.println(" 除数10 = "+intValue);
 
-        for (int i = 0; i < 6; i++) {
-            System.out.println(i + " % " + 5 + " = " + i % 5);
-        }
+//        for (int i = 0; i < 6; i++) {
+//            System.out.println(i + " % " + 5 + " = " + i % 5);
+//        }
+
+        String ss= "22.549625";
+        System.out.println(ss);
     }
 
     private static void 枚举测试类() {
