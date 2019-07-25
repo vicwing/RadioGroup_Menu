@@ -16,6 +16,7 @@ import com.example.cdj.myapplication.mainfunction.function4.Fragment4;
 import com.example.cdj.myapplication.utils.BarUtils;
 import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
 import com.example.cdj.myapplication.widget.MyViewPager;
+import com.orhanobut.logger.Logger;
 
 import java.util.ArrayList;
 
@@ -76,6 +77,7 @@ public class MainServerActivity extends BaseActivity {
 
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
+                Logger.d("onCheckedChanged:   " + " checkedId = [" + checkedId + "]");
                 // TODO Auto-generated method stub
                 switch (checkedId) {
                     case R.id.one:
@@ -133,6 +135,7 @@ public class MainServerActivity extends BaseActivity {
     private class CheckedChangeListener implements RadioGroup.OnCheckedChangeListener {
         @Override
         public void onCheckedChanged(RadioGroup group, int checkedId) {
+            Logger.d("onCheckedChanged:   " + " checkedId = [" + checkedId + "]");
             switch (checkedId) {
                 case R.id.one:
                     mPager.setCurrentItem(0, false);

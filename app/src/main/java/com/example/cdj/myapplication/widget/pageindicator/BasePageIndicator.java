@@ -9,6 +9,10 @@ import android.support.v7.widget.RecyclerView.OnScrollListener;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.orhanobut.logger.Logger;
+
+import java.math.BigDecimal;
+
 /**
  * Created by HanHailong on 2017/9/24.
  */
@@ -230,12 +234,18 @@ public class BasePageIndicator extends View implements PageIndicator {
                 if (layoutManager instanceof GridLayoutManager) {
                     GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
                     int row = gridLayoutManager.getSpanCount();
-                    int column = lastPageItemCount / row;
-//                    Logger.d("getLastPageItemColumn:   " + lastPageItemCount + "column" + column);
+//                    int column = lastPageItemCount / row;
+                    int column = div(lastPageItemCount, row);
+                    Logger.d("getLastPageItemColumn:=" + lastPageItemCount + "   column=" + column);
                     return column;
                 }
             }
         }
         return 0;
+    }
+    private int div(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
+        return b1.divide(b2, 0,BigDecimal.ROUND_UP).intValue();
     }
 }

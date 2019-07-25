@@ -61,7 +61,7 @@ public class LinearIndicatorActivity extends AppCompatActivity {
 
     private void initData() {
         mData = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
+        for (int i = 0; i < 11; i++) {
             mData.add("i=" + i);
         }
         ArrayList<String> objects = new ArrayList<>();

@@ -7,6 +7,8 @@ import com.example.pojo.Student;
 import com.example.rxjava.RxjavaTest;
 
 import java.lang.ref.WeakReference;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -84,8 +86,21 @@ public class MyClass {
 //            System.out.println(i + " % " + 5 + " = " + i % 5);
 //        }
 
-        String ss= "22.549625";
+        String ss = "22.549625";
         System.out.println(ss);
+        int div = div(1, 2);
+        System.out.println("除法结果" + div);
+//        BigDecimal bigDecimal = new BigDecimal(1.5);
+//        System.out.println("reuslt="+bigDecimal.setScale(0,RoundingMode.UP));
+    }
+
+    private static int div(double v1, double v2) {
+        BigDecimal b1 = new BigDecimal(v1);
+        BigDecimal b2 = new BigDecimal(v2);
+        BigDecimal divide = b1.divide(b2, 0, RoundingMode.UP);
+//        BigDecimal bigDecimal = divide.setScale(0, BigDecimal.ROUND_UP);
+//        System.out.println("bigDecimal " + bigDecimal);
+        return divide.intValue();
     }
 
     private static void 枚举测试类() {

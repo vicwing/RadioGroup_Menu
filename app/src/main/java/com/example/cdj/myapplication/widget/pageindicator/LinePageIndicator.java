@@ -118,14 +118,14 @@ public class LinePageIndicator extends BasePageIndicator {
         }
         float starx = horizontalOffset;
         float endx = horizontalOffset + indicatorTotalWidth;
-
+        Logger.d("onDraw:   " + "starx = [" + starx + "]" + "endx =" + endx + " indicatorWidth = " + (endx - starx));
 
         canvas.drawLine(starx + radius, verticalOffset, endx - radius, verticalOffset, mPaintbackground);
         float dx = getdx(indicatorTotalWidth);
         float startxSelect = horizontalOffset + dx;
         float endXSelet = startxSelect + mLineWidth;
         canvas.drawLine(startxSelect + radius, verticalOffset, endXSelet - radius, verticalOffset, mPaintSelected);
-
+        Logger.d("onDraw:  selecedIndicatorWidth =  " + (endXSelet - startxSelect));
     }
 
     @Override
