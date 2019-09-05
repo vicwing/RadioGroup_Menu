@@ -6,4 +6,12 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_size_second">16sp</dimen>
     <integer name="activity_switch_anim_duration">350</integer>
+    <!--BottomNavigationView 的选中没有选中的字体大小-->
+    <!--<dimen name="design_bottom_navigation_active_text_size">10sp</dimen>-->
+    <!--<dimen name="design_bottom_navigation_text_size">10sp</dimen>-->
+
+    <!--&lt;!&ndash;BottomNavigationView 只放图标时的设置&ndash;&gt;-->
+    <!--<dimen name="design_bottom_navigation_active_text_size">10sp</dimen>-->
+    <!--<dimen name="design_bottom_navigation_text_size">10sp</dimen>-->
+    <!--<dimen name="design_bottom_navigation_margin">16dp</dimen>-->
 </resources>

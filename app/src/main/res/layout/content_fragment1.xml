@@ -10,10 +10,11 @@
 
     <Button
         android:id="@+id/btn_subthread"
-        android:layout_width="100dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="子线程"
+        android:text="BottomNavigationView Activiy"
         app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="11sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

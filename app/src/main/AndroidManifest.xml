@@ -2,12 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.cdj.myapplication">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
-    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
-
     <application
         android:name=".base.BaseApplication"
         android:allowBackup="true"
@@ -21,9 +15,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
-            <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".RootViewActivity" />
@@ -39,6 +33,18 @@
         </activity>
         <activity android:name=".activity.webview.StickyHeaderListViewActivity" />
 
+        <activity android:name=".activity.webview.WebViewActivity" />
+
+        <activity android:name=".activity.ScrollDetailActivity">
+            <!--<intent-filter>&ndash;&gt;-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        </activity>
+        <activity android:name=".activity.SnapHelperActivity" />
+        <activity android:name=".activity.SecondMainBottomNavigationActivity" />
+        <activity android:name=".activity.TabLayoutActivity"/>
         <service
             android:name=".service.BookManagerService"
             android:enabled="true"
@@ -49,17 +55,14 @@
             </intent-filter>
 
         </service>
-
-        <activity android:name=".activity.webview.WebViewActivity" />
-        <activity android:name=".activity.ScrollDetailActivity">
-            <!--<intent-filter>&ndash;&gt;-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-        </activity>
-        <activity android:name=".activity.SnapHelperActivity"/>
         <!--<activity android:name=".activity.LinearIndicatorActivity"/>-->
     </application>
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.EXPAND_STATUS_BAR" />
+    <!--<uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

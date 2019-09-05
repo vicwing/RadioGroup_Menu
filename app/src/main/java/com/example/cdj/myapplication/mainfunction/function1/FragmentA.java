@@ -50,7 +50,9 @@ import com.example.cdj.myapplication.Interceptor.NoNetInterceptor;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
 import com.example.cdj.myapplication.activity.LinearIndicatorActivity;
+import com.example.cdj.myapplication.activity.SecondMainBottomNavigationActivity;
 import com.example.cdj.myapplication.activity.SnapHelperActivity;
+import com.example.cdj.myapplication.activity.TabLayoutActivity;
 import com.example.cdj.myapplication.base.BaseFragment;
 import com.example.cdj.myapplication.mainfunction.adapter.FragmentAAdapter;
 import com.example.cdj.myapplication.utils.NetWorkUtils;
@@ -857,18 +859,24 @@ public class FragmentA extends BaseFragment {
     }
 
 
-    @OnClick({R.id.btn_subthread})
+    @OnClick({R.id.btn_subthread,R.id.tv_texcontent})
     void btnOnclick(View v) {
         switch (v.getId()) {
             case R.id.btn_subthread:
 //                makeThread();
-                tvTexcontent.setText("");
-                testCacheControl();
+//                tvTexcontent.setText("");
+//                testCacheControl();
+                Intent intent = new Intent(getActivity(), SecondMainBottomNavigationActivity.class);
+                startActivity(intent);
                 break;
 //            case R.id.textView7:
 //                Intent intent = new Intent(getContext(), StickyHeaderListViewActivity.class);
 //                startActivity(intent);
 //                break;
+            case  R.id.tv_texcontent:
+                Intent intent1 = new Intent(getContext(), TabLayoutActivity.class);
+                startActivity(intent1);
+                break;
             default:
                 break;
         }
