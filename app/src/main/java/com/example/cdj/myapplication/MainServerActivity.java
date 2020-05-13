@@ -1,6 +1,8 @@
 package com.example.cdj.myapplication;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -18,6 +20,7 @@ import com.example.cdj.myapplication.utils.device.DeviceUuidFactory;
 import com.example.cdj.myapplication.widget.MyViewPager;
 import com.orhanobut.logger.Logger;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -130,6 +133,51 @@ public class MainServerActivity extends BaseActivity {
         mPager.setOffscreenPageLimit(4);
 
         mRadioGroup.check(R.id.one);
+        fileDirsTest();
+    }
+
+    private void fileDirsTest() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            File[] files = getExternalFilesDirs(Environment.MEDIA_MOUNTED);
+            for (File file : files) {
+                Logger.d("file_dir", file.getAbsolutePath());
+            }
+            File filesDir = getFilesDir();
+            File cacheDir = getCacheDir();
+            Logger.d("filesDir:   " + filesDir.getAbsolutePath());
+            Logger.d("cacheDir:   " + cacheDir.getAbsolutePath());
+
+            File externalCacheDir = getExternalCacheDir();
+            Logger.d("externalCacheDir:   " + externalCacheDir.getAbsolutePath());
+            File parentFile = externalCacheDir.getParentFile();
+            for (File file : parentFile.listFiles()) {
+                Logger.i("externalCacheDir: before" + file);
+            }
+            File file1 = getExternalFilesDir("files2222");
+            Logger.i("externalCacheDir:  make a new ?  " + file1);
+            File parentFile1 = externalCacheDir.getParentFile();
+            for (File file : parentFile1.listFiles()) {
+                Logger.i("externalCacheDir: after    " + file);
+            }
+//            File parentFile = externalCacheDir.getParentFile().getParentFile();
+//            File[] parentList = parentFile.listFiles();
+//            for (File file : parentList) {
+//                Logger.d("parentFile:   " + file.getName());
+//            }
+
+            String absolutePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+            Logger.d("Environment fileDirsTest:   " + absolutePath);
+
+//            获取下载的缓存目录
+            File downloadCacheDirectory = Environment.getDownloadCacheDirectory();
+            Logger.e("downloadCacheDirectory:   " + downloadCacheDirectory.getAbsolutePath());
+
+
+//            File[] externalMediaDirs = getExternalMediaDirs();
+//            for (File fil : externalMediaDirs) {
+//                Logger.d("getExternalMediaDirs", fil.getAbsolutePath());
+//            }
+        }
     }
 
     private class CheckedChangeListener implements RadioGroup.OnCheckedChangeListener {

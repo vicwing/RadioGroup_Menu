@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ViewFlipper;
 
 import com.blankj.utilcode.util.ImageUtils;
 import com.example.cdj.myapplication.R;
@@ -41,6 +42,9 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
 
     @BindView(R.id.animate_view)
     MyAnimView animateView;
+
+    @BindView(R.id.view_flipper)
+    ViewFlipper viewFlipper;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -74,6 +78,19 @@ public class Fragment2 extends Fragment implements View.OnClickListener {
         Bitmap addReflection = ImageUtils.addReflection(decodeResource,1000);
         Bitmap fastBlur = ImageUtils.fastBlur(addReflection, 1, 3);
         iv_fragment2.setImageBitmap(fastBlur);
+
+        for (int i = 0; i < 3; i++) {
+            View view1 = getLayoutInflater().inflate(R.layout.item_textview, null);
+            viewFlipper.addView(view1);
+        }
+        viewFlipper.setFlipInterval(2000);
+        viewFlipper.startFlipping();
+        viewFlipper.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Logger.d("onClick:   "+"v = [" + viewFlipper.getDisplayedChild() + "]");
+            }
+        });
     }
 
     /**

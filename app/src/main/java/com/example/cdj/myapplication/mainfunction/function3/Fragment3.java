@@ -1,6 +1,9 @@
 package com.example.cdj.myapplication.mainfunction.function3;
 
+import android.animation.ValueAnimator;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,35 +12,20 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.Button;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.BaseViewHolder;
-import com.example.cdj.myapplication.Bean.SecListItemEntity;
 import com.example.cdj.myapplication.R;
-import com.example.cdj.myapplication.baseadapter.adapterhelper.QuickAdapter;
-import com.example.cdj.myapplication.loadmore.LoadMoreContainer;
-import com.example.cdj.myapplication.loadmore.LoadMoreHandler;
-import com.example.cdj.myapplication.loadmore.LoadMoreListViewContainer;
-import com.example.cdj.myapplication.loadmore.LoadMoreUIHandler;
+import com.example.cdj.myapplication.mainfunction.adapter.MySimpledapter;
 import com.example.cdj.myapplication.widget.segmentcontrol.SegmentControl;
 import com.orhanobut.logger.Logger;
-import com.zhy.http.okhttp.OkHttpUtils;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.CacheControl;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * Created by cdj onCallBackData 2016/5/6.
@@ -53,18 +41,10 @@ public class Fragment3 extends Fragment {
     @BindView(R.id.recycleview)
     RecyclerView recycleview;
     Unbinder unbinder;
+    @BindView(R.id.button_translate)
+    Button buttonTranslate;
 
-    // 这里的参数只是一个举例可以根据需求更改
-    private String mParam1;
-    private String mParam2;
-
-    //    private PtrClassicFrameLayout mPtrFrameLayout;
-    private ListView mListView;
-    private QuickAdapter<SecListItemEntity> mAdapter;
-    private List<SecListItemEntity> mSecListItemEntities = new ArrayList<SecListItemEntity>();
-    private LoadMoreListViewContainer loadMoreListViewContainer;
-    private int pageCount = 0;
-
+    private boolean buttonFlag = true;
     /**
      * 通过工厂方法来创建Fragment实例
      * 同时给Fragment来提供参数来使用
@@ -87,10 +67,6 @@ public class Fragment3 extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -107,6 +83,48 @@ public class Fragment3 extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initRecycleview();
+
+//        buttonScaleAni();
+
+    }
+
+    private void buttonScaleAni(final int startWidth, int endWidth) {
+        // 创建动画作用对象：此处以Button为例
+// 步骤1：设置属性数值的初始值 & 结束值
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(startWidth, endWidth);
+        // 初始值 = 当前按钮的宽度，此处在xml文件中设置为150
+        // 结束值 = 500
+        // ValueAnimator.ofInt()内置了整型估值器,直接采用默认的.不需要设置
+        // 即默认设置了如何从初始值150 过渡到 结束值500
+
+// 步骤2：设置动画的播放各种属性
+        valueAnimator.setDuration(2000);
+        // 设置动画运行时长:1s
+// 步骤3：将属性数值手动赋值给对象的属性:此处是将 值 赋给 按钮的宽度
+        // 设置更新监听器：即数值每次变化更新都会调用该方法
+//        int orgin = buttonTranslate.getWidth();
+//        Logger.i("onAnimationUpdate:   " + " orginalW = " + orgin);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+                int currentValue = (Integer) animator.getAnimatedValue();
+                Logger.d("onAnimationUpdate:   " + "currentValue = [" + currentValue + "]" + " orginalW = " + buttonTranslate.getWidth());
+                // 获得每次变化后的属性值
+                // 输出每次变化后的属性值进行查看
+                buttonTranslate.getLayoutParams().width = currentValue;
+                // 每次值变化时，将值手动赋值给对象的属性
+                // 即将每次变化后的值 赋 给按钮的宽度，这样就实现了按钮宽度属性的动态变化
+                // 步骤4：刷新视图，即重新绘制，从而实现动画效果
+                buttonTranslate.requestLayout();
+            }
+        });
+
+        valueAnimator.start();
+        // 启动动画
+    }
+
+    private void initRecycleview() {
         ArrayList<String> arrayList = new ArrayList<>();
         arrayList.add("A");
         arrayList.add("b");
@@ -138,152 +156,6 @@ public class Fragment3 extends Fragment {
 //        mSegmentControl.setSelectedDrawableColor(getResources().getColor(R.color.white));
     }
 
-    private int currentPage = 1;
-    public static String Url = "http://shenzhen.qfang.com/appapi/v4_5/room/list?bizType=SALE&dataSource=SHENZHEN&pageSize=10";
-
-    private void requestUpdate(final String currentPageStr) {
-        String httpUrl = Url + "&currentPage=" + currentPageStr;
-//        Logger.d("下拉刷新控件啦......currentPage  "+httpUrl);
-//        OkHttpUtils
-//                .get()//
-//                .url(httpUrl)
-//                .addHeader("Cache-Control","no-cache")
-//                .build()
-//                .execute(new SecListItemBeanCallback() {
-//
-//                    @Override
-//                    public void onError(Call call, Exception e, int id) {
-//                        mPtrFrameLayout.refreshComplete();
-//                    }
-//
-//                    @Override
-//                    public void onResponse(SecListBean response, int id) {
-//                        mPtrFrameLayout.refreshComplete();
-////                        mSecListItemEntities.addAll(response.getResult().getList());
-//                        mAdapter.addAll(response.getResult().getList());
-////                        Logger.d("response  "+response.getMessage()+"  count  "+mAdapter.getCount());
-//                        pageCount = response.getResult().getPageCount();
-//                        if (currentPage <= pageCount) {
-//                            loadMoreListViewContainer.loadMoreFinish(false, true);
-//                        }
-//                    }
-//                });
-
-//        getCacheRequset(httpUrl);
-
-    }
-
-    /**
-     * 实现了缓存的okhttp
-     *
-     * @param httpUrl
-     */
-    private void getCacheRequset(String httpUrl) {
-        Request request = new Request.Builder().url(httpUrl).cacheControl(new CacheControl.Builder()
-                .maxAge(5, TimeUnit.SECONDS)
-                .maxStale(5, TimeUnit.SECONDS).build())
-                .build();
-        OkHttpClient okHttpClient = OkHttpUtils.getInstance().getOkHttpClient();
-        Call call = okHttpClient.newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                Logger.d("onFailure  ........");
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String s = response.body().string();
-                Logger.d("response " + s);
-            }
-        });
-    }
-
-    private int pageSize = 10;
-
-    /**
-     * 自定义loadmore footview
-     *
-     * @param loadMoreListViewContainer
-     */
-    private void setLoadMoreFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
-//        loadMoreListViewContainer.setLoadMoreView( LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
-            @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                Logger.d("自定义footview   加载更多...........");
-                loadMoreListViewContainer.setLoadMoreView(LayoutInflater.from(getContext()).inflate(R.layout.item_textview, null));
-                loadMoreContainer.loadMoreFinish(true, true);
-            }
-        });
-        loadMoreListViewContainer.setLoadMoreUIHandler(new LoadMoreUIHandler() {
-            @Override
-            public void onLoading(LoadMoreContainer container) {
-                Logger.i("LoadMoreUIHandler   onLoading...");
-            }
-
-            @Override
-            public void onLoadFinish(LoadMoreContainer container, boolean empty, boolean hasMore) {
-                Logger.i("LoadMoreUIHandler   onLoadFinish...");
-            }
-
-            @Override
-            public void onWaitToLoadMore(LoadMoreContainer container) {
-                Logger.i("LoadMoreUIHandler   onWaitToLoadMore...");
-            }
-
-            @Override
-            public void onLoadError(LoadMoreContainer container, int errorCode, String errorMessage) {
-                Logger.i("LoadMoreUIHandler   onLoadError...");
-            }
-        });
-    }
-
-    /**
-     * 设置默认的加载更多.
-     *
-     * @param loadMoreListViewContainer
-     */
-    private void setLoadMoreDefaultFootView(final LoadMoreListViewContainer loadMoreListViewContainer) {
-        // load more container
-        //设定view可以加载更多
-        loadMoreListViewContainer.useDefaultHeader();
-        loadMoreListViewContainer.setAutoLoadMore(true);
-        loadMoreListViewContainer.setShowLoadingForFirstPage(true);
-        loadMoreListViewContainer.setLoadMoreHandler(new LoadMoreHandler() {
-            @Override
-            public void onLoadMore(LoadMoreContainer loadMoreContainer) {
-                currentPage++;
-                Logger.i("LoadMoreHandler  加载更多..............currentPage " + currentPage);
-                if (currentPage <= pageCount) {
-                    requestUpdate(String.valueOf(currentPage));
-                } else {
-                    loadMoreListViewContainer.loadMoreFinish(true, false);
-                }
-            }
-        });
-    }
-
-
-    private void testThread() {
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                                simpleAdapter.addAll("","","","","","","","","","");
-//                        for (int i = 0; i <10 ; i++) {
-//                            mSecListItemEntities.add("i  "+i+"number");
-//                        }
-                        mAdapter.addAll(mSecListItemEntities);
-                        loadMoreListViewContainer.loadMoreFinish(false, true);
-                    }
-                });
-            }
-        }.start();
-    }
 
     @Override
     public void onDestroyView() {
@@ -291,16 +163,20 @@ public class Fragment3 extends Fragment {
         unbinder.unbind();
     }
 
-    public static class MySimpledapter extends BaseQuickAdapter<String, BaseViewHolder> {
-
-        public MySimpledapter(@Nullable List data) {
-            super(R.layout.item_list_simple_text, data);
-        }
-
-
-        @Override
-        protected void convert(BaseViewHolder helper, String item) {
-            helper.setText(R.id.tv_avg_price, "item " + helper.getAdapterPosition());
+    @OnClick({R.id.btn_start})
+    void submitClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_start:
+                if (buttonFlag) {
+                    buttonScaleAni(buttonTranslate.getWidth(), 500);
+                    buttonFlag = false;
+                } else {
+                    buttonScaleAni(buttonTranslate.getWidth(), 200);
+                    buttonFlag = true;
+                }
+                break;
+            default:
+                break;
         }
     }
 }

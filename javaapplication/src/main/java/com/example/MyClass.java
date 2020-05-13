@@ -3,6 +3,7 @@ package com.example;
 import com.example.lambda.LambdaTest;
 import com.example.pojo.Car;
 import com.example.pojo.FilterMoreEnum;
+import com.example.pojo.QFCity;
 import com.example.pojo.Student;
 import com.example.rxjava.RxjavaTest;
 
@@ -62,16 +63,6 @@ public class MyClass {
 //        }else {
 //            System.out.println(" 小小小  = " + v);
 //        }
-        ArrayList<String> mData = new ArrayList<>();
-        for (int i = 0; i < 50; i++) {
-            if (i < 10) {
-                mData.add("0" + i);
-            } else {
-                mData.add(i + "");
-            }
-        }
-//        RowAndColumm.printDataToend(mData, 5);
-        System.out.println("------------------------");
 //        List<String> sortRowAndColumnData = RowAndColumm.sortRowAndColumnData(mData, 2, 5);
 //        RowAndColumm.printDataToend(sortRowAndColumnData, 5);
 
@@ -82,16 +73,53 @@ public class MyClass {
 //        double intValue = bigDecimal.divide(BigDecimal.valueOf(6), RoundingMode.UP).doubleValue();
 //        System.out.println(" 除数10 = "+intValue);
 
-//        for (int i = 0; i < 6; i++) {
-//            System.out.println(i + " % " + 5 + " = " + i % 5);
-//        }
-
-        String ss = "22.549625";
-        System.out.println(ss);
-        int div = div(1, 2);
-        System.out.println("除法结果" + div);
 //        BigDecimal bigDecimal = new BigDecimal(1.5);
 //        System.out.println("reuslt="+bigDecimal.setScale(0,RoundingMode.UP));
+//        Instant now = Instant.now();
+//        System.out.println("time = "+now.mi);
+
+//        long beforeTime = 1571068800000L;
+//        Instant instant = Instant.ofEpochMilli(beforeTime);
+//        System.out.println("Instant =  "+instant);
+//        LocalDate localDate1 = LocalDate.ofEpochDay(beforeTime);
+//        System.out.println("localDate1 =  "+localDate1);
+
+
+//        String nowDate = DateUtil.timeStamp2Date(System.currentTimeMillis(), DateUtil.DateStyle.YYYY_MM_DD.getValue());
+//        System.out.println("nowDate = " + nowDate);
+//        int result  = 33*335+1951+150+242;
+
+        int result  = 1951+150+20*335+75;
+        System.out.println(" reutlt  = "+result);
+    }
+
+    private static void testListException() {
+        QFCity qfCity = new QFCity();
+        qfCity.setDataSource("shenzhen");
+
+        ArrayList<QFCity> historyCities = new ArrayList<>();
+        for (int i = 0; i < 4; i++) {
+            QFCity qfCity1 = new QFCity();
+            if (i == 3) {
+                qfCity1.setDataSource("shenzhen");
+            } else {
+                qfCity1.setDataSource("shenzhen" + i);
+            }
+            historyCities.add(qfCity1);
+        }
+
+        int index = 0;
+        boolean contained = false;
+        for (int i = 0; i < historyCities.size(); i++) {
+            if (qfCity.getDataSource().equals(historyCities.get(i).getDataSource())) {
+                index = i;
+                contained = true;
+                System.out.println("contained  =  " + contained);
+                break;
+            }
+        }
+        QFCity element = contained ? historyCities.remove(index) : qfCity;
+        historyCities.add(0, element);
     }
 
     private static int div(double v1, double v2) {

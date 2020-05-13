@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 def config_android = rootProject.ext.android // 配置
 def ext_version = rootProject.ext.version // 库
@@ -158,6 +160,12 @@ dependencies {
 //    Rxjava 生命感知取消订阅.
     implementation 'com.uber.autodispose:autodispose:0.6.1'
     implementation 'com.uber.autodispose:autodispose-android-archcomponents:0.6.1'
+
+    implementation 'com.tencent:mmkv-static:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+}
+repositories {
+    mavenCentral()
 }
 
 // ADD THIS AT THE BOTTOM

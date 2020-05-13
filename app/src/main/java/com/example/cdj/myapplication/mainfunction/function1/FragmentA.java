@@ -3,9 +3,11 @@ package com.example.cdj.myapplication.mainfunction.function1;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -23,6 +25,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -43,12 +46,14 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.example.cdj.myapplication.Bean.CityInfoBean;
 import com.example.cdj.myapplication.Bean.SecListBean;
 import com.example.cdj.myapplication.Interceptor.LoggerInterceptor;
 import com.example.cdj.myapplication.Interceptor.NetInterceptor;
 import com.example.cdj.myapplication.Interceptor.NoNetInterceptor;
 import com.example.cdj.myapplication.R;
 import com.example.cdj.myapplication.SecListItemBeanCallback;
+import com.example.cdj.myapplication.activity.FileActivity;
 import com.example.cdj.myapplication.activity.LinearIndicatorActivity;
 import com.example.cdj.myapplication.activity.SecondMainBottomNavigationActivity;
 import com.example.cdj.myapplication.activity.SnapHelperActivity;
@@ -59,6 +64,7 @@ import com.example.cdj.myapplication.utils.NetWorkUtils;
 import com.example.cdj.myapplication.utils.ScreenUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.orhanobut.logger.Logger;
+import com.tencent.mmkv.MMKV;
 import com.zhy.http.okhttp.OkHttpUtils;
 
 import org.reactivestreams.Subscriber;
@@ -99,6 +105,7 @@ public class FragmentA extends BaseFragment {
     private final String rx_binding_test = "RX_binding_test";
     private final String snapheler_recycleview = "snapheler_recycleview";
     private final String LINEAR_PAGE_INDICATOR = "linear_page_indicator";
+    private final String FILE_ACTIVITY = "file_activity";
     //    @BindView(R.id.textView7)
     //    TextView textView7;
     //    @BindView(R.id.textView6)
@@ -115,6 +122,8 @@ public class FragmentA extends BaseFragment {
     TextView tvTexcontent;
     @BindView(R.id.recycleview)
     RecyclerView recycleview;
+    @BindView(R.id.tv_mmkv)
+    TextView tvMMkv;
     private Context mContext;
     private int screenWidth;
     private int screenHeight;
@@ -132,40 +141,38 @@ public class FragmentA extends BaseFragment {
     @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-
         super.onViewCreated(view, savedInstanceState);
         mContext = getActivity();
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
         recycleview.setLayoutManager(linearLayoutManager);
         List<String> datas = new ArrayList<>();
         datas.add(snapheler_recycleview);
         datas.add(rx_binding_test);
         datas.add(LINEAR_PAGE_INDICATOR);
+        datas.add(FILE_ACTIVITY);
         FragmentAAdapter adapter = new FragmentAAdapter(datas);
         recycleview.setAdapter(adapter);
         adapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                Logger.d("onItemClick:   ");
-                List<String> data = adapter.getData();
-                if (data != null) {
-                    for (int i = 0; i < data.size(); i++) {
-                        String resut = data.get(i);
-                        Intent intent = null;
-                        switch (resut) {
-                            case snapheler_recycleview:
-                                intent = new Intent(mContext, SnapHelperActivity.class);
-                                mContext.startActivity(intent);
-                                break;
-                            case LINEAR_PAGE_INDICATOR:
-                                intent = new Intent(mContext, LinearIndicatorActivity.class);
-                                mContext.startActivity(intent);
-                                break;
-                            default:
-                                break;
-                        }
-                    }
+                String resut = (String) adapter.getItem(position);
+                Logger.d("onItemClick:   resut= " + resut);
+                Intent intent = null;
+                switch (resut) {
+                    case snapheler_recycleview:
+                        intent = new Intent(mContext, SnapHelperActivity.class);
+                        mContext.startActivity(intent);
+                        break;
+                    case LINEAR_PAGE_INDICATOR:
+                        intent = new Intent(mContext, LinearIndicatorActivity.class);
+                        mContext.startActivity(intent);
+                        break;
+                    case FILE_ACTIVITY:
+                        intent = new Intent(mContext, FileActivity.class);
+                        mContext.startActivity(intent);
+                        break;
+                    default:
+                        break;
                 }
             }
         });
@@ -274,16 +281,56 @@ public class FragmentA extends BaseFragment {
 //        disposable = RxjavaTest.rangeTest(this);
 //        RxjavaTest.interval(this);
 //        SystemClock.sleep(10000);
-        getImEiMethod();
+
+
+//        getImEiMethod();
 
         printdifrentPath();
+        mmkvTest();
+
+        Uri imageContentUri = getImageContentUri(mContext, getCacheFilePath(mContext));
+        Logger.i("FragmentA    onViewCreated: imageContentUri   " + imageContentUri);
+    }
+
+    public static Uri getImageContentUri(Context context, String path) {
+        Cursor cursor = context.getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                new String[]{MediaStore.Images.Media._ID}, MediaStore.Images.Media.DATA + "=? ",
+                new String[]{path}, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+            Uri baseUri = Uri.parse("content://media/external/images/media");
+            return Uri.withAppendedPath(baseUri, "" + id);
+        } else {
+            // 如果图片不在手机的共享图片数据库，就先把它插入。
+            if (new File(path).exists()) {
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, path);
+                return context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            } else {
+                return null;
+            }
+        }
+    }
+
+    private void mmkvTest() {
+//        CityInfoBean cityInfoBean = new CityInfoBean();
+//        cityInfoBean.setNameZh("香格里拉");
+        MMKV kv = MMKV.defaultMMKV();
+        String city_info = kv.decodeString("city_info");
+        tvMMkv.setText(city_info);
+        CityInfoBean parcel = kv.decodeParcelable("parcel", CityInfoBean.class);
+        tvMMkv.setText(String.format("%s%s", parcel.getDataSource(), parcel.getNameZh()));
     }
 
     public void printdifrentPath() {
         Logger.d("getCacheDir=" + mContext.getCacheDir());
         Logger.d("getFilesDir=" + mContext.getFilesDir());
         Logger.d("getExternalCacheDir=" + mContext.getExternalCacheDir());
-        Logger.d("getExternalFilesDir=" + mContext.getExternalFilesDir(null));
+        File externalFilesDir = mContext.getExternalFilesDir(null);
+        File[] files = externalFilesDir.listFiles();
+        for (int i = 0; i < files.length; i++) {
+            Logger.i("getExternalFilesDir=" + files[i]);
+        }
         Logger.d("getExternalFilesDir=" + getCacheFilePath(mContext));
     }
 
@@ -859,7 +906,7 @@ public class FragmentA extends BaseFragment {
     }
 
 
-    @OnClick({R.id.btn_subthread,R.id.tv_texcontent})
+    @OnClick({R.id.btn_subthread, R.id.tv_texcontent})
     void btnOnclick(View v) {
         switch (v.getId()) {
             case R.id.btn_subthread:

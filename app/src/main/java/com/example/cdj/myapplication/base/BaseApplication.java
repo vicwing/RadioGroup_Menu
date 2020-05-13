@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Environment;
 
 import com.blankj.utilcode.util.Utils;
+import com.example.cdj.myapplication.Bean.CityInfoBean;
 import com.example.cdj.myapplication.BuildConfig;
 import com.example.cdj.myapplication.utils.LogCatStrategy;
 import com.orhanobut.logger.AndroidLogAdapter;
@@ -12,6 +13,7 @@ import com.orhanobut.logger.Logger;
 import com.orhanobut.logger.PrettyFormatStrategy;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.tencent.mmkv.MMKV;
 
 import java.io.File;
 import java.util.Timer;
@@ -63,8 +65,19 @@ public class BaseApplication extends Application {
 //                .build();
 //        OkHttpUtils.initClient(newClient);
         setLoggerConfig();
+        String rootDir = MMKV.initialize(this);
+        Logger.i("application : mmkv =   " + rootDir);
+        mmkvTest();
+        File filesDir = getFilesDir();
     }
-
+    private void mmkvTest() {
+        CityInfoBean cityInfoBean = new CityInfoBean();
+        cityInfoBean.setNameZh("香格里拉");
+        cityInfoBean.setDataSource("guangzhou");
+        MMKV kv = MMKV.defaultMMKV();
+        kv.encode("city_info","哈哈哈.......");
+        kv.encode("parcel",cityInfoBean);
+    }
     private void setLoggerConfig() {
         //        Logger.init("vicwing").logLevel(LogLevel.FULL).methodCount(1).hideThreadInfo();
 

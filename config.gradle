@@ -21,9 +21,9 @@ ext {
     android = [
             package          : "com.cdj.group",
             buildToolsVersion: "28.0.3",
-            compileVersion   : 28,
+            compileVersion   : 29,
             minSdk           : 23,
-            targetSdk        : 28,
+            targetSdk        : 29,
             version_code     : 1,
             version_name     : "0.0.1"
     ]

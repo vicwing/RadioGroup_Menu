@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/RadioGroup_Menu.iml" filepath="$PROJECT_DIR$/RadioGroup_Menu.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/javaapplication/javaapplication.iml" filepath="$PROJECT_DIR$/javaapplication/javaapplication.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RadioGroup_Menu.iml" filepath="$PROJECT_DIR$/RadioGroup_Menu.iml" group="RadioGroup_Menu" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="RadioGroup_Menu/app" />
+      <module fileurl="file://$PROJECT_DIR$/javaapplication/javaapplication.iml" filepath="$PROJECT_DIR$/javaapplication/javaapplication.iml" group="RadioGroup_Menu/javaapplication" />
     </modules>
   </component>
 </project>

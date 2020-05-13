@@ -31,6 +31,17 @@
             segmentcontrol:texts="商业|公积金|组合"
             segmentcontrol:verticalGap="8dip"/>
     </LinearLayout>
+    <Button
+        android:id="@+id/btn_start"
+        android:layout_width="wrap_content"
+        android:text="开始动画"
+        android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/button_translate"
+        android:layout_width="wrap_content"
+        android:text="按钮"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content" />
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleview"
         android:layout_width="match_parent"
